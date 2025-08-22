@@ -1,0 +1,200 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "academic-citation-platform"
+version = "0.1.0"
+description = "Comprehensive platform for academic citation network analysis, prediction, and exploration"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Academic Citation Platform Team"},
+]
+keywords = ["academic", "citations", "graph", "machine-learning", "neo4j"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    # Core dependencies
+    "pandas>=1.5.0",
+    "numpy>=1.21.0",
+    "pydantic>=1.10.0",
+    
+    # Database
+    "neo4j>=5.0.0",
+    
+    # Configuration and environment
+    "python-dotenv>=0.19.0",
+    
+    # HTTP requests
+    "requests>=2.28.0",
+    "httpx>=0.24.0",
+    
+    # Data validation and serialization
+    "pydantic>=1.10.0",
+    
+    # Utilities
+    "python-dateutil>=2.8.0",
+    "tqdm>=4.64.0",
+]
+
+[project.optional-dependencies]
+# Development dependencies
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.20.0",
+    "black>=22.0.0",
+    "isort>=5.10.0",
+    "flake8>=5.0.0",
+    "mypy>=0.991",
+    "pre-commit>=2.20.0",
+]
+
+# Machine Learning dependencies (Phase 2)
+ml = [
+    "torch>=1.12.0",
+    "scikit-learn>=1.1.0",
+    "scipy>=1.9.0",
+    "networkx>=2.8.0",
+]
+
+# Visualization dependencies (Phase 3) 
+viz = [
+    "matplotlib>=3.5.0",
+    "seaborn>=0.11.0",
+    "plotly>=5.10.0",
+    "pyvis>=0.2.0",
+]
+
+# Web interface dependencies (Phase 4)
+web = [
+    "streamlit>=1.12.0",
+    "streamlit-agraph>=0.0.45",
+]
+
+# All optional dependencies
+all = [
+    "academic-citation-platform[dev,ml,viz,web]"
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/academic-citation-platform"
+Documentation = "https://academic-citation-platform.readthedocs.io"
+Repository = "https://github.com/your-org/academic-citation-platform.git"
+Issues = "https://github.com/your-org/academic-citation-platform/issues"
+
+[project.scripts]
+acp = "src.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.setuptools.package-data]
+"src.config" = ["*.yaml", "*.json"]
+
+# Development tools configuration
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "neo4j.*",
+    "streamlit.*",
+    "plotly.*",
+    "pyvis.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["src/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "src/tests/*",
+    "*/conftest.py",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
