@@ -1,8 +1,5 @@
 # Academic Citation Platform .gitignore
 
-# Reference codebases (separate projects)
-reference-codebases/
-
 # Python
 __pycache__/
 *.py[cod]
@@ -82,6 +79,9 @@ tmp/
 # Models and data (large files)
 models/*.pt
 models/*.pkl
+outputs/*.png
+outputs/*.pkl
+outputs/*.csv
 data/raw/
 data/processed/
 outputs/large_files/

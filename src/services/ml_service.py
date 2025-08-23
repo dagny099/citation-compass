@@ -1,9 +1,8 @@
 """
 Machine Learning service layer for TransE citation prediction model.
 
-This service provides a high-level interface for loading and serving the trained
-TransE model from the citation-map-dashboard codebase, with caching optimizations
-for web application performance.
+This service provides a high-level interface for loading and serving locally
+trained TransE models, with caching optimizations for web application performance.
 """
 
 import os
@@ -32,10 +31,10 @@ from ..data.api_config import get_config
 
 class TransEModel(nn.Module):
     """
-    TransE model implementation matching the citation-map-dashboard structure.
+    TransE model implementation for citation prediction.
     
-    This is a clean implementation of the TransE model for loading the
-    pre-trained weights from the reference codebase.
+    This is a clean implementation of the TransE model that can be trained
+    locally and used for citation prediction tasks.
     """
     
     def __init__(self, 
@@ -207,9 +206,8 @@ class TransEModelService:
     """
     High-level service for TransE model predictions with caching and optimization.
     
-    This service loads the trained model from citation-map-dashboard and provides
-    a clean interface for citation predictions with performance optimizations
-    suitable for web applications.
+    This service loads locally trained models and provides a clean interface for
+    citation predictions with performance optimizations suitable for web applications.
     """
     
     def __init__(self, 
@@ -252,16 +250,16 @@ class TransEModelService:
         self.logger.info(f"TransE service initialized (device: {self.device})")
     
     def _get_reference_model_path(self) -> Path:
-        """Get path to the trained model in reference codebase."""
-        return Path("reference-codebases/citation-map-dashboard/models/transe_citation_model.pt")
+        """Get path to the trained model in local models directory."""
+        return Path("models/transe_citation_model.pt")
     
     def _get_reference_entity_mapping_path(self) -> Path:
-        """Get path to entity mapping in reference codebase."""
-        return Path("reference-codebases/citation-map-dashboard/models/entity_mapping.pkl")
+        """Get path to entity mapping in local models directory."""
+        return Path("models/entity_mapping.pkl")
     
     def _get_reference_metadata_path(self) -> Path:
-        """Get path to training metadata in reference codebase."""
-        return Path("reference-codebases/citation-map-dashboard/models/training_metadata.pkl")
+        """Get path to training metadata in local models directory."""
+        return Path("models/training_metadata.pkl")
     
     def _load_entity_mapping(self) -> None:
         """Load entity mapping from pickle file."""

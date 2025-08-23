@@ -59,9 +59,23 @@ Get context for your findings:
 
 ## 🛠️ For Data Scientists
 
+### Train Your Own Models
+
+**First time setup? Train a TransE model:**
+```bash
+# Open the training notebook
+jupyter notebook notebooks/model_training.ipynb
+```
+
+The training notebook will:
+- Load citation data from your Neo4j database
+- Train a TransE model for citation prediction
+- Save the trained model to `models/` directory
+- Generate training visualizations
+
 ### Python API Usage
 ```python
-# ML predictions
+# ML predictions (after training)
 from src.services.ml_service import get_ml_service
 ml = get_ml_service()
 predictions = ml.predict_citations('paper_id', top_k=10)
@@ -83,7 +97,7 @@ communities = analytics.detect_communities('author_id')
 # Run all tests
 python -m pytest tests/ -v
 
-# Test ML service
+# Test ML service (requires trained model)
 python -c "from src.services.ml_service import get_ml_service; print('✅ ML Ready')"
 
 # Test analytics
@@ -92,10 +106,11 @@ python -c "from src.services.analytics_service import get_analytics_service; pri
 
 ## 📊 Sample Workflows
 
-1. **Citation Prediction**: Input a paper → Get predicted citations → Validate with embeddings
-2. **Network Analysis**: Select author/field → Detect communities → Export LaTeX summary
-3. **Temporal Analysis**: Choose date range → Analyze citation trends → Generate insights
-4. **Research Discovery**: Explore embeddings → Find similar papers → Build reading lists
+1. **Model Training**: Run training notebook → Train TransE model → Save to local models
+2. **Citation Prediction**: Input a paper → Get predicted citations → Validate with embeddings
+3. **Network Analysis**: Select author/field → Detect communities → Export LaTeX summary
+4. **Temporal Analysis**: Choose date range → Analyze citation trends → Generate insights
+5. **Research Discovery**: Explore embeddings → Find similar papers → Build reading lists
 
 ## 🔧 Advanced Configuration
 
