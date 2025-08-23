@@ -11,27 +11,29 @@ from __future__ import annotations
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 from dataclasses import dataclass, field
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field as PydanticField, field_validator, ConfigDict
 
 
 class PaperBase(BaseModel):
     """Base paper model with common fields."""
-    title: str = Field(..., min_length=1, max_length=1000)
-    abstract: Optional[str] = Field(None, max_length=10000)
-    year: Optional[int] = Field(None, ge=1900, le=2030)
-    citation_count: Optional[int] = Field(None, ge=0)
-    reference_count: Optional[int] = Field(None, ge=0)
+    title: str = PydanticField(..., min_length=1, max_length=1000)
+    abstract: Optional[str] = PydanticField(None, max_length=10000)
+    year: Optional[int] = PydanticField(None, ge=1900, le=2030)
+    citation_count: Optional[int] = PydanticField(None, ge=0)
+    reference_count: Optional[int] = PydanticField(None, ge=0)
     publication_date: Optional[str] = None
     doi: Optional[str] = None
     is_open_access: Optional[bool] = None
     
-    @validator('year')
+    @field_validator('year')
+    @classmethod
     def validate_year(cls, v):
         if v is not None and (v < 1900 or v > 2030):
             raise ValueError('Year must be between 1900 and 2030')
         return v
     
-    @validator('title')
+    @field_validator('title')
+    @classmethod
     def validate_title(cls, v):
         if not v or len(v.strip()) == 0:
             raise ValueError('Title cannot be empty')
@@ -40,25 +42,22 @@ class PaperBase(BaseModel):
 
 class Paper(PaperBase):
     """Complete paper model with all fields."""
-    paper_id: str = Field(..., description="Unique paper identifier")
+    model_config = ConfigDict(validate_assignment=True)
+    
+    paper_id: str = PydanticField(..., description="Unique paper identifier")
     
     # Additional metadata from Semantic Scholar
-    influential_citation_count: Optional[int] = Field(None, ge=0)
-    s2_fields_of_study: Optional[List[str]] = Field(default_factory=list)
+    influential_citation_count: Optional[int] = PydanticField(None, ge=0)
+    s2_fields_of_study: Optional[List[str]] = PydanticField(default_factory=list)
     open_access_pdf: Optional[str] = None
     
     # Computed fields
-    authors: Optional[List[str]] = Field(default_factory=list)
-    venues: Optional[List[str]] = Field(default_factory=list)
-    fields: Optional[List[str]] = Field(default_factory=list)
+    authors: Optional[List[str]] = PydanticField(default_factory=list)
+    venues: Optional[List[str]] = PydanticField(default_factory=list)
+    fields: Optional[List[str]] = PydanticField(default_factory=list)
     
     # ML features
-    embedding: Optional[List[float]] = Field(None, description="Paper embedding vector")
-    
-    class Config:
-        """Pydantic configuration."""
-        allow_population_by_field_name = True
-        validate_assignment = True
+    embedding: Optional[List[float]] = PydanticField(None, description="Paper embedding vector")
         
     @property
     def has_abstract(self) -> bool:
@@ -164,28 +163,28 @@ class Paper(PaperBase):
 
 class PaperCreate(PaperBase):
     """Model for creating new papers."""
-    paper_id: str = Field(..., description="Unique paper identifier")
+    paper_id: str = PydanticField(..., description="Unique paper identifier")
     
     def to_paper(self) -> Paper:
         """Convert to full Paper model."""
-        return Paper(**self.dict())
+        return Paper(**self.model_dump())
 
 
 class PaperUpdate(BaseModel):
     """Model for updating existing papers."""
-    title: Optional[str] = Field(None, min_length=1, max_length=1000)
-    abstract: Optional[str] = Field(None, max_length=10000)
-    year: Optional[int] = Field(None, ge=1900, le=2030)
-    citation_count: Optional[int] = Field(None, ge=0)
-    reference_count: Optional[int] = Field(None, ge=0)
+    title: Optional[str] = PydanticField(None, min_length=1, max_length=1000)
+    abstract: Optional[str] = PydanticField(None, max_length=10000)
+    year: Optional[int] = PydanticField(None, ge=1900, le=2030)
+    citation_count: Optional[int] = PydanticField(None, ge=0)
+    reference_count: Optional[int] = PydanticField(None, ge=0)
     publication_date: Optional[str] = None
     doi: Optional[str] = None
     is_open_access: Optional[bool] = None
-    influential_citation_count: Optional[int] = Field(None, ge=0)
+    influential_citation_count: Optional[int] = PydanticField(None, ge=0)
     
     def apply_to_paper(self, paper: Paper) -> Paper:
         """Apply updates to an existing paper."""
-        update_data = self.dict(exclude_unset=True)
+        update_data = self.model_dump(exclude_unset=True)
         for field, value in update_data.items():
             setattr(paper, field, value)
         return paper

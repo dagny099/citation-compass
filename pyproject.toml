@@ -159,7 +159,7 @@ module = [
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
-testpaths = ["src/tests"]
+testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
@@ -167,9 +167,6 @@ addopts = [
     "--strict-markers",
     "--strict-config",
     "--verbose",
-    "--cov=src",
-    "--cov-report=term-missing",
-    "--cov-report=html",
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
