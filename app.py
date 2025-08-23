@@ -42,6 +42,7 @@ home_page = st.Page("pages/Home.py", title="Home", icon="🏠", default=True)
 ml_predictions_page = st.Page("src/streamlit_app/pages/ML_Predictions.py", title="ML Predictions", icon="🤖")
 embedding_explorer_page = st.Page("src/streamlit_app/pages/Embedding_Explorer.py", title="Embedding Explorer", icon="🧭")
 visualization_page = st.Page("src/streamlit_app/pages/Enhanced_Visualizations.py", title="Enhanced Visualizations", icon="📊")
+results_interpretation_page = st.Page("src/streamlit_app/pages/Results_Interpretation.py", title="Results Interpretation", icon="📋")
 notebook_pipeline_page = st.Page("src/streamlit_app/pages/Notebook_Pipeline.py", title="Analysis Pipeline", icon="📓")
 
 # Set up navigation
@@ -49,7 +50,7 @@ pg = st.navigation(
     {
         "Main": [home_page],
         "Machine Learning": [ml_predictions_page, embedding_explorer_page],
-        "Analysis": [visualization_page, notebook_pipeline_page],
+        "Analysis": [visualization_page, results_interpretation_page, notebook_pipeline_page],
     }
 )
 

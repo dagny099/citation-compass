@@ -64,7 +64,6 @@ class Paper(PaperBase):
         """Check if paper has an abstract."""
         return bool(self.abstract and len(self.abstract.strip()) > 0)
     
-    @property
     def is_highly_cited(self, threshold: int = 100) -> bool:
         """Check if paper is highly cited."""
         return bool(self.citation_count and self.citation_count >= threshold)

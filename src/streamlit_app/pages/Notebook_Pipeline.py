@@ -1,9 +1,9 @@
 """
-Notebook Analysis Pipeline page.
+Advanced Notebook Analysis Pipeline page.
 
-This page recreates the comprehensive analysis pipeline from the reference notebooks,
-providing step-by-step model evaluation, prediction analysis, and visualization
-in an interactive Streamlit interface.
+This page provides comprehensive analytics pipeline integrating Phase 3 advanced
+analytics capabilities including network analysis, temporal analysis, performance
+benchmarking, and interactive notebook execution with export capabilities.
 """
 
 import streamlit as st
@@ -13,27 +13,39 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pickle
 import torch
+import json
+import io
 from typing import Dict, List, Optional, Tuple
+from datetime import datetime
 import logging
+import subprocess
+import sys
+from pathlib import Path
 
 from src.services.ml_service import get_ml_service
+from src.services.analytics_service import get_analytics_service
 from src.data.unified_api_client import UnifiedSemanticScholarClient
 from src.models.ml import CitationPrediction, ModelMetadata
+from src.analytics.export_engine import ExportConfiguration, ExportResult
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 st.set_page_config(
-    page_title="Analysis Pipeline",
-    page_icon="📓",
+    page_title="Advanced Analytics Pipeline",
+    page_icon="📔",
     layout="wide"
 )
 
-st.title("📓 Analysis Pipeline")
+st.title("📔 Advanced Analytics Pipeline")
 st.markdown("""
-Comprehensive analysis workflow based on the citation-map-dashboard notebooks.
-Run model evaluation, prediction analysis, and generate insights interactively.
+**Phase 3 Enhanced Analytics** - Comprehensive analysis workflow with advanced capabilities:
+- 🔬 Interactive notebook execution
+- 📊 Network and temporal analysis  
+- ⚡ Performance benchmarking
+- 📈 Advanced visualizations
+- 📋 Multi-format report generation
 """)
 
 # Initialize services
@@ -42,35 +54,84 @@ def get_services():
     """Initialize and cache services."""
     try:
         ml_service = get_ml_service()
+        analytics_service = get_analytics_service()
         api_client = UnifiedSemanticScholarClient()
-        return ml_service, api_client
+        return ml_service, analytics_service, api_client
     except Exception as e:
         st.error(f"Failed to initialize services: {e}")
-        return None, None
+        return None, None, None
 
-ml_service, api_client = get_services()
+ml_service, analytics_service, api_client = get_services()
 
-if ml_service is None:
-    st.error("❌ ML service not available.")
+if ml_service is None or analytics_service is None:
+    st.error("❌ Required services not available.")
     st.stop()
+
+# Check service health
+system_health = analytics_service.get_system_health()
+health_status = system_health.get('overall_health')
+overall_status = health_status.status if health_status else 'unknown'
+
+if overall_status == 'critical':
+    st.error("🚨 System health is critical. Some features may not work properly.")
+elif overall_status == 'warning':
+    st.warning("⚠️ System health has warnings. Monitor performance closely.")
+else:
+    st.success("✅ All systems healthy and ready for analytics.")
 
 # Sidebar configuration
 st.sidebar.header("📋 Pipeline Configuration")
 
-# Pipeline steps
-pipeline_steps = [
-    "Model Information & Health Check",
-    "Prediction Generation & Analysis", 
-    "Performance Metrics & Evaluation",
-    "Confidence Analysis & Patterns",
-    "Embedding Space Analysis",
-    "Research Insights & Summary"
-]
+# Enhanced pipeline steps with Phase 3 analytics
+st.sidebar.subheader("🔬 Analysis Type")
+analysis_type = st.sidebar.selectbox(
+    "Choose analysis type:",
+    ["Complete Pipeline", "Network Analysis", "Temporal Analysis", "Performance Benchmarks", "Interactive Notebooks"]
+)
+
+# Pipeline steps based on analysis type
+if analysis_type == "Complete Pipeline":
+    pipeline_steps = [
+        "System Health & Model Info",
+        "ML Predictions & Analysis",
+        "Network Structure Analysis", 
+        "Performance Benchmarks",
+        "Advanced Visualizations",
+        "Export & Report Generation"
+    ]
+elif analysis_type == "Network Analysis":
+    pipeline_steps = [
+        "Network Data Loading",
+        "Centrality Analysis",
+        "Community Detection",
+        "Network Visualizations"
+    ]
+elif analysis_type == "Temporal Analysis":
+    pipeline_steps = [
+        "Citation Time Series",
+        "Growth Pattern Analysis", 
+        "Trend Detection",
+        "Seasonal Analysis"
+    ]
+elif analysis_type == "Performance Benchmarks":
+    pipeline_steps = [
+        "ML Model Benchmarks",
+        "API Performance Tests",
+        "Stress Testing",
+        "Resource Analysis"
+    ]
+elif analysis_type == "Interactive Notebooks":
+    pipeline_steps = [
+        "Notebook Selection",
+        "Parameter Configuration",
+        "Interactive Execution",
+        "Results Export"
+    ]
 
 selected_steps = st.sidebar.multiselect(
     "Select analysis steps to run:",
     pipeline_steps,
-    default=pipeline_steps[:3]
+    default=pipeline_steps[:2] if len(pipeline_steps) > 2 else pipeline_steps
 )
 
 # Parameters
@@ -541,8 +602,255 @@ if run_pipeline and selected_steps:
             st.write(f"**{i}.** {step}")
         
         st.success("✅ Research insights and summary complete")
+
+# Phase 3: Interactive Notebooks Section
+elif analysis_type == "Interactive Notebooks":
+    st.header("📔 Interactive Notebook Execution")
     
-    # Clear progress indicators
+    if "Notebook Selection" in selected_steps:
+        st.subheader("📚 Available Notebooks")
+        
+        available_notebooks = {
+            "01_network_exploration.ipynb": {
+                "title": "🏗️ Network Exploration Analysis",
+                "description": "Comprehensive citation network analysis with centrality measures and community detection",
+                "estimated_time": "2-3 minutes",
+                "complexity": "Medium"
+            },
+            "02_citation_analysis.ipynb": {
+                "title": "📅 Citation Analysis & Temporal Patterns", 
+                "description": "Temporal analysis of citation patterns, trends, and growth over time",
+                "estimated_time": "3-4 minutes",
+                "complexity": "Medium"
+            },
+            "03_performance_benchmarks.ipynb": {
+                "title": "⚡ Performance Benchmarks & System Analysis",
+                "description": "Comprehensive performance testing and system health analysis",
+                "estimated_time": "4-5 minutes", 
+                "complexity": "High"
+            }
+        }
+        
+        selected_notebook = st.selectbox(
+            "Choose notebook to execute:",
+            list(available_notebooks.keys()),
+            format_func=lambda x: available_notebooks[x]["title"]
+        )
+        
+        if selected_notebook:
+            notebook_info = available_notebooks[selected_notebook]
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.info(f"**Description:** {notebook_info['description']}")
+                st.info(f"**Estimated Time:** {notebook_info['estimated_time']}")
+                st.info(f"**Complexity:** {notebook_info['complexity']}")
+            
+            with col2:
+                st.warning("""
+                **Note:** Notebook execution runs actual analysis code.
+                This may take several minutes and consume system resources.
+                """)
+        
+        st.session_state['selected_notebook'] = selected_notebook
+    
+    if "Parameter Configuration" in selected_steps:
+        st.subheader("⚙️ Notebook Configuration")
+        
+        if 'selected_notebook' in st.session_state:
+            selected_notebook = st.session_state['selected_notebook']
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                if "network" in selected_notebook:
+                    max_papers = st.number_input("Max papers to analyze", 100, 2000, 1000)
+                    include_communities = st.checkbox("Include community detection", True)
+                    include_centrality = st.checkbox("Include centrality analysis", True)
+                    
+                    notebook_params = {
+                        'max_papers': max_papers,
+                        'include_communities': include_communities,
+                        'include_centrality': include_centrality
+                    }
+                
+                elif "citation" in selected_notebook:
+                    num_papers = st.number_input("Number of papers", 50, 500, 100)
+                    include_trends = st.checkbox("Include trend analysis", True)
+                    include_seasonality = st.checkbox("Include seasonal analysis", True)
+                    
+                    notebook_params = {
+                        'num_papers': num_papers,
+                        'include_trends': include_trends,
+                        'include_seasonality': include_seasonality
+                    }
+                
+                elif "performance" in selected_notebook:
+                    ml_iterations = st.number_input("ML benchmark iterations", 10, 50, 20)
+                    stress_duration = st.number_input("Stress test duration (seconds)", 10, 60, 20)
+                    include_memory = st.checkbox("Include memory analysis", True)
+                    
+                    notebook_params = {
+                        'ml_iterations': ml_iterations,
+                        'stress_duration': stress_duration,
+                        'include_memory': include_memory
+                    }
+            
+            with col2:
+                export_format = st.selectbox("Export format", ["HTML", "JSON", "CSV"])
+                include_visualizations = st.checkbox("Include visualizations", True)
+                
+                notebook_params.update({
+                    'export_format': export_format.lower(),
+                    'include_visualizations': include_visualizations
+                })
+            
+            st.session_state['notebook_params'] = notebook_params
+    
+    if "Interactive Execution" in selected_steps:
+        st.subheader("🚀 Notebook Execution")
+        
+        if 'selected_notebook' in st.session_state and 'notebook_params' in st.session_state:
+            selected_notebook = st.session_state['selected_notebook']
+            params = st.session_state['notebook_params']
+            
+            if st.button(f"▶️ Execute {selected_notebook}", type="primary"):
+                with st.spinner("Executing notebook... This may take several minutes."):
+                    
+                    # Execute notebook based on type
+                    try:
+                        if "network" in selected_notebook:
+                            results = analytics_service.analyze_citation_network(
+                                max_papers=params.get('max_papers', 1000),
+                                include_communities=params.get('include_communities', True),
+                                include_centrality=params.get('include_centrality', True)
+                            )
+                            
+                            if 'error' not in results:
+                                st.success("✅ Network analysis completed successfully!")
+                                
+                                # Display key results
+                                graph_info = results['graph_info']
+                                st.write(f"**Analyzed:** {graph_info['num_nodes']:,} nodes, {graph_info['num_edges']:,} edges")
+                                
+                                if 'network_metrics' in results:
+                                    metrics = results['network_metrics']
+                                    col1, col2, col3 = st.columns(3)
+                                    
+                                    with col1:
+                                        st.metric("Network Density", f"{metrics['density']:.6f}")
+                                    with col2:
+                                        st.metric("Avg Degree", f"{metrics['average_degree']:.2f}")
+                                    with col3:
+                                        st.metric("Communities", len(results.get('communities', [])))
+                            else:
+                                st.error(f"Analysis failed: {results['error']}")
+                        
+                        elif "citation" in selected_notebook:
+                            st.info("Temporal analysis requires citation data. Using simulated data for demonstration.")
+                            
+                            # Simulate temporal analysis results
+                            results = {
+                                'analysis_timestamp': datetime.now().isoformat(),
+                                'data_info': {
+                                    'num_papers': params.get('num_papers', 100),
+                                    'num_citations': params.get('num_papers', 100) * 15
+                                },
+                                'trend_analysis': {
+                                    'trend_direction': 'increasing',
+                                    'trend_strength': 0.75,
+                                    'growth_rate': 0.12
+                                }
+                            }
+                            
+                            st.success("✅ Temporal analysis completed successfully!")
+                            st.write(f"**Analyzed:** {results['data_info']['num_papers']} papers")
+                            st.write(f"**Growth trend:** {results['trend_analysis']['trend_direction']} ({results['trend_analysis']['growth_rate']:.1%} annual)")
+                        
+                        elif "performance" in selected_notebook:
+                            benchmark_results = analytics_service.run_performance_benchmarks(
+                                benchmark_types=['ml', 'stress'],
+                                test_paper_ids=['test_1', 'test_2', 'test_3']
+                            )
+                            
+                            if 'error' not in benchmark_results:
+                                st.success("✅ Performance benchmarks completed successfully!")
+                                
+                                summary = benchmark_results['summary']
+                                col1, col2, col3 = st.columns(3)
+                                
+                                with col1:
+                                    st.metric("Success Rate", f"{summary['key_metrics']['average_success_rate']:.1%}")
+                                with col2:
+                                    st.metric("Benchmarks Run", summary['total_benchmarks'])
+                                with col3:
+                                    st.metric("Performance Score", f"{summary['key_metrics']['performance_score']:.1f}/100")
+                            else:
+                                st.error(f"Benchmarks failed: {benchmark_results['error']}")
+                        
+                        # Store results for export
+                        st.session_state['notebook_results'] = results
+                        
+                    except Exception as e:
+                        st.error(f"Notebook execution failed: {str(e)}")
+        else:
+            st.info("Please complete notebook selection and configuration first.")
+    
+    if "Results Export" in selected_steps:
+        st.subheader("💾 Export Results")
+        
+        if 'notebook_results' in st.session_state:
+            results = st.session_state['notebook_results']
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.write("**Available Export Formats:**")
+                st.write("• HTML - Interactive report with visualizations")
+                st.write("• JSON - Raw data for programmatic use")
+                st.write("• CSV - Tabular data for spreadsheet analysis")
+            
+            with col2:
+                if st.button("🗂️ Generate Export Files"):
+                    try:
+                        # Configure export
+                        export_config = ExportConfiguration(
+                            format='html',
+                            include_visualizations=True,
+                            include_raw_data=True,
+                            metadata={
+                                'notebook_executed': st.session_state.get('selected_notebook', 'unknown'),
+                                'execution_time': datetime.now().isoformat(),
+                                'parameters': st.session_state.get('notebook_params', {})
+                            }
+                        )
+                        
+                        # Generate report
+                        export_result = analytics_service.generate_comprehensive_report(
+                            analysis_results={'notebook_analysis': results},
+                            export_format='html',
+                            include_visualizations=True
+                        )
+                        
+                        if export_result.success:
+                            st.success(f"✅ Report exported: {export_result.file_path}")
+                            st.download_button(
+                                "📥 Download Results",
+                                data=json.dumps(results, default=str, indent=2),
+                                file_name=f"notebook_results_{datetime.now().strftime('%Y%m%d_%H%M')}.json",
+                                mime="application/json"
+                            )
+                        else:
+                            st.error(f"Export failed: {export_result.error_message}")
+                    
+                    except Exception as e:
+                        st.error(f"Export error: {str(e)}")
+        else:
+            st.info("Execute a notebook first to generate exportable results.")
+
+# Clear progress indicators and show completion
+if run_pipeline and selected_steps:
     progress_bar.progress(1.0)
     status_text.text("✅ Pipeline execution complete!")
     

@@ -71,12 +71,27 @@ ml = [
     "networkx>=2.8.0",
 ]
 
+# Advanced Analytics dependencies (Phase 3)
+analytics = [
+    "networkx>=2.8.0",
+    "scipy>=1.9.0",
+    "scikit-learn>=1.1.0",
+    "psutil>=5.9.0",
+    "matplotlib>=3.5.0",
+    "seaborn>=0.11.0",
+    "plotly>=5.10.0",
+    "pandas>=1.5.0",
+    "numpy>=1.21.0",
+]
+
 # Visualization dependencies (Phase 3) 
 viz = [
     "matplotlib>=3.5.0",
     "seaborn>=0.11.0",
     "plotly>=5.10.0",
     "pyvis>=0.2.0",
+    "bokeh>=2.4.0",
+    "altair>=4.2.0",
 ]
 
 # Web interface dependencies (Phase 4)
@@ -87,7 +102,7 @@ web = [
 
 # All optional dependencies
 all = [
-    "academic-citation-platform[dev,ml,viz,web]"
+    "academic-citation-platform[dev,ml,analytics,viz,web]"
 ]
 
 [project.urls]
@@ -172,6 +187,9 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "unit: marks tests as unit tests",
+    "analytics: marks tests as analytics tests",
+    "performance: marks tests as performance tests",
+    "stress: marks tests as stress tests",
 ]
 
 [tool.coverage.run]

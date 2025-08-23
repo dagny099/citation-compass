@@ -20,6 +20,7 @@ import logging
 from src.services.ml_service import get_ml_service
 from src.data.unified_api_client import UnifiedSemanticScholarClient
 from src.models.ml import CitationPrediction
+from src.analytics.contextual_explanations import ContextualExplanationEngine
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -44,12 +45,13 @@ def get_services():
     try:
         ml_service = get_ml_service()
         api_client = UnifiedSemanticScholarClient()
-        return ml_service, api_client
+        explanation_engine = ContextualExplanationEngine()
+        return ml_service, api_client, explanation_engine
     except Exception as e:
         st.error(f"Failed to initialize services: {e}")
-        return None, None
+        return None, None, None
 
-ml_service, api_client = get_services()
+ml_service, api_client, explanation_engine = get_services()
 
 if ml_service is None:
     st.error("❌ Services not available.")
@@ -327,24 +329,185 @@ if viz_type == "Citation Network with Predictions":
             
             st.plotly_chart(fig, use_container_width=True)
             
-            # Network statistics
-            st.subheader("📈 Network Statistics")
+            # Enhanced Network Statistics with Contextual Explanations
+            st.subheader("📈 Network Analysis with Academic Context")
             
+            # Calculate network metrics
+            network_density = nx.density(G) if len(G.nodes()) > 1 else 0
+            avg_confidence = np.mean([d.get('confidence', 0) for _, _, d in G.edges(data=True) if d.get('edge_type') == 'predicted']) if any(d.get('edge_type') == 'predicted' for _, _, d in G.edges(data=True)) else 0
+            predicted_edges = sum(1 for _, _, d in G.edges(data=True) if d.get('edge_type') == 'predicted')
+            actual_edges = sum(1 for _, _, d in G.edges(data=True) if d.get('edge_type') == 'actual')
+            
+            # Generate contextual explanations
+            network_metrics = {
+                "network_density": network_density,
+                "hits_at_10": min(avg_confidence, 1.0) if avg_confidence > 0 else 0
+            }
+            
+            explanations = explanation_engine.bulk_explain_metrics(
+                network_metrics, 
+                context={"num_entities": len(G.nodes()), "num_predictions": predicted_edges}
+            )
+            
+            # Display metrics with traffic light indicators
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
                 st.metric("Total Nodes", len(G.nodes()))
+                if len(G.nodes()) > 0:
+                    st.caption("Papers in analysis network")
             
             with col2:
-                st.metric("Total Edges", len(G.edges()))
+                density_explanation = explanations.get("network_density")
+                if density_explanation:
+                    st.metric(
+                        f"{density_explanation.performance_icon} Network Density", 
+                        f"{network_density:.4f}",
+                        help=density_explanation.short_description
+                    )
+                    with st.expander("📖 What does this mean?"):
+                        st.write(f"**Performance:** {density_explanation.performance_level.value.title()}")
+                        st.write(density_explanation.detailed_explanation)
+                        st.write(f"**Academic Context:** {density_explanation.academic_context}")
+                        st.write(f"**Typical Range:** {density_explanation.typical_range_text}")
+                else:
+                    st.metric("Network Density", f"{network_density:.4f}")
             
             with col3:
-                predicted_edges = sum(1 for _, _, d in G.edges(data=True) if d.get('edge_type') == 'predicted')
                 st.metric("Predicted Citations", predicted_edges)
+                if predicted_edges > 0:
+                    confidence_explanation = explanations.get("hits_at_10")
+                    if confidence_explanation:
+                        st.metric(
+                            f"{confidence_explanation.performance_icon} Avg Confidence",
+                            f"{avg_confidence:.3f}",
+                            help="Average ML prediction confidence"
+                        )
+                        with st.expander("🎯 Prediction Quality"):
+                            st.write(f"**Performance:** {confidence_explanation.performance_level.value.title()}")
+                            st.write(confidence_explanation.detailed_explanation)
+                            if confidence_explanation.suggested_actions:
+                                st.write("**Suggested Actions:**")
+                                for action in confidence_explanation.suggested_actions:
+                                    st.write(f"• {action}")
+                    else:
+                        st.metric("Avg Confidence", f"{avg_confidence:.3f}")
             
             with col4:
-                actual_edges = sum(1 for _, _, d in G.edges(data=True) if d.get('edge_type') == 'actual')
                 st.metric("Actual Citations", actual_edges)
+                if actual_edges > 0 and predicted_edges > 0:
+                    overlap_rate = len([e for e in G.edges(data=True) if e[2].get('edge_type') in ['predicted', 'actual']]) / max(predicted_edges, actual_edges)
+                    st.metric("Prediction Overlap", f"{overlap_rate:.1%}")
+            
+            # Research Insights Section
+            st.subheader("💡 Research Insights & Recommendations")
+            
+            # Generate research insights based on network characteristics
+            insights_col1, insights_col2 = st.columns(2)
+            
+            with insights_col1:
+                st.markdown("**🔍 Network Structure Analysis**")
+                if network_density > 0.01:
+                    st.success("🟢 Dense citation network detected - good for community analysis")
+                    st.write("• High interconnectivity suggests well-established research field")
+                    st.write("• Suitable for identifying influential papers and research clusters")
+                elif network_density > 0.005:
+                    st.info("🟡 Moderate density - typical for academic networks")
+                    st.write("• Standard citation pattern for academic literature")
+                    st.write("• Good balance of specialization and connectivity")
+                else:
+                    st.warning("🔴 Sparse network - may indicate emerging or specialized field")
+                    st.write("• Low connectivity typical for new or highly specialized areas")
+                    st.write("• Consider expanding search scope or timeframe")
+            
+            with insights_col2:
+                st.markdown("**🤖 ML Prediction Analysis**")
+                if avg_confidence > 0.7:
+                    st.success("🟢 High confidence predictions - excellent for recommendations")
+                    st.write("• Model shows strong predictive capability")
+                    st.write("• Suitable for automated citation suggestions")
+                elif avg_confidence > 0.4:
+                    st.info("🟡 Moderate confidence - good for research exploration")
+                    st.write("• Predictions provide useful research directions")
+                    st.write("• Combine with domain expertise for best results")
+                elif avg_confidence > 0:
+                    st.warning("🔴 Lower confidence - use with caution")
+                    st.write("• Predictions should be validated manually")
+                    st.write("• Consider model retraining or parameter adjustment")
+                else:
+                    st.info("ℹ️ No ML predictions available for current selection")
+            
+            # Export Options
+            st.subheader("📋 Export & Research Tools")
+            export_col1, export_col2, export_col3 = st.columns(3)
+            
+            with export_col1:
+                if st.button("📊 Generate LaTeX Table"):
+                    latex_table = f"""
+\\begin{{table}}[h]
+\\centering
+\\caption{{Citation Network Analysis Results}}
+\\begin{{tabular}}{{|l|c|c|}}
+\\hline
+Metric & Value & Performance \\\\
+\\hline
+Network Density & {network_density:.4f} & {explanations.get('network_density', {}).get('performance_level', 'N/A')} \\\\
+Total Nodes & {len(G.nodes())} & - \\\\
+Predicted Citations & {predicted_edges} & - \\\\
+Avg Confidence & {avg_confidence:.3f} & {explanations.get('hits_at_10', {}).get('performance_level', 'N/A')} \\\\
+\\hline
+\\end{{tabular}}
+\\end{{table}}
+"""
+                    st.code(latex_table, language="latex")
+                    st.success("✅ LaTeX table generated - copy above code")
+            
+            with export_col2:
+                if st.button("📝 Research Summary"):
+                    summary = f"""
+## Citation Network Analysis Summary
+
+**Dataset:** {len(center_papers)} center paper(s), {len(G.nodes())} total papers analyzed
+
+**Network Characteristics:**
+- Density: {network_density:.4f} ({explanations.get('network_density', {}).get('performance_level', 'Unknown')} performance)
+- Structure: {('Dense' if network_density > 0.01 else 'Moderate' if network_density > 0.005 else 'Sparse')} citation network
+
+**ML Predictions:**
+- {predicted_edges} predicted citations with {avg_confidence:.1%} average confidence
+- Performance: {explanations.get('hits_at_10', {}).get('performance_level', 'Unknown')} prediction quality
+
+**Research Implications:**
+{explanations.get('network_density', {}).get('interpretation_guide', 'Network analysis complete')}
+
+**Next Steps:**
+{'• '.join(explanations.get('hits_at_10', {}).get('suggested_actions', ['Continue research analysis']))}
+"""
+                    st.markdown(summary)
+                    st.success("✅ Research summary generated")
+            
+            with export_col3:
+                if st.button("🎯 Action Items"):
+                    action_items = []
+                    
+                    # Collect action items from explanations
+                    for metric_name, explanation in explanations.items():
+                        if hasattr(explanation, 'suggested_actions') and explanation.suggested_actions:
+                            action_items.extend(explanation.suggested_actions)
+                    
+                    # Add network-specific actions
+                    if network_density < 0.002:
+                        action_items.append("Consider expanding the citation network scope")
+                    if predicted_edges > 0 and avg_confidence < 0.5:
+                        action_items.append("Review model parameters and training data quality")
+                    if actual_edges == 0:
+                        action_items.append("Verify paper IDs and check data connectivity")
+                    
+                    st.markdown("**🚀 Recommended Actions:**")
+                    for i, action in enumerate(set(action_items[:6]), 1):  # Remove duplicates, limit to 6
+                        st.write(f"{i}. {action}")
+                    
+                    st.success("✅ Action plan generated")
         
         else:
             st.warning("No network data available. Check that papers exist in the model.")
@@ -386,19 +549,154 @@ elif viz_type == "Prediction Confidence Heatmap":
         fig.update_layout(height=600)
         st.plotly_chart(fig, use_container_width=True)
         
-        # Statistics
-        st.subheader("📊 Heatmap Statistics")
+        # Enhanced Statistics with Contextual Analysis
+        st.subheader("📊 Heatmap Analysis with Academic Context")
+        
+        # Calculate metrics
+        avg_conf = np.mean(prediction_matrix[prediction_matrix > 0])
+        max_conf = np.max(prediction_matrix)
+        above_threshold = np.sum(prediction_matrix > confidence_threshold)
+        
+        # Generate explanations for confidence metrics
+        confidence_metrics = {
+            "mrr": avg_conf,  # Use MRR as proxy for average confidence
+            "hits_at_10": max_conf  # Use hits@10 for max confidence interpretation
+        }
+        
+        conf_explanations = explanation_engine.bulk_explain_metrics(
+            confidence_metrics,
+            context={"num_entities": len(center_papers), "matrix_size": len(center_papers)**2}
+        )
+        
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.metric("Average Confidence", f"{np.mean(prediction_matrix[prediction_matrix > 0]):.3f}")
+            avg_explanation = conf_explanations.get("mrr")
+            if avg_explanation:
+                st.metric(
+                    f"{avg_explanation.performance_icon} Average Confidence",
+                    f"{avg_conf:.3f}",
+                    help=avg_explanation.short_description
+                )
+                with st.expander("🎯 Average Performance Analysis"):
+                    st.write(f"**Performance Level:** {avg_explanation.performance_level.value.title()}")
+                    st.write(avg_explanation.detailed_explanation)
+                    st.write(f"**Academic Context:** {avg_explanation.academic_context}")
+            else:
+                st.metric("Average Confidence", f"{avg_conf:.3f}")
         
         with col2:
-            st.metric("Max Confidence", f"{np.max(prediction_matrix):.3f}")
+            max_explanation = conf_explanations.get("hits_at_10")
+            if max_explanation:
+                st.metric(
+                    f"{max_explanation.performance_icon} Max Confidence",
+                    f"{max_conf:.3f}",
+                    help="Highest prediction confidence in matrix"
+                )
+                with st.expander("🏆 Peak Performance Analysis"):
+                    st.write(f"**Performance Level:** {max_explanation.performance_level.value.title()}")
+                    st.write(f"Best prediction achieves {max_conf:.1%} confidence")
+                    if max_conf > 0.8:
+                        st.success("🟢 Excellent peak performance suggests strong model capability")
+                    elif max_conf > 0.5:
+                        st.info("🟡 Good peak performance with room for improvement")
+                    else:
+                        st.warning("🔴 Lower peak confidence may indicate training issues")
+            else:
+                st.metric("Max Confidence", f"{max_conf:.3f}")
         
         with col3:
-            st.metric("Predictions Above Threshold", 
-                     f"{np.sum(prediction_matrix > confidence_threshold)}")
+            st.metric("Above Threshold", f"{above_threshold}")
+            threshold_rate = above_threshold / (len(center_papers)**2 - len(center_papers)) if len(center_papers) > 1 else 0
+            st.metric("Threshold Rate", f"{threshold_rate:.1%}")
+        
+        # Matrix Pattern Analysis
+        st.subheader("🔍 Pattern Recognition & Research Insights")
+        
+        pattern_col1, pattern_col2 = st.columns(2)
+        
+        with pattern_col1:
+            st.markdown("**📈 Citation Pattern Analysis**")
+            
+            # Analyze diagonal vs off-diagonal
+            diagonal_avg = np.mean(np.diag(prediction_matrix)) if len(center_papers) > 1 else 0
+            off_diagonal = prediction_matrix[~np.eye(prediction_matrix.shape[0], dtype=bool)]
+            off_diagonal_avg = np.mean(off_diagonal[off_diagonal > 0]) if len(off_diagonal[off_diagonal > 0]) > 0 else 0
+            
+            if diagonal_avg > off_diagonal_avg * 1.5:
+                st.warning("🔴 High self-citation bias detected")
+                st.write("• Model may be overfitting to paper self-similarity")
+                st.write("• Consider reviewing training data for bias")
+            elif off_diagonal_avg > diagonal_avg:
+                st.success("🟢 Healthy cross-citation patterns")
+                st.write("• Model effectively identifies inter-paper relationships")
+                st.write("• Good for citation recommendation tasks")
+            else:
+                st.info("🟡 Balanced citation prediction patterns")
+            
+            # Identify strongest connections
+            max_idx = np.unravel_index(np.argmax(prediction_matrix), prediction_matrix.shape)
+            if prediction_matrix[max_idx] > 0:
+                st.write(f"**Strongest predicted connection:**")
+                st.write(f"Paper {max_idx[0]+1} → Paper {max_idx[1]+1} ({prediction_matrix[max_idx]:.3f})")
+        
+        with pattern_col2:
+            st.markdown("**🚀 Actionable Recommendations**")
+            
+            # Generate specific recommendations based on matrix patterns
+            recommendations = []
+            
+            if avg_conf > 0.7:
+                recommendations.extend([
+                    "✅ High confidence predictions suitable for automated recommendations",
+                    "📚 Results ready for academic publication or presentation"
+                ])
+            elif avg_conf > 0.4:
+                recommendations.extend([
+                    "🔄 Consider ensemble methods to boost confidence",
+                    "🎯 Focus on high-confidence predictions for practical use"
+                ])
+            else:
+                recommendations.extend([
+                    "⚠️ Review model architecture and training parameters",
+                    "📊 Analyze training data quality and completeness"
+                ])
+            
+            if above_threshold < len(center_papers):
+                recommendations.append("🔍 Consider lowering confidence threshold for broader exploration")
+            
+            if threshold_rate > 0.5:
+                recommendations.append("🎉 Strong inter-paper connectivity detected - excellent for network analysis")
+            
+            for i, rec in enumerate(recommendations[:5], 1):
+                st.write(f"{i}. {rec}")
+        
+        # Export heatmap analysis
+        if st.button("📋 Export Heatmap Analysis"):
+            heatmap_analysis = f"""
+## Citation Confidence Heatmap Analysis
+
+**Dataset:** {len(center_papers)} papers, {len(center_papers)**2} total predictions
+
+**Performance Metrics:**
+- Average Confidence: {avg_conf:.3f} ({conf_explanations.get('mrr', {}).get('performance_level', 'Unknown')} level)
+- Peak Confidence: {max_conf:.3f} ({conf_explanations.get('hits_at_10', {}).get('performance_level', 'Unknown')} level)
+- Above Threshold ({confidence_threshold}): {above_threshold}/{len(center_papers)**2} ({threshold_rate:.1%})
+
+**Pattern Analysis:**
+- Diagonal Average: {diagonal_avg:.3f}
+- Off-diagonal Average: {off_diagonal_avg:.3f}
+- Pattern Assessment: {'Self-citation bias' if diagonal_avg > off_diagonal_avg * 1.5 else 'Healthy patterns'}
+
+**Research Implications:**
+{conf_explanations.get('mrr', {}).get('interpretation_guide', 'Matrix analysis complete')}
+
+**Recommended Next Steps:**
+{chr(10).join(f'• {rec.split(maxsplit=1)[1] if len(rec.split(maxsplit=1)) > 1 else rec}' for rec in recommendations)}
+"""
+            
+            st.code(heatmap_analysis, language="markdown")
+            st.success("✅ Heatmap analysis exported - copy above text")
     
     else:
         st.info("Please select at least 2 papers for confidence heatmap analysis.")
