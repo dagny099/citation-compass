@@ -1,0 +1,37 @@
+[global]
+# Set to false for production
+developmentMode = false
+
+[server]
+# Port to run on
+port = 8501
+# Enable CORS
+enableCORS = true
+# Enable WebSocket compression
+enableWebsocketCompression = true
+# File watcher type
+fileWatcherType = "auto"
+
+[browser]
+# Gather usage stats
+gatherUsageStats = false
+# Server address
+serverAddress = "localhost"
+# Server port  
+serverPort = 8501
+
+[theme]
+# Primary color
+primaryColor = "#1f77b4"
+# Background color
+backgroundColor = "#ffffff"
+# Secondary background color
+secondaryBackgroundColor = "#f0f2f6"
+# Text color
+textColor = "#262730"
+# Font
+font = "sans serif"
+
+[client]
+# Show error details
+showErrorDetails = true
