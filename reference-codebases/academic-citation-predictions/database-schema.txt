@@ -1,0 +1,22 @@
+# -------------------------
+# DATA SCHEMA 
+# -------------------------
+#
+# .........................
+# Node Types & Properties
+# .........................
+# - Paper (title*, paperId, referenceCount, citationCount, publicationDate)
+# - Author (name*, id, url, paperCount, citationCount, hIndex)
+# - PubVenue (name*, e.g. str: Journal of Vision)
+# - PubYear (year*, e.g. dateYr: 2009)
+# - Field (name*, e.g. str: Computer Science)
+# - Institution (name*, e.g. str: The University of Melbourne)
+#
+#
+# .........................
+# Relationships related to Papers
+# .........................
+# 'venue' ... title PUBLISHED_IN venue
+# 'year' ... title PUB_YEAR year
+# 'fieldsOfStudy' ... title IS_ABOUT field-of-study  (note: field needs to be expanded)
+# 'authors' ... author.name CO_AUTHORED title  (note: field needs to be expanded)

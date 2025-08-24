@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  <!-- Custom CSS for Academic Citation Platform -->
+  <style>
+    /* Academic theme styling */
+    :root {
+      --md-primary-fg-color: #2E7D9A;
+      --md-primary-fg-color--light: #54B3D9;
+      --md-primary-fg-color--dark: #1B5F76;
+      --md-accent-fg-color: #FF6B35;
+    }
+    
+    /* Custom header styling */
+    .md-header {
+      background: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-primary-fg-color--dark) 100%);
+    }
+    
+    /* Enhanced code block styling */
+    .md-typeset .highlight pre,
+    .md-typeset .highlight code {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+    }
+    
+    /* Notebook-style cells */
+    .notebook-cell {
+      background: #f8f9fa;
+      border-left: 4px solid var(--md-accent-fg-color);
+      margin: 1rem 0;
+      padding: 1rem;
+      border-radius: 0 6px 6px 0;
+    }
+    
+    /* Mermaid diagram styling */
+    .mermaid {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    
+    /* Enhanced admonition styling */
+    .md-typeset .admonition.tip {
+      border-left: 4px solid #00c851;
+    }
+    
+    .md-typeset .admonition.warning {
+      border-left: 4px solid #ffbb33;
+    }
+    
+    .md-typeset .admonition.danger {
+      border-left: 4px solid #ff4444;
+    }
+    
+    /* Citation-specific styling */
+    .paper-citation {
+      background: #f0f7ff;
+      border-left: 3px solid var(--md-primary-fg-color);
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 0 4px 4px 0;
+      font-style: italic;
+    }
+    
+    .prediction-result {
+      background: #fff8e1;
+      border: 1px solid #ffd54f;
+      border-radius: 4px;
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+    }
+    
+    /* Performance metrics styling */
+    .metric-card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    
+    .metric-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--md-primary-fg-color);
+    }
+    
+    .metric-label {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+    
+    /* Interactive elements */
+    .interactive-demo {
+      border: 2px dashed var(--md-accent-fg-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      background: #fafafa;
+    }
+    
+    /* Mobile responsiveness */
+    @media screen and (max-width: 768px) {
+      .metric-card {
+        margin: 0.25rem;
+        padding: 0.75rem;
+      }
+      
+      .metric-value {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+  
+  <!-- Academic research analytics -->
+  {% if config.extra.analytics %}
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config.extra.analytics.property }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ config.extra.analytics.property }}');
+    </script>
+  {% endif %}
+  
+  <!-- MathJax for mathematical expressions -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["\\(", "\\)"]],
+        displayMath: [["\\[", "\\]"]],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        ignoreHtmlClass: ".*|",
+        processHtmlClass: "arithmatex"
+      }
+    };
+  </script>
+  <script async src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}
+
+{% block footer %}
+  {{ super() }}
+  
+  <!-- Custom footer -->
+  <div style="text-align: center; padding: 2rem; background: #f5f5f5; margin-top: 2rem;">
+    <p style="margin: 0; color: #666;">
+      Built with ❤️ for the research community | 
+      <a href="mailto:{{ config.extra.support_email or 'contact@citationcompass.com' }}">Contact Support</a> | 
+      <a href="{{ config.repo_url }}">View Source</a>
+    </p>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  
+  <!-- Enhanced search functionality -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Add search shortcuts
+      document.addEventListener("keydown", function(e) {
+        if (e.ctrlKey && e.key === "k") {
+          e.preventDefault();
+          document.querySelector(".md-search__input").focus();
+        }
+      });
+      
+      // Add copy buttons to code blocks
+      const codeBlocks = document.querySelectorAll("pre > code");
+      codeBlocks.forEach(function(block) {
+        const button = document.createElement("button");
+        button.className = "md-clipboard";
+        button.title = "Copy to clipboard";
+        button.innerHTML = "📋";
+        button.addEventListener("click", function() {
+          navigator.clipboard.writeText(block.textContent);
+          button.innerHTML = "✅";
+          setTimeout(() => button.innerHTML = "📋", 2000);
+        });
+        
+        block.parentNode.insertBefore(button, block.parentNode.firstChild);
+      });
+    });
+  </script>
+{% endblock %}
