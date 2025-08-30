@@ -158,3 +158,22 @@ graph.db/
 # PyTorch specific
 *.pth
 checkpoints/
+
+# Additional ML/Data Science files
+wandb/
+mlruns/
+.neptune/
+experiments/
+
+# API keys and tokens
+*.token
+api_keys.txt
+.secrets
+*.env.sample
+
+# Large reference datasets (that we want to keep tracked)
+!reference-codebases/**/storage/MEGA_paper_*.csv
+!reference-codebases/**/storage/MEGA_paper_*.json
+
+# Generated documentation files (keeping user examples)
+!EXAMPLE_PAPERS_FOR_EXPLORATION.md
