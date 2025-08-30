@@ -61,23 +61,27 @@ Get context for your findings:
 
 ### Train Your Own Models
 
-**First time setup? Train a TransE model:**
-```bash
-# Open the training notebook
-jupyter notebook notebooks/model_training.ipynb
-```
+**⚠️ No trained models yet? Follow the 4-notebook pipeline:**
 
-The training notebook will:
+1. **Start with exploration**: `jupyter notebook notebooks/01_comprehensive_exploration.ipynb`
+2. **Train your model**: `jupyter notebook notebooks/02_model_training_pipeline.ipynb`
+3. **Evaluate predictions**: `jupyter notebook notebooks/03_prediction_evaluation.ipynb`
+4. **Create presentations**: `jupyter notebook notebooks/04_narrative_presentation.ipynb`
+
+The training pipeline will:
 - Load citation data from your Neo4j database
 - Train a TransE model for citation prediction
 - Save the trained model to `models/` directory
-- Generate training visualizations
+- Generate training visualizations and evaluations
+
+**🚀 Quick Start (Without Models)**: You can explore network analysis and data preparation features even without trained models!
 
 ### Python API Usage
 ```python
-# ML predictions (after training)
+# ML predictions (requires trained model)
 from src.services.ml_service import get_ml_service
 ml = get_ml_service()
+# Note: Will raise FileNotFoundError if no model trained yet
 predictions = ml.predict_citations('paper_id', top_k=10)
 
 # Network analysis  
@@ -97,8 +101,8 @@ communities = analytics.detect_communities('author_id')
 # Run all tests
 python -m pytest tests/ -v
 
-# Test ML service (requires trained model)
-python -c "from src.services.ml_service import get_ml_service; print('✅ ML Ready')"
+# Test ML service (will show warning if no trained model)
+python -c "from src.services.ml_service import get_ml_service; ml=get_ml_service(); print('✅ ML Service Ready')"
 
 # Test analytics
 python -c "from src.services.analytics_service import get_analytics_service; print('✅ Analytics Ready')"

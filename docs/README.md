@@ -284,7 +284,7 @@ site_url: https://citationcompass.barbhs.com
 
 # Repository
 repo_name: academic-citation-platform
-repo_url: https://github.com/your-org/academic-citation-platform
+repo_url: https://github.com/dagny099/citation-compass
 
 # Theme configuration
 theme:
@@ -323,7 +323,7 @@ extra:
     property: !ENV GOOGLE_ANALYTICS_KEY
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/your-org/academic-citation-platform
+      link: https://github.com/dagny099/citation-compass
 ```
 
 ## 📊 Performance Optimization

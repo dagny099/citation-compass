@@ -44,8 +44,8 @@ Get up and running in minutes:
 
     ```bash
     # Clone and install
-    git clone https://github.com/your-org/academic-citation-platform.git
-    cd academic-citation-platform
+    git clone https://github.com/dagny099/citation-compass.git
+    cd citation-compass
     pip install -e ".[all]"
     ```
 
@@ -196,7 +196,7 @@ graph TB
     
     Source code, issues, and contributions welcome
     
-    [View on GitHub](https://github.com/your-org/academic-citation-platform)
+    [View on GitHub](https://github.com/dagny099/citation-compass)
 
 -   :material-help-circle: **Documentation**
     
@@ -204,11 +204,11 @@ graph TB
     
     [Browse Documentation](getting-started/installation.md)
 
--   :material-email: **Contact**
+-   :material-email: **Support**
     
     Questions, support, or collaboration inquiries
     
-    [contact@citationcompass.com](mailto:contact@citationcompass.com)
+    [GitHub Discussions](https://github.com/dagny099/citation-compass/discussions)
 
 </div>
 

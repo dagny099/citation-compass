@@ -69,14 +69,18 @@ print(f"Average citations per paper: {overview.avg_citations:.2f}")
 
 ### Step 3: Make Your First Citation Prediction
 
+!!! info "Model Training First?"
+    Citation predictions require a trained model. If you haven't trained one yet, start with network analysis (Step 4) or follow the [notebook pipeline](../notebooks/overview.md) to train your model.
+
 Let's predict potential citations between papers:
 
 === "🖥️ Dashboard Method"
 
     1. Go to **ML Predictions** page
-    2. Enter a paper ID or search by title
-    3. Click **Generate Predictions**
-    4. Explore the results with confidence scores
+    2. Check if model is loaded (green status)
+    3. Enter a paper ID or search by title
+    4. Click **Generate Predictions**
+    5. Explore the results with confidence scores
 
 === "📓 Notebook Method"
 
@@ -191,15 +195,15 @@ Now that you've completed your first analysis:
 
 ### 🔧 Customize Your Setup
 
-- **[Custom Models](../advanced/custom-models.md)** - Train models for your domain
-- **[Performance Optimization](../advanced/performance-optimization.md)** - Scale for large datasets
-- **[Integration Patterns](../advanced/integration-patterns.md)** - Connect with other tools
+- **[Model Training Notebook](../notebooks/overview.md)** - Train models for your domain
+- **[API Reference](../api/services.md)** - Scale for large datasets
+- **[Developer Guide](../developer-guide/architecture.md)** - Connect with other tools
 
 ### 🤝 Get Help
 
-- **[Troubleshooting](../advanced/troubleshooting.md)** - Common issues and solutions
+- **[GitHub Issues](https://github.com/dagny099/citation-compass/issues)** - Common issues and solutions
 - **[API Reference](../api/services.md)** - Complete API documentation
-- **[GitHub Issues](https://github.com/your-org/academic-citation-platform/issues)** - Report bugs or request features
+- **[GitHub Issues](https://github.com/dagny099/citation-compass/issues)** - Report bugs or request features
 
 ## Quick Reference
 

@@ -318,9 +318,9 @@ If you continue to experience setup issues:
 
 1. **Check the logs**: Look for detailed error messages in the console output
 2. **Review configuration**: Double-check your `.env` file settings
-3. **Consult documentation**: See [Troubleshooting Guide](../advanced/troubleshooting.md)
+3. **Consult documentation**: Review the configuration guide above
 4. **Community support**: Join our discussions or file an issue on GitHub
-5. **Professional support**: Contact [contact@citationcompass.com](mailto:contact@citationcompass.com)
+5. **Community support**: Join [GitHub Discussions](https://github.com/dagny099/citation-compass/discussions)
 
 ## Next Steps
 

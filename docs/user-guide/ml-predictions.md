@@ -42,13 +42,18 @@ graph LR
 
 ## 🚀 Getting Started with Predictions
 
+!!! warning "Model Training Required"
+    ML predictions require a trained TransE model. If you see "❌ Model Not Found", follow the [model training pipeline](../notebooks/overview.md) first.
+
 ### Dashboard Interface
 
 #### Step 1: Access ML Predictions Page
 
 1. Launch Streamlit dashboard: `streamlit run app.py`
 2. Navigate to **"ML Predictions"** in the sidebar
-3. Verify model status (should show "✅ Model Loaded")
+3. Check model status:
+   - **"✅ Model Loaded"** → Ready for predictions
+   - **"❌ Model Not Found"** → Need to train model first
 
 #### Step 2: Generate Basic Predictions
 

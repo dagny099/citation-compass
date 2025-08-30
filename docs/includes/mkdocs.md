@@ -26,8 +26,7 @@
 <!-- Common variables -->
 {% set platform_name = "Academic Citation Platform" %}
 {% set version = "0.1.0" %}
-{% set github_repo = "https://github.com/your-org/academic-citation-platform" %}
-{% set support_email = "contact@citationcompass.com" %}
+{% set github_repo = "https://github.com/dagny099/citation-compass" %}
 
 <!-- Code block styling -->
 <style>

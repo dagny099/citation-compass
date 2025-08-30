@@ -5,7 +5,7 @@ site_author: Academic Citation Platform Team
 
 # Repository
 repo_name: academic-citation-platform
-repo_url: https://github.com/your-org/academic-citation-platform
+repo_url: https://github.com/dagny099/citation-compass
 
 # Copyright
 copyright: Copyright &copy; 2024 Academic Citation Platform Team
@@ -103,11 +103,11 @@ extra:
     property: !ENV GOOGLE_ANALYTICS_KEY
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/your-org/academic-citation-platform
+      link: https://github.com/dagny099/citation-compass
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/academic-citation-platform/
-    - icon: fontawesome/solid/paper-plane
-      link: mailto:contact@citationcompass.com
+    - icon: fontawesome/solid/comments
+      link: https://github.com/dagny099/citation-compass/discussions
 
 # Extensions
 markdown_extensions:

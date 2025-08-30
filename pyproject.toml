@@ -103,10 +103,10 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-org/academic-citation-platform"
-Documentation = "https://academic-citation-platform.readthedocs.io"
-Repository = "https://github.com/your-org/academic-citation-platform.git"
-Issues = "https://github.com/your-org/academic-citation-platform/issues"
+Homepage = "https://github.com/dagny099/citation-compass"
+Documentation = "https://citationcompass.barbhs.com"
+Repository = "https://github.com/dagny099/citation-compass.git"
+Issues = "https://github.com/dagny099/citation-compass/issues"
 
 [project.scripts]
 acp = "src.cli.main:main"

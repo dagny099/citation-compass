@@ -60,7 +60,7 @@ Programmatic access for integration and automation:
 **Recommended workflow**:
 1. Use [Interactive Features](interactive-features.md) for overview
 2. Generate reports with [Results Interpretation](results-interpretation.md)
-3. Monitor performance with [Advanced Topics](../advanced/performance-optimization.md)
+3. Monitor performance using built-in metrics
 
 ## Feature Matrix
 
@@ -106,7 +106,7 @@ Choose your path based on your goals:
     **Path**:
     1. Review [Developer Guide](../developer-guide/architecture.md)
     2. Use [API Reference](../api/services.md)
-    3. Implement custom [Integration Patterns](../advanced/integration-patterns.md)
+    3. Explore the Python API for custom integrations
 
 ## Common Workflows
 
@@ -216,14 +216,14 @@ flowchart LR
 
 - **[API Reference](../api/services.md)**: Complete technical documentation
 - **[Developer Guide](../developer-guide/architecture.md)**: Architecture and customization
-- **[Advanced Topics](../advanced/custom-models.md)**: Specialized use cases
-- **[Troubleshooting](../advanced/troubleshooting.md)**: Common issues and solutions
+- **[API Reference](../api/services.md)**: Complete technical documentation
+- **[GitHub Issues](https://github.com/dagny099/citation-compass/issues)**: Common issues and community solutions
 
 ### 🤝 Getting Help
 
 - **GitHub Issues**: Report bugs and request features
 - **Community Discussions**: Share experiences and get advice
-- **Email Support**: [contact@citationcompass.com](mailto:contact@citationcompass.com)
+- **GitHub Support**: [Create an issue](https://github.com/dagny099/citation-compass/issues)
 - **Documentation Updates**: Contribute improvements to guides
 
 ---

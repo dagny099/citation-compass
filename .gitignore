@@ -130,3 +130,31 @@ tensorboard_logs/
 # Cache directories  
 .cache/
 *.cache
+
+# Documentation build artifacts
+docs/site/
+site/
+_site/
+
+# Academic paper outputs (user-generated)
+papers/
+publications/
+*.tex.aux
+*.tex.log
+*.tex.out
+*.tex.synctex.gz
+
+# Large dataset files that shouldn't be committed
+*.parquet
+*.hdf5
+data/*.csv
+data/*.json
+data/*.xml
+
+# Neo4j specific
+*.db.lock
+graph.db/
+
+# PyTorch specific
+*.pth
+checkpoints/

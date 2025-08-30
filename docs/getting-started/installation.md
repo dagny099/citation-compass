@@ -22,8 +22,8 @@ Choose the installation method that best fits your needs:
 
     ```bash
     # Clone the repository
-    git clone https://github.com/your-org/academic-citation-platform.git
-    cd academic-citation-platform
+    git clone https://github.com/dagny099/citation-compass.git
+    cd citation-compass
     
     # Install with all features
     pip install -e ".[all]"
@@ -33,8 +33,8 @@ Choose the installation method that best fits your needs:
 
     ```bash
     # Clone the repository
-    git clone https://github.com/your-org/academic-citation-platform.git
-    cd academic-citation-platform
+    git clone https://github.com/dagny099/citation-compass.git
+    cd citation-compass
     
     # Install base dependencies only
     pip install -e .
@@ -51,8 +51,8 @@ Choose the installation method that best fits your needs:
 
     ```bash
     # Clone the repository
-    git clone https://github.com/your-org/academic-citation-platform.git
-    cd academic-citation-platform
+    git clone https://github.com/dagny099/citation-compass.git
+    cd citation-compass
     
     # Build and run with Docker Compose
     docker-compose up -d
@@ -142,10 +142,10 @@ After installation, proceed to:
 
 If you encounter issues:
 
-1. Check the [Troubleshooting Guide](../advanced/troubleshooting.md)
-2. Search existing [GitHub Issues](https://github.com/your-org/academic-citation-platform/issues)
+1. Check the installation steps above carefully
+2. Search existing [GitHub Issues](https://github.com/dagny099/citation-compass/issues)
 3. Join our community discussions
-4. Contact support at [contact@citationcompass.com](mailto:contact@citationcompass.com)
+4. Create an issue on [GitHub](https://github.com/dagny099/citation-compass/issues)
 
 ## System Requirements
 
