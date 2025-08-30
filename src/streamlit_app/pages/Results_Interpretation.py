@@ -276,8 +276,8 @@ elif view_mode == "🔍 Detailed Analysis":
                     csv = df.to_csv(index=False)
                     st.text_area("CSV Data (copy to clipboard):", csv, height=150)
         
-        else:
-            st.info(f"No metrics available for {selected_category.value.replace('_', ' ').title()} category.")
+    else:
+        st.info(f"No metrics available for {selected_category.value.replace('_', ' ').title()} category.")
 
 
 
