@@ -126,10 +126,13 @@ tensorboard_logs/
 
 # Streamlit
 .streamlit/secrets.toml
+.streamlit/config.toml
 
 # Cache directories  
 .cache/
 *.cache
+__pycache__/
+.pytest_cache/
 
 # Documentation build artifacts
 docs/site/
@@ -189,3 +192,13 @@ ENHANCED_VISUALIZATION_FIX_SUMMARY.md
 # Additional ML service files
 entity_embeddings/
 model_artifacts/
+
+# Node.js (if any frontend components are added)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor temporary files
+.vscode/settings.json
+*.sublime-*
