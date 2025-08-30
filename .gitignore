@@ -177,3 +177,15 @@ api_keys.txt
 
 # Generated documentation files (keeping user examples)
 !EXAMPLE_PAPERS_FOR_EXPLORATION.md
+
+# Test files and temporary debugging scripts
+test_*.py
+debug_*.py
+ENHANCED_VISUALIZATION_FIX_SUMMARY.md
+
+# Streamlit session state and cache
+.streamlit/
+
+# Additional ML service files
+entity_embeddings/
+model_artifacts/

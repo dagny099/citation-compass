@@ -53,9 +53,22 @@ def get_services():
 
 ml_service, api_client, explanation_engine = get_services()
 
-if ml_service is None:
-    st.error("❌ Services not available.")
+if api_client is None:
+    st.error("❌ API client not available. Cannot retrieve citation data.")
     st.stop()
+
+# Handle ML service gracefully
+ml_available = ml_service is not None
+if not ml_available:
+    st.warning("⚠️ ML prediction service not available. Visualization will show actual citations only.")
+    st.info("💡 To enable ML predictions: Train the TransE model using the Analysis Pipeline.")
+else:
+    try:
+        model_info = ml_service.get_model_info()
+        st.sidebar.success(f"✅ ML Model loaded ({model_info.num_entities:,} entities)")
+    except Exception as e:
+        st.sidebar.warning(f"⚠️ ML Model issue: {str(e)[:50]}...")
+        ml_available = False
 
 # Sidebar configuration
 st.sidebar.header("🎛️ Visualization Controls")
@@ -76,7 +89,7 @@ viz_type = st.sidebar.selectbox(
 st.sidebar.subheader("📋 Parameters")
 max_papers = st.sidebar.slider("Maximum papers to analyze", 5, 50, 20)
 confidence_threshold = st.sidebar.slider("Confidence threshold", 0.0, 1.0, 0.3, 0.05)
-show_predictions = st.sidebar.checkbox("Show ML predictions", value=True)
+show_predictions = st.sidebar.checkbox("Show ML predictions", value=ml_available, disabled=not ml_available)
 show_actual_citations = st.sidebar.checkbox("Show actual citations", value=True)
 
 # Paper input
@@ -142,13 +155,17 @@ if viz_type == "Citation Network with Predictions":
             for center_paper in center_papers:
                 try:
                     # Get predictions
-                    if show_predictions:
-                        predictions = ml_service.predict_citations(
-                            center_paper, 
-                            top_k=min(max_papers, 20),
-                            score_threshold=confidence_threshold
-                        )
-                        all_predictions[center_paper] = predictions
+                    if show_predictions and ml_available:
+                        try:
+                            predictions = ml_service.predict_citations(
+                                center_paper, 
+                                top_k=min(max_papers, 20),
+                                score_threshold=confidence_threshold
+                            )
+                            all_predictions[center_paper] = predictions
+                        except Exception as pred_error:
+                            st.warning(f"⚠️ Could not get predictions for {center_paper}: {pred_error}")
+                            all_predictions[center_paper] = []
                     
                     # Get actual citations if available
                     if show_actual_citations and api_client:
@@ -518,7 +535,10 @@ Avg Confidence & {avg_confidence:.3f} & {explanations.get('hits_at_10', {}).get(
 elif viz_type == "Prediction Confidence Heatmap":
     st.header("🔥 Prediction Confidence Heatmap")
     
-    if len(center_papers) >= 2:
+    if not ml_available:
+        st.error("❌ ML predictions are required for confidence heatmap visualization.")
+        st.info("💡 Train the TransE model using the Analysis Pipeline to enable this feature.")
+    elif len(center_papers) >= 2:
         # Generate predictions for all pairs
         with st.spinner("Generating prediction matrix..."):
             prediction_matrix = np.zeros((len(center_papers), len(center_papers)))
@@ -742,11 +762,17 @@ with st.sidebar:
     """)
     
     # Model status
-    try:
-        model_info = ml_service.get_model_info()
-        st.markdown("---")
-        st.subheader("🤖 Model Status")
-        st.write(f"**Papers:** {model_info.num_entities:,}")
-        st.write(f"**Embedding Dim:** {model_info.embedding_dim}")
-    except Exception:
-        pass
+    st.markdown("---")
+    st.subheader("🤖 Model Status")
+    
+    if ml_available:
+        try:
+            model_info = ml_service.get_model_info()
+            st.write(f"**Papers:** {model_info.num_entities:,}")
+            st.write(f"**Embedding Dim:** {model_info.embedding_dim}")
+        except Exception:
+            st.write("**Status:** Model issues detected")
+    else:
+        st.write("**Status:** ❌ Not available")
+        st.write("**Working:** ✅ Actual citations")
+        st.write("**Limited:** 🔥 Heatmaps, 🎯 Predictions")

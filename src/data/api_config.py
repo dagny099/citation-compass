@@ -34,8 +34,8 @@ class SemanticScholarConfig:
     default_page_size: int = 100   # Default items per page
     
     # Field specifications for different use cases
-    paper_fields: str = "paperId,title,abstract,citationCount,publicationDate,year,authors,venues,fieldsOfStudy,references,citations"
-    author_fields: str = "authorId,name,paperCount,citationCount,hIndex"
+    paper_fields: str = "paperId,title,abstract,citationCount,publicationDate,year,authors"
+    author_fields: str = "authorId,name,paperCount,citationCount,hIndex"  
     citation_fields: str = "paperId,title,citationCount"
     
     # Endpoints
