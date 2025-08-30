@@ -52,6 +52,15 @@ class DatabaseConfig:
         """Validate required configuration parameters."""
         return all([self.uri, self.user, self.password])
         
+    def get_fallback_config(self) -> 'DatabaseConfig':
+        """Get fallback configuration for testing/development."""
+        return DatabaseConfig(
+            uri="bolt://localhost:7687",
+            user="neo4j",
+            password="password",
+            database="neo4j"
+        )
+        
     def get_connection_params(self) -> Dict[str, Any]:
         """Get Neo4j driver connection parameters."""
         return {
@@ -227,6 +236,10 @@ class Settings:
         # Set up logging immediately
         self.logging.setup_logging()
         
+        # Apply fallbacks if in development mode
+        if os.getenv('ENVIRONMENT', '').lower() in ['development', 'test']:
+            self.apply_fallbacks()
+        
     def validate(self) -> Dict[str, bool]:
         """
         Validate all configuration sections.
@@ -261,6 +274,14 @@ class Settings:
     def is_valid(self) -> bool:
         """Check if all configuration is valid."""
         return len(self.get_validation_errors()) == 0
+        
+    def apply_fallbacks(self) -> None:
+        """Apply fallback configurations where needed."""
+        if not self.database.validate():
+            logging.warning("Database configuration invalid, using fallback for development")
+            fallback_db = self.database.get_fallback_config()
+            if os.getenv('ENVIRONMENT', '').lower() in ['development', 'test']:
+                self.database = fallback_db
         
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -306,10 +327,21 @@ class Settings:
 # Create global settings instance
 settings = Settings()
 
-# Validate configuration on import
-if not settings.is_valid():
-    errors = settings.get_validation_errors()
-    logging.warning(f"Configuration validation errors: {errors}")
+# Validate configuration on import with fallback handling
+try:
+    if not settings.is_valid():
+        errors = settings.get_validation_errors()
+        logging.warning(f"Configuration validation errors: {errors}")
+        
+        # Try to create sample environment file if validation fails
+        try:
+            create_sample_env_file(".env.example")
+            logging.info("Created .env.example file. Please configure your environment.")
+        except Exception as e:
+            logging.error(f"Failed to create sample environment file: {e}")
+except Exception as e:
+    logging.error(f"Critical configuration error: {e}")
+    logging.info("Using default configuration values where possible")
 
 
 # ====================================================================

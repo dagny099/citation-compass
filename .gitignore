@@ -89,6 +89,9 @@ outputs/large_files/
 # Environment-specific files
 .env.local
 .env.production
+.env.development
+.env.test
+.env.staging
 
 # MkDocs
 site/
@@ -96,3 +99,34 @@ docs-public/site/
 
 # Reference codebases (external git repositories)
 reference-codebases/
+
+# Security and credentials
+*.pem
+*.key
+*.crt
+*.p12
+credentials.json
+secrets/
+
+# Backup files
+*.bak
+*.backup
+conftest_original.py
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# ML model artifacts
+*.onnx
+*.h5
+*.joblib
+model_checkpoints/
+tensorboard_logs/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Cache directories  
+.cache/
+*.cache

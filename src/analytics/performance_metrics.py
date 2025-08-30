@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from collections import defaultdict, deque
 import statistics
 
-from ..services.ml_service import TransEModelService
+from src.services.ml_service import TransEModelService
 
 
 @dataclass

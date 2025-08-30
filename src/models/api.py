@@ -15,8 +15,8 @@ from __future__ import annotations
 from typing import List, Dict, Any, Optional, Union, Generic, TypeVar
 from datetime import datetime
 from enum import Enum
-from pydantic import BaseModel, Field, validator
-from pydantic.generics import GenericModel
+from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel as GenericModel
 
 # Type variable for generic responses
 T = TypeVar('T')
@@ -140,7 +140,8 @@ class PaginationParams(BaseModel):
     sort_by: Optional[str] = Field(None, description="Field to sort by")
     sort_direction: SortDirection = Field(default=SortDirection.DESC, description="Sort direction")
     
-    @validator('limit')
+    @field_validator('limit')
+    @classmethod
     def validate_limit(cls, v):
         """Ensure reasonable limit values."""
         if v > 1000:
@@ -290,18 +291,20 @@ class SearchRequest(BaseModel):
     max_year: Optional[int] = Field(None, le=2030, description="Maximum publication year")
     min_citations: Optional[int] = Field(None, ge=0, description="Minimum citation count")
     
-    @validator('query')
+    @field_validator('query')
+    @classmethod
     def validate_query(cls, v):
         """Ensure query is not empty after stripping."""
         if not v.strip():
             raise ValueError("Query cannot be empty")
         return v.strip()
     
-    @validator('max_year')
-    def validate_year_range(cls, v, values):
+    @field_validator('max_year')
+    @classmethod
+    def validate_year_range(cls, v, info):
         """Ensure year range is valid."""
-        if 'min_year' in values and v is not None and values['min_year'] is not None:
-            if v < values['min_year']:
+        if hasattr(info, 'data') and 'min_year' in info.data and v is not None and info.data['min_year'] is not None:
+            if v < info.data['min_year']:
                 raise ValueError("max_year must be >= min_year")
         return v
 
@@ -314,7 +317,7 @@ class BatchRequest(BaseModel):
     and error handling for individual items.
     """
     
-    items: List[Dict[str, Any]] = Field(..., min_items=1, max_items=1000, description="Items to process")
+    items: List[Dict[str, Any]] = Field(..., min_length=1, max_length=1000, description="Items to process")
     operation: str = Field(..., description="Operation to perform")
     options: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Operation options")
     
@@ -323,7 +326,8 @@ class BatchRequest(BaseModel):
     continue_on_error: bool = Field(default=True, description="Continue processing if individual items fail")
     return_errors: bool = Field(default=True, description="Include errors in response")
     
-    @validator('items')
+    @field_validator('items')
+    @classmethod
     def validate_items_not_empty(cls, v):
         """Ensure items list is not empty."""
         if not v:
@@ -391,15 +395,17 @@ class CitationSearchRequest(BaseModel):
     include_citations: bool = Field(default=True, description="Include citing papers")
     max_network_size: int = Field(default=1000, ge=1, le=5000, description="Maximum network size")
     
-    @validator('max_citations')
-    def validate_citation_range(cls, v, values):
+    @field_validator('max_citations')
+    @classmethod
+    def validate_citation_range(cls, v, info):
         """Ensure citation range is valid."""
-        if v is not None and 'min_citations' in values:
-            if v < values['min_citations']:
+        if v is not None and hasattr(info, 'data') and 'min_citations' in info.data:
+            if v < info.data['min_citations']:
                 raise ValueError("max_citations must be >= min_citations")
         return v
     
-    @validator('year_range')
+    @field_validator('year_range')
+    @classmethod
     def validate_year_range(cls, v):
         """Ensure year range is valid."""
         if v is not None:
@@ -420,7 +426,7 @@ class PredictionRequest(BaseModel):
     """
     
     # Source papers
-    source_paper_ids: List[str] = Field(..., min_items=1, description="Papers that would cite")
+    source_paper_ids: List[str] = Field(..., min_length=1, description="Papers that would cite")
     
     # Target options
     target_paper_ids: Optional[List[str]] = Field(None, description="Specific target papers")
@@ -440,7 +446,8 @@ class PredictionRequest(BaseModel):
     include_explanations: bool = Field(default=False, description="Include prediction explanations")
     include_confidence_intervals: bool = Field(default=False, description="Include confidence intervals")
     
-    @validator('source_paper_ids')
+    @field_validator('source_paper_ids')
+    @classmethod
     def validate_source_papers(cls, v):
         """Ensure source papers list is valid."""
         if not v:
@@ -481,7 +488,8 @@ class NetworkAnalysisRequest(BaseModel):
     include_edge_attributes: bool = Field(default=True, description="Include detailed edge attributes")
     format_for_visualization: bool = Field(default=True, description="Format output for visualization")
     
-    @validator('centrality_measures')
+    @field_validator('centrality_measures')
+    @classmethod
     def validate_centrality_measures(cls, v):
         """Ensure centrality measures are valid."""
         valid_measures = {"degree", "betweenness", "closeness", "pagerank", "eigenvector"}
