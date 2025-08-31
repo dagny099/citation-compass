@@ -1,5 +1,5 @@
 """
-Contextual explanations system for enhanced research insights.
+Contextual explanations system for research insights and analytics interpretation.
 
 Provides academic context, benchmarking, and interpretations for all metrics
 displayed in the Academic Citation Platform.

@@ -1,7 +1,7 @@
 """
 Advanced Notebook Analysis Pipeline page.
 
-This page provides comprehensive analytics pipeline with advanced
+This page provides comprehensive analytics pipeline integrating advanced
 analytics capabilities including network analysis, temporal analysis, performance
 benchmarking, and interactive notebook execution with export capabilities.
 """
@@ -40,7 +40,7 @@ st.set_page_config(
 
 st.title("📔 Advanced Analytics Pipeline")
 st.markdown("""
-**Advanced Analytics Pipeline** - Comprehensive analysis workflow with advanced capabilities:
+**Advanced Interactive Analytics** - Comprehensive analysis workflow with powerful capabilities:
 - 🔬 Interactive notebook execution
 - 📊 Network and temporal analysis  
 - ⚡ Performance benchmarking
@@ -603,7 +603,7 @@ if run_pipeline and selected_steps:
         
         st.success("✅ Research insights and summary complete")
 
-# Advanced Analytics: Interactive Notebooks Section
+# Interactive Notebooks Section
 elif analysis_type == "Interactive Notebooks":
     st.header("📔 Interactive Notebook Execution")
     

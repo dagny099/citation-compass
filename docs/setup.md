@@ -149,7 +149,7 @@ pip install -e ".[all]"
 
 ### Model Files Setup
 
-The ML models are included in the `models/` directory. Verify they're accessible:
+The ML models are trained locally and stored in the `models/` directory. Verify they're accessible:
 
 ```bash
 python -c "
@@ -162,9 +162,11 @@ print('Entities:', health.get('num_entities', 0))
 ```
 
 If models are missing or corrupted, check the `models/` directory contains:
-- `transe_citation_model.pt` (~19MB)
-- `entity_mapping.pkl` (~577KB) 
-- `training_metadata.pkl` (~200B)
+- `transe_citation_model.pt` (~19MB) - The trained TransE citation prediction model
+- `entity_mapping.pkl` (~577KB) - Maps papers/authors to model embeddings
+- `training_metadata.pkl` (~200B) - Training configuration and metrics
+
+If these files are missing, you'll need to run the model training pipeline using the notebooks in the `notebooks/` directory.
 
 ## Testing Setup
 

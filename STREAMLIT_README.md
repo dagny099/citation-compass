@@ -22,7 +22,7 @@ A comprehensive web application for academic citation analysis powered by machin
 - **Export Capabilities**: High-quality outputs in multiple formats (PNG, SVG, PDF)
 - **Real-time Updates**: Dynamic visualization updates based on ML predictions
 
-### 📔 Notebook Pipeline (Advanced Analytics)
+### 📔 Interactive Analytics Pipeline
 - **Interactive Analysis**: Jupyter-style notebook execution within Streamlit
 - **Advanced Analytics**: Network analysis, community detection, temporal trends
 - **Batch Processing**: Large-scale citation analysis and reporting
@@ -59,7 +59,7 @@ A comprehensive web application for academic citation analysis powered by machin
 ### Configuration
 
 The app automatically detects and loads:
-- **TransE Model**: Pre-trained model from `models/` directory
+- **TransE Model**: Locally trained model from `models/` directory
 - **Entity Mapping**: Paper ID to model entity mappings
 - **API Configuration**: Semantic Scholar API settings
 
@@ -113,7 +113,7 @@ The app automatically detects and loads:
    - Time-series analysis of citation patterns
    - Distribution analyses and statistical summaries
 
-### Notebook Pipeline Page (Advanced Analytics)
+### Interactive Analytics Pipeline
 
 1. **Interactive Analysis**:
    - Execute pre-built analytical notebooks
@@ -180,7 +180,7 @@ The app automatically detects and loads:
     └── config.toml
 ```
 
-### Analytics Architecture
+### Advanced Analytics Architecture
 ```
 ├── src/analytics/ (New)
 │   ├── __init__.py
@@ -232,7 +232,7 @@ The app automatically detects and loads:
 ### Common Issues
 
 1. **Model Not Found**:
-   - Ensure `models/` directory contains the trained model
+   - Ensure `models/` directory contains the locally trained model files
    - Check file permissions and paths
 
 2. **Paper Not in Model**:

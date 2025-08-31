@@ -645,7 +645,7 @@ class ExportEngine:
         
         return html
     
-    def export_enhanced_analysis(self,
+    def export_phase4_analysis(self,
                               metrics: Dict[str, float],
                               explanations: Dict[str, MetricExplanation],
                               domain: str,
@@ -662,7 +662,7 @@ class ExportEngine:
         Returns:
             ExportResult with export details
         """
-        self.logger.info(f"Exporting enhanced analysis to {config.format}")
+        self.logger.info(f"Exporting contextual analysis to {config.format}")
         
         start_time = datetime.now()
         
@@ -672,11 +672,11 @@ class ExportEngine:
             else:
                 return ExportResult(
                     success=False,
-                    error_message=f"Unsupported enhanced analysis format: {config.format}"
+                    error_message=f"Unsupported contextual analysis format: {config.format}"
                 )
         
         except Exception as e:
-            self.logger.error(f"Enhanced analysis export failed: {e}")
+            self.logger.error(f"Contextual analysis export failed: {e}")
             return ExportResult(
                 success=False,
                 error_message=str(e)

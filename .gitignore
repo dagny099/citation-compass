@@ -49,8 +49,7 @@ htmlcov/
 .tox/
 .nox/
 
-# mypy
-.mypy_cache/
+# Type checking
 .dmypy.json
 dmypy.json
 
@@ -62,14 +61,11 @@ logs/
 *.db
 *.sqlite3
 
-# OS
-.DS_Store
-.DS_Store?
+# OS files
 ._*
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db
 
 # Temporary files
 temp/
@@ -97,6 +93,8 @@ outputs/large_files/
 site/
 docs-public/site/
 
+# External repositories and reference materials (when used)
+# reference-codebases/
 
 # Security and credentials
 *.pem
@@ -126,11 +124,12 @@ tensorboard_logs/
 .streamlit/secrets.toml
 .streamlit/config.toml
 
-# Cache directories  
+# Cache directories (consolidated)
 .cache/
 *.cache
 __pycache__/
 .pytest_cache/
+.mypy_cache/
 
 # Documentation build artifacts
 docs/site/
@@ -172,16 +171,21 @@ api_keys.txt
 .secrets
 *.env.sample
 
+# Large datasets (examples for tracking pattern)
+# !external-data/**/storage/MEGA_paper_*.csv
+# !external-data/**/storage/MEGA_paper_*.json
 
 # Generated documentation files (keeping user examples)
 !EXAMPLE_PAPERS_FOR_EXPLORATION.md
 
-# Test files and temporary debugging scripts
+# Test files and temporary debugging scripts (excluding official tests/)
 test_*.py
 debug_*.py
+*_test.py
+temp_*.py
+
+# Temporary files created during development
 ENHANCED_VISUALIZATION_FIX_SUMMARY.md
-test_enhanced_visualization_improvements.py
-test_local_first_optimization.py
 
 # Streamlit session state and cache
 .streamlit/
@@ -205,3 +209,17 @@ yarn-error.log*
 # Editor temporary files
 .vscode/settings.json
 *.sublime-*
+
+# MacOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows specific
+Thumbs.db
+Desktop.ini
+
+# Development artifacts
+*.orig
+*.rej
+.#*
