@@ -16,11 +16,13 @@ import plotly.express as px
 import networkx as nx
 from typing import List, Dict, Optional, Tuple
 import logging
+import time
 
 from src.services.ml_service import get_ml_service
 from src.data.unified_api_client import UnifiedSemanticScholarClient
 from src.models.ml import CitationPrediction
 from src.analytics.contextual_explanations import ContextualExplanationEngine
+from src.database.connection import create_connection, Neo4jError
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -87,7 +89,9 @@ viz_type = st.sidebar.selectbox(
 
 # Common parameters
 st.sidebar.subheader("📋 Parameters")
-max_papers = st.sidebar.slider("Maximum papers to analyze", 5, 50, 20)
+max_papers = st.sidebar.slider("Maximum papers to analyze", 5, 100, 20)
+if max_papers > 75:
+    st.sidebar.warning("⚠️ Large networks may take longer to load and visualize")
 confidence_threshold = st.sidebar.slider("Confidence threshold", 0.0, 1.0, 0.3, 0.05)
 show_predictions = st.sidebar.checkbox("Show ML predictions", value=ml_available, disabled=not ml_available)
 show_actual_citations = st.sidebar.checkbox("Show actual citations", value=True)
@@ -140,12 +144,353 @@ elif paper_input_method == "Search and Select":
         
         center_papers = [st.session_state['search_results'][i]['paperId'] for i in selected_indices]
 
+# Helper function to create rich hover text
+def create_rich_hover_text(paper_id: str, paper_metadata: Dict, node_type: str, confidence: Optional[float] = None) -> str:
+    """
+    Create rich hover text for network nodes.
+    
+    Args:
+        paper_id: Paper ID
+        paper_metadata: Dictionary containing paper metadata
+        node_type: Type of node ('center', 'predicted', 'cited')
+        confidence: ML prediction confidence (for predicted nodes)
+        
+    Returns:
+        Formatted hover text string
+    """
+    # Get paper details with fallbacks
+    title = paper_metadata.get('title', 'Unknown Title')[:60]
+    if len(paper_metadata.get('title', '')) > 60:
+        title += '...'
+    
+    authors = paper_metadata.get('authors', [])
+    if authors:
+        author_names = [author.get('name', str(author)) if isinstance(author, dict) else str(author) for author in authors[:3]]
+        authors_str = ', '.join(author_names)
+        if len(authors) > 3:
+            authors_str += f' et al. ({len(authors)} total)'
+    else:
+        authors_str = 'Unknown Authors'
+    
+    year = paper_metadata.get('year', 'Unknown')
+    citation_count = paper_metadata.get('citationCount', 0)
+    
+    # Build hover text based on node type
+    hover_lines = []
+    
+    if node_type == 'center':
+        hover_lines.append(f"📍 CENTER: {title}")
+    elif node_type == 'predicted':
+        hover_lines.append(f"🔮 PREDICTED: {title}")
+        if confidence:
+            hover_lines.append(f"🎯 Confidence: {confidence:.1%}")
+    else:  # cited
+        hover_lines.append(f"📚 CITED: {title}")
+    
+    hover_lines.extend([
+        f"👥 Authors: {authors_str}",
+        f"📅 Year: {year} | 📈 Citations: {citation_count:,}"
+    ])
+    
+    # Add venue if available
+    venues = paper_metadata.get('venues', [])
+    if venues and venues[0]:
+        venue = venues[0][:40]
+        if len(venues[0]) > 40:
+            venue += '...'
+        hover_lines.append(f"📍 Venue: {venue}")
+    
+    return '<br>'.join(hover_lines)
+
+
+def get_papers_from_neo4j(paper_ids: List[str]) -> Dict[str, Dict]:
+    """
+    Fetch paper metadata from local Neo4j database (fastest).
+    
+    Args:
+        paper_ids: List of paper IDs to fetch
+        
+    Returns:
+        Dictionary mapping paper_id -> paper_metadata
+    """
+    if not paper_ids:
+        return {}
+    
+    metadata = {}
+    
+    try:
+        db = create_connection(validate=False)  # Skip validation for speed
+        
+        # Batch query for all papers
+        query = """
+        MATCH (p:Paper)
+        WHERE p.paperId IN $paper_ids
+        OPTIONAL MATCH (p)<-[:AUTHORED]-(a:Author)
+        OPTIONAL MATCH (p)-[:PUBLISHED_IN]->(v:PubVenue)
+        OPTIONAL MATCH (p)-[:IS_ABOUT]->(f:Field)
+        OPTIONAL MATCH (p)-[:PUB_YEAR]->(y:PubYear)
+        RETURN p.paperId as paperId, p.title as title, p.abstract as abstract,
+               p.year as year, p.citationCount as citationCount,
+               collect(DISTINCT a.authorName) as authors,
+               collect(DISTINCT v.venue) as venues,
+               collect(DISTINCT f.field) as fields,
+               y.year as pubYear
+        """
+        
+        result = db.query(query, {"paper_ids": paper_ids})
+        
+        for _, row in result.iterrows():
+            paper_id = row['paperId']
+            
+            # Process authors - filter out null values and ensure consistent format
+            authors = [{'name': str(author)} for author in row['authors'] if author and str(author).strip()]
+            
+            # Process venues - filter out null values
+            venues = [str(venue) for venue in row['venues'] if venue and str(venue).strip()]
+            
+            # Use the year from the paper itself, fallback to pubYear
+            year = row['year'] if row['year'] else row.get('pubYear')
+            
+            metadata[paper_id] = {
+                'paperId': paper_id,
+                'title': str(row['title']) if row['title'] else f'Paper {paper_id[:12]}...',
+                'abstract': str(row['abstract']) if row['abstract'] else None,
+                'year': int(year) if year else None,
+                'citationCount': int(row['citationCount']) if row['citationCount'] else 0,
+                'authors': authors,
+                'venues': venues,
+                'fields': [str(field) for field in row['fields'] if field and str(field).strip()]
+            }
+            
+        db.close()
+        logger.info(f"Fetched {len(metadata)} papers from Neo4j database")
+        
+    except Neo4jError as e:
+        logger.warning(f"Neo4j query failed: {e}")
+    except Exception as e:
+        logger.warning(f"Error fetching from Neo4j: {e}")
+    
+    return metadata
+
+
+def get_cached_papers(paper_ids: List[str]) -> Dict[str, Dict]:
+    """
+    Get papers from session-level cache.
+    
+    Args:
+        paper_ids: List of paper IDs to fetch
+        
+    Returns:
+        Dictionary mapping paper_id -> paper_metadata for cached papers
+    """
+    if 'paper_metadata_cache' not in st.session_state:
+        st.session_state.paper_metadata_cache = {}
+    
+    cache = st.session_state.paper_metadata_cache
+    cached_papers = {}
+    
+    for paper_id in paper_ids:
+        if paper_id in cache:
+            # Check if cache entry is still valid (1 hour TTL)
+            cache_entry = cache[paper_id]
+            if 'timestamp' in cache_entry:
+                age = time.time() - cache_entry['timestamp']
+                if age < 3600:  # 1 hour TTL
+                    cached_papers[paper_id] = cache_entry['data']
+                else:
+                    # Remove expired entry
+                    del cache[paper_id]
+            else:
+                # Old cache entry without timestamp, assume valid for this session
+                cached_papers[paper_id] = cache_entry
+    
+    if cached_papers:
+        logger.info(f"Retrieved {len(cached_papers)} papers from session cache")
+    
+    return cached_papers
+
+
+def cache_papers(paper_metadata: Dict[str, Dict]) -> None:
+    """
+    Store paper metadata in session cache.
+    
+    Args:
+        paper_metadata: Dictionary of paper metadata to cache
+    """
+    if 'paper_metadata_cache' not in st.session_state:
+        st.session_state.paper_metadata_cache = {}
+    
+    cache = st.session_state.paper_metadata_cache
+    timestamp = time.time()
+    
+    for paper_id, metadata in paper_metadata.items():
+        cache[paper_id] = {
+            'data': metadata,
+            'timestamp': timestamp
+        }
+
+
+def fetch_paper_metadata_local_first(api_client, paper_ids: List[str]) -> Tuple[Dict[str, Dict], Dict[str, int]]:
+    """
+    Fetch paper metadata with local-first strategy for maximum performance.
+    
+    Priority order:
+    1. Session cache (fastest - 1ms)
+    2. Neo4j database (fast - 5-50ms) 
+    3. Semantic Scholar API (slow - 200-2000ms)
+    
+    Args:
+        api_client: API client instance (fallback only)
+        paper_ids: List of paper IDs to fetch
+        
+    Returns:
+        Tuple of (paper_metadata_dict, source_stats)
+        source_stats: {'cache': count, 'neo4j': count, 'api': count}
+    """
+    if not paper_ids:
+        return {}, {'cache': 0, 'neo4j': 0, 'api': 0}
+    
+    all_metadata = {}
+    source_stats = {'cache': 0, 'neo4j': 0, 'api': 0}
+    remaining_paper_ids = list(paper_ids)  # Copy to modify
+    
+    # Tier 1: Check session cache first
+    cached_papers = get_cached_papers(remaining_paper_ids)
+    if cached_papers:
+        all_metadata.update(cached_papers)
+        source_stats['cache'] = len(cached_papers)
+        remaining_paper_ids = [pid for pid in remaining_paper_ids if pid not in cached_papers]
+    
+    # Tier 2: Query Neo4j database for remaining papers
+    if remaining_paper_ids:
+        neo4j_papers = get_papers_from_neo4j(remaining_paper_ids)
+        if neo4j_papers:
+            all_metadata.update(neo4j_papers)
+            source_stats['neo4j'] = len(neo4j_papers)
+            # Cache Neo4j results for future use
+            cache_papers(neo4j_papers)
+            remaining_paper_ids = [pid for pid in remaining_paper_ids if pid not in neo4j_papers]
+    
+    # Tier 3: API fallback for still missing papers
+    if remaining_paper_ids:
+        logger.info(f"Falling back to API for {len(remaining_paper_ids)} missing papers")
+        api_papers = fetch_paper_metadata_batch_api_only(api_client, remaining_paper_ids)
+        if api_papers:
+            all_metadata.update(api_papers)
+            source_stats['api'] = len(api_papers)
+            # Cache API results for future use
+            cache_papers(api_papers)
+    
+    logger.info(f"Metadata sources - Cache: {source_stats['cache']}, Neo4j: {source_stats['neo4j']}, API: {source_stats['api']}")
+    
+    return all_metadata, source_stats
+
+
+def fetch_paper_metadata_batch_api_only(api_client, paper_ids: List[str]) -> Dict[str, Dict]:
+    """
+    Fetch detailed metadata for multiple papers from Semantic Scholar API only.
+    
+    This is the fallback function when local sources (cache, Neo4j) don't have the data.
+    
+    Args:
+        api_client: API client instance
+        paper_ids: List of paper IDs to fetch
+        
+    Returns:
+        Dictionary mapping paper_id -> paper_metadata
+    """
+    metadata = {}
+    
+    # Use richer fields for detailed information
+    detailed_fields = "paperId,title,authors,year,citationCount,venue,abstract,publicationDate,fieldsOfStudy"
+    
+    try:
+        # Try batch request first (more efficient)
+        if hasattr(api_client, 'get_papers_batch') and len(paper_ids) > 1:
+            batch_results = api_client.get_papers_batch(paper_ids, fields=detailed_fields)
+            for paper_data in batch_results:
+                if paper_data and 'paperId' in paper_data:
+                    # Process authors to ensure consistent format
+                    if 'authors' in paper_data and paper_data['authors']:
+                        paper_data['authors'] = [
+                            author if isinstance(author, dict) else {'name': str(author)}
+                            for author in paper_data['authors']
+                        ]
+                    
+                    # Process venue
+                    if 'venue' in paper_data and paper_data['venue']:
+                        paper_data['venues'] = [paper_data['venue']]
+                    
+                    metadata[paper_data['paperId']] = paper_data
+        else:
+            # Fallback to individual requests
+            for paper_id in paper_ids:
+                try:
+                    paper_data = api_client.get_paper_details(paper_id, fields=detailed_fields)
+                    if paper_data:
+                        # Process authors to ensure consistent format
+                        if 'authors' in paper_data and paper_data['authors']:
+                            paper_data['authors'] = [
+                                author if isinstance(author, dict) else {'name': str(author)}
+                                for author in paper_data['authors']
+                            ]
+                        
+                        # Process venue
+                        if 'venue' in paper_data and paper_data['venue']:
+                            paper_data['venues'] = [paper_data['venue']]
+                        
+                        metadata[paper_id] = paper_data
+                except Exception as e:
+                    logging.warning(f"Failed to fetch metadata for {paper_id}: {e}")
+                    # Create minimal fallback metadata
+                    metadata[paper_id] = {
+                        'paperId': paper_id,
+                        'title': f'Paper {paper_id[:12]}...',
+                        'authors': [],
+                        'year': None,
+                        'citationCount': 0,
+                        'venues': []
+                    }
+                    
+    except Exception as e:
+        logging.error(f"Batch metadata fetch failed: {e}")
+        # Create minimal fallback metadata for all papers
+        for paper_id in paper_ids:
+            metadata[paper_id] = {
+                'paperId': paper_id,
+                'title': f'Paper {paper_id[:12]}...',
+                'authors': [],
+                'year': None,
+                'citationCount': 0,
+                'venues': []
+            }
+    
+    return metadata
+
+
 # Main content based on visualization type
 if viz_type == "Citation Network with Predictions":
     st.header("🕸️ Citation Network with ML Prediction Overlay")
     
     if len(center_papers) >= 1:
         st.info(f"Analyzing network for {len(center_papers)} center paper(s)...")
+        
+        # Performance warnings and suggestions
+        if max_papers > 50:
+            estimated_network_size = len(center_papers) * max_papers
+            if estimated_network_size > 500:
+                st.warning(f"⚠️ Large network detected! Estimated {estimated_network_size:,} potential connections.")
+                st.info("💡 For better performance: Try reducing max papers, increasing confidence threshold, or analyzing fewer center papers at once.")
+                
+                if st.checkbox("🚀 Enable progressive loading (recommended for large networks)"):
+                    st.info("🔄 Progressive loading enabled - network will build incrementally")
+                    progressive_loading = True
+                else:
+                    progressive_loading = False
+            else:
+                progressive_loading = False
+        else:
+            progressive_loading = False
         
         # Generate network data
         network_data = {}
@@ -159,7 +504,7 @@ if viz_type == "Citation Network with Predictions":
                         try:
                             predictions = ml_service.predict_citations(
                                 center_paper, 
-                                top_k=min(max_papers, 20),
+                                top_k=max_papers,  # Remove artificial limit
                                 score_threshold=confidence_threshold
                             )
                             all_predictions[center_paper] = predictions
@@ -172,7 +517,7 @@ if viz_type == "Citation Network with Predictions":
                         try:
                             citations = api_client.get_paper_citations(
                                 center_paper, 
-                                limit=min(max_papers, 20)
+                                limit=max_papers  # Remove artificial limit
                             )
                             network_data[center_paper] = citations
                         except Exception as e:
@@ -182,14 +527,69 @@ if viz_type == "Citation Network with Predictions":
                 except Exception as e:
                     st.error(f"Error processing {center_paper}: {e}")
         
+            # Collect all unique paper IDs for metadata fetching
+        all_paper_ids = set(center_papers)
+        
+        # Add predicted paper IDs
+        for predictions in all_predictions.values():
+            for pred in predictions:
+                all_paper_ids.add(pred.target_paper_id)
+        
+        # Add cited paper IDs
+        for citations in network_data.values():
+            for citation in citations:
+                if isinstance(citation, dict):
+                    paper_id = citation.get('paperId', citation.get('id'))
+                    if paper_id:
+                        all_paper_ids.add(paper_id)
+        
+        # Fetch rich metadata for all papers in the network using local-first strategy
+        paper_metadata = {}
+        source_stats = {'cache': 0, 'neo4j': 0, 'api': 0}
+        if all_paper_ids:
+            metadata_count = len(all_paper_ids)
+            if metadata_count > 100:
+                st.info(f"📊 Fetching metadata for {metadata_count} papers - this may take a moment...")
+                
+            with st.spinner(f"Fetching detailed metadata for {metadata_count} papers..."):
+                # Use local-first fetching strategy
+                start_time = time.time()
+                paper_metadata, source_stats = fetch_paper_metadata_local_first(api_client, list(all_paper_ids))
+                fetch_time = time.time() - start_time
+                    
+            # Report metadata fetch performance and sources
+            successful_fetches = sum(1 for meta in paper_metadata.values() if meta.get('title', '').startswith('Paper ') == False)
+            total_requested = len(all_paper_ids)
+            
+            # Create performance summary
+            perf_parts = []
+            if source_stats['cache'] > 0:
+                perf_parts.append(f"🚀 {source_stats['cache']} from cache")
+            if source_stats['neo4j'] > 0:
+                perf_parts.append(f"🏠 {source_stats['neo4j']} from local DB")
+            if source_stats['api'] > 0:
+                perf_parts.append(f"🌐 {source_stats['api']} from API")
+            
+            if successful_fetches == total_requested:
+                st.success(f"✅ Retrieved all {total_requested} papers in {fetch_time:.2f}s ({', '.join(perf_parts)})")
+            else:
+                missing_count = total_requested - successful_fetches
+                st.info(f"📊 Retrieved {successful_fetches}/{total_requested} papers in {fetch_time:.2f}s ({', '.join(perf_parts)}, {missing_count} fallback)")
+                
+            # Show performance improvement message
+            if source_stats['cache'] + source_stats['neo4j'] > source_stats['api']:
+                local_pct = (source_stats['cache'] + source_stats['neo4j']) / total_requested * 100
+                st.info(f"⚡ {local_pct:.0f}% served from local sources - much faster than API-only!")
+        
         # Create network visualization
         if all_predictions or network_data:
             # Create NetworkX graph
             G = nx.Graph()
             
-            # Add center papers
+            # Add center papers with metadata
             for paper in center_papers:
-                G.add_node(paper, node_type='center', color='red', size=30)
+                G.add_node(paper, node_type='center', color='red', size=30, 
+                          metadata=paper_metadata.get(paper, {}))
             
             # Add predicted citations
             prediction_edges = []
@@ -197,7 +597,9 @@ if viz_type == "Citation Network with Predictions":
                 for center_paper, predictions in all_predictions.items():
                     for pred in predictions:
                         target_paper = pred.target_paper_id
-                        G.add_node(target_paper, node_type='predicted', color='blue', size=20)
+                        G.add_node(target_paper, node_type='predicted', color='blue', size=20,
+                                  metadata=paper_metadata.get(target_paper, {}),
+                                  confidence=pred.prediction_score)
                         G.add_edge(center_paper, target_paper, 
                                  edge_type='predicted', 
                                  confidence=pred.prediction_score,
@@ -216,15 +618,26 @@ if viz_type == "Citation Network with Predictions":
                             target_paper = str(citation)
                         
                         if target_paper != 'unknown':
-                            G.add_node(target_paper, node_type='cited', color='green', size=15)
+                            G.add_node(target_paper, node_type='cited', color='green', size=15,
+                                      metadata=paper_metadata.get(target_paper, {}))
                             G.add_edge(center_paper, target_paper, 
                                      edge_type='actual',
                                      color='green',
                                      width=5)
                             citation_edges.append((center_paper, target_paper))
             
-            # Create Plotly network visualization
-            pos = nx.spring_layout(G, k=1, iterations=50)
+            # Create Plotly network visualization with performance optimization
+            node_count = len(G.nodes())
+            
+            # Optimize layout parameters based on network size
+            if node_count > 100:
+                # Faster layout for large networks
+                pos = nx.spring_layout(G, k=2, iterations=30)
+                st.info(f"🎨 Optimized layout for large network ({node_count} nodes)")
+            elif node_count > 50:
+                pos = nx.spring_layout(G, k=1.5, iterations=40)
+            else:
+                pos = nx.spring_layout(G, k=1, iterations=50)
             
             # Prepare node traces
             node_traces = {}
@@ -295,35 +708,58 @@ if viz_type == "Citation Network with Predictions":
             for trace in edge_traces:
                 fig.add_trace(trace)
             
-            # Add node traces
+            # Add node traces with rich hover text
             if center_x:
+                center_nodes = [node for node in G.nodes() if G.nodes[node].get('node_type') == 'center']
+                center_hover_text = [
+                    create_rich_hover_text(node, G.nodes[node].get('metadata', {}), 'center')
+                    for node in center_nodes
+                ]
                 fig.add_trace(go.Scatter(
                     x=center_x, y=center_y,
                     mode='markers',
                     marker=dict(size=30, color='red'),
                     name='Center Papers',
-                    text=[f"Center: {node[:15]}..." for node in G.nodes() if G.nodes[node].get('node_type') == 'center'],
-                    hoverinfo='text'
+                    text=center_hover_text,
+                    hoverinfo='text',
+                    hoverlabel=dict(bgcolor="rgba(255,255,255,0.8)", font_size=12, font_color="black")
                 ))
             
             if pred_x:
+                pred_nodes = [node for node in G.nodes() if G.nodes[node].get('node_type') == 'predicted']
+                pred_hover_text = [
+                    create_rich_hover_text(
+                        node, 
+                        G.nodes[node].get('metadata', {}), 
+                        'predicted',
+                        G.nodes[node].get('confidence')
+                    )
+                    for node in pred_nodes
+                ]
                 fig.add_trace(go.Scatter(
                     x=pred_x, y=pred_y,
                     mode='markers',
                     marker=dict(size=20, color='blue'),
                     name='ML Predictions',
-                    text=[f"Predicted: {node[:15]}..." for node in G.nodes() if G.nodes[node].get('node_type') == 'predicted'],
-                    hoverinfo='text'
+                    text=pred_hover_text,
+                    hoverinfo='text',
+                    hoverlabel=dict(bgcolor="rgba(255,255,255,0.8)", font_size=12, font_color="black")
                 ))
             
             if cited_x:
+                cited_nodes = [node for node in G.nodes() if G.nodes[node].get('node_type') == 'cited']
+                cited_hover_text = [
+                    create_rich_hover_text(node, G.nodes[node].get('metadata', {}), 'cited')
+                    for node in cited_nodes
+                ]
                 fig.add_trace(go.Scatter(
                     x=cited_x, y=cited_y,
                     mode='markers',
                     marker=dict(size=15, color='green'),
                     name='Actual Citations',
-                    text=[f"Cited: {node[:15]}..." for node in G.nodes() if G.nodes[node].get('node_type') == 'cited'],
-                    hoverinfo='text'
+                    text=cited_hover_text,
+                    hoverinfo='text',
+                    hoverlabel=dict(bgcolor="rgba(255,255,255,0.8)", font_size=12, font_color="black")
                 ))
             
             fig.update_layout(

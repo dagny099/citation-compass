@@ -185,9 +185,17 @@ api_keys.txt
 test_*.py
 debug_*.py
 ENHANCED_VISUALIZATION_FIX_SUMMARY.md
+test_enhanced_visualization_improvements.py
+test_local_first_optimization.py
 
 # Streamlit session state and cache
 .streamlit/
+.streamlit_cache/
+
+# Local cache directories for performance optimization
+cache/paper_metadata/
+cache/*.json
+paper_cache/
 
 # Additional ML service files
 entity_embeddings/
