@@ -2,83 +2,12 @@
 
 Comprehensive API documentation for the Academic Citation Platform service layer.
 
-## Analytics Service
+*Note: Service documentation is currently being updated. The service implementations are available in the `src/services/` directory.*
 
-The core analytics service orchestrates network analysis, community detection, and temporal analysis operations.
+## Available Services
 
-::: src.services.analytics_service.AnalyticsService
-    options:
-      show_root_heading: true
-      show_source: false
-      heading_level: 3
-      members:
-        - __init__
-        - get_network_overview
-        - analyze_network
-        - detect_communities
-        - compute_centrality_metrics
-        - analyze_temporal_trends
-        - generate_report
-        - run_comprehensive_analysis
-
----
-
-### Analytics Service Factory
-
-::: src.services.analytics_service.get_analytics_service
-    options:
-      show_root_heading: true
-      show_source: false
-      heading_level: 4
-
----
-
-## ML Service
-
-Machine learning service for citation prediction, model training, and embedding management.
-
-::: src.services.ml_service.MLService
-    options:
-      show_root_heading: true
-      show_source: false
-      heading_level: 3
-      members:
-        - __init__
-        - predict_citations
-        - predict_batch_citations
-        - compute_embeddings
-        - find_similar_papers
-        - train_model
-        - evaluate_model
-        - load_model
-        - save_model
-
----
-
-### TransE Model Service
-
-::: src.services.ml_service.TransEModelService
-    options:
-      show_root_heading: true
-      show_source: false
-      heading_level: 3
-      members:
-        - __init__
-        - train
-        - predict
-        - evaluate
-        - save_model
-        - load_model
-
----
-
-### ML Service Factory
-
-::: src.services.ml_service.get_ml_service
-    options:
-      show_root_heading: true
-      show_source: false
-      heading_level: 4
+- **Analytics Service** (`src/services/analytics_service.py`) - Network analysis and community detection
+- **ML Service** (`src/services/ml_service.py`) - Machine learning predictions and embeddings
 
 ---
 

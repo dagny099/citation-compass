@@ -92,6 +92,10 @@ outputs/large_files/
 # MkDocs
 site/
 docs-public/site/
+.mkdocs_cache/
+mkdocs_macros_cache/
+**/site/
+docs/site/
 
 # External repositories and reference materials (when used)
 # reference-codebases/
@@ -135,6 +139,8 @@ __pycache__/
 docs/site/
 site/
 _site/
+.gh-pages/
+*.tmp.md
 
 # Academic paper outputs (user-generated)
 papers/

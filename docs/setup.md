@@ -1,11 +1,27 @@
 # Setup Guide
 
+!!! info "🚀 Setup Overview"
+    Get your Academic Citation Platform running in 4 simple steps: Clone → Configure → Database → Launch
+
+```mermaid
+flowchart LR
+    A["📥 Clone Repository"] --> B["⚙️ Configure Environment"]
+    B --> C["🗄️ Setup Database"]
+    C --> D["🚀 Launch Application"]
+    
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style C fill:#e8f5e8
+    style D fill:#fce4ec
+```
+
 ## Prerequisites
 
-- Python 3.8+ (recommended: Python 3.10+)
-- Neo4j Database (local installation or Neo4j AuraDB cloud instance)
-- Git
-- 4GB+ RAM (for ML model operations)
+!!! tip "System Requirements"
+    - **Python 3.8+** (recommended: Python 3.10+)
+    - **Neo4j Database** (local installation or Neo4j AuraDB cloud instance)
+    - **Git** version control
+    - **4GB+ RAM** (for ML model operations)
 
 ## Quick Start
 

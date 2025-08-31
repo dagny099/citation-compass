@@ -8,7 +8,7 @@ Comprehensive documentation for data models, schemas, and data structures used t
 
 The central data structure representing academic papers.
 
-::: src.models.paper.Paper
+::: models.paper.Paper
     options:
       show_root_heading: true
       show_source: false
@@ -18,7 +18,7 @@ The central data structure representing academic papers.
 
 Represents citation relationships between papers.
 
-::: src.models.citation.Citation
+::: models.citation.Citation
     options:
       show_root_heading: true
       show_source: false
@@ -28,7 +28,7 @@ Represents citation relationships between papers.
 
 Represents academic authors and their affiliations.
 
-::: src.models.author.Author
+::: models.author.Author
     options:
       show_root_heading: true
       show_source: false
@@ -38,7 +38,7 @@ Represents academic authors and their affiliations.
 
 Represents publication venues (journals, conferences).
 
-::: src.models.venue.Venue
+::: models.venue.Venue
     options:
       show_root_heading: true
       show_source: false
@@ -48,7 +48,7 @@ Represents publication venues (journals, conferences).
 
 Represents academic fields of study.
 
-::: src.models.field.Field
+::: models.field.Field
     options:
       show_root_heading: true
       show_source: false
@@ -60,23 +60,15 @@ Represents academic fields of study.
 
 ### Network Graph
 
-::: src.models.network.NetworkGraph
+::: models.network.NetworkGraph
     options:
       show_root_heading: true
       show_source: false
       heading_level: 3
 
-### Community Info
+### Network Analysis
 
-::: src.models.network.CommunityInfo
-    options:
-      show_root_heading: true
-      show_source: false
-      heading_level: 3
-
-### Network Metrics
-
-::: src.models.network.NetworkMetrics
+::: models.network.NetworkAnalysis
     options:
       show_root_heading: true
       show_source: false
@@ -86,17 +78,9 @@ Represents academic fields of study.
 
 ## Machine Learning Models
 
-### ML Model Configuration
+### Citation Prediction
 
-::: src.models.ml.MLModelConfig
-    options:
-      show_root_heading: true
-      show_source: false
-      heading_level: 3
-
-### Prediction Result
-
-::: src.models.ml.Prediction
+::: models.ml.CitationPrediction
     options:
       show_root_heading: true
       show_source: false
@@ -104,15 +88,23 @@ Represents academic fields of study.
 
 ### Training Configuration
 
-::: src.models.ml.TrainingConfig
+::: models.ml.TrainingConfig
     options:
       show_root_heading: true
       show_source: false
       heading_level: 3
 
-### Evaluation Result
+### Evaluation Metrics
 
-::: src.models.ml.EvaluationResult
+::: models.ml.EvaluationMetrics
+    options:
+      show_root_heading: true
+      show_source: false
+      heading_level: 3
+
+### Paper Embedding
+
+::: models.ml.PaperEmbedding
     options:
       show_root_heading: true
       show_source: false
@@ -124,15 +116,15 @@ Represents academic fields of study.
 
 ### API Response Models
 
-::: src.models.api.APIResponse
+::: models.api.APIResponse
     options:
       show_root_heading: true
       show_source: false
       heading_level: 3
 
-### Error Response
+### API Error
 
-::: src.models.api.ErrorResponse
+::: models.api.APIError
     options:
       show_root_heading: true
       show_source: false
@@ -140,7 +132,7 @@ Represents academic fields of study.
 
 ### Pagination
 
-::: src.models.api.PaginatedResponse
+::: models.api.PaginatedResponse
     options:
       show_root_heading: true
       show_source: false

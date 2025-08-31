@@ -2,33 +2,16 @@ site_name: Academic Citation Platform
 site_description: Comprehensive platform for academic citation network analysis, prediction, and exploration
 site_url: https://citationcompass.barbhs.com
 site_author: Academic Citation Platform Team
+copyright: Copyright © 2025 Academic Citation Platform Team
 
-# Repository
-repo_name: academic-citation-platform
+repo_name: dagny099/citation-compass
 repo_url: https://github.com/dagny099/citation-compass
+edit_uri: edit/main/docs/
 
-# Copyright
-copyright: Copyright &copy; 2024 Academic Citation Platform Team
-
-# Configuration
 theme:
   name: material
-  
-  # Custom directory for overrides
-  custom_dir: docs/overrides
-  
-  # Static files
-  favicon: assets/images/favicon.ico
-  logo: assets/images/logo.png
-  
-  # Fonts
-  font:
-    text: Inter
-    code: JetBrains Mono
-  
-  # Color palette
+  custom_dir: docs/assets
   palette:
-    # Light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: blue grey
@@ -36,8 +19,6 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    
-    # Dark mode  
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: blue grey
@@ -45,15 +26,12 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
-  
-  # Features
   features:
     - announce.dismiss
     - content.action.edit
     - content.action.view
     - content.code.annotate
     - content.code.copy
-    - content.code.select
     - content.tabs.link
     - content.tooltips
     - header.autohide
@@ -62,7 +40,6 @@ theme:
     - navigation.indexes
     - navigation.instant
     - navigation.instant.prefetch
-    - navigation.instant.progress
     - navigation.prune
     - navigation.sections
     - navigation.tabs
@@ -73,43 +50,40 @@ theme:
     - search.share
     - search.suggest
     - toc.follow
+    - toc.integrate
 
-# Plugins
 plugins:
-  - search:
-      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-  - minify:
-      minify_html: true
-  - git-revision-date-localized:
-      enable_creation_date: true
-  - git-committers:
-      repository: your-org/academic-citation-platform
-      branch: main
+  - search
   - mkdocstrings:
       handlers:
         python:
-          paths: [src]
+          paths: [src]            # add src/ to sys.path for imports
           options:
             docstring_style: google
-            merge_init_into_class: true
             show_submodules: false
+            merge_init_into_class: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+      fallback_to_build_date: true
+  - git-committers:
+      repository: dagny099/citation-compass
+      branch: main
+      # token: !ENV MKDOCS_GIT_COMMITTERS_APIKEY
+  - minify:
+      minify_html: true
 
-# Customization
 extra:
-  annotate:
-    json: [.s2]
   analytics:
     provider: google
     property: !ENV GOOGLE_ANALYTICS_KEY
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/dagny099/citation-compass
-    - icon: fontawesome/brands/python
-      link: https://pypi.org/project/academic-citation-platform/
-    - icon: fontawesome/solid/comments
-      link: https://github.com/dagny099/citation-compass/discussions
+  generator: false
 
-# Extensions
+extra_css:
+  - assets/css/extra.css
+
 markdown_extensions:
   - abbr
   - admonition
@@ -126,8 +100,8 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_generator: !!python/name:materialx.emoji.to_svg
-      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -137,13 +111,9 @@ markdown_extensions:
   - pymdownx.magiclink:
       normalize_issue_symbols: true
       repo_url_shorthand: true
-      user: your-org
-      repo: academic-citation-platform
+      user: dagny099
+      repo: citation-compass
   - pymdownx.mark
-  - pymdownx.smartsymbols
-  - pymdownx.snippets:
-      auto_append:
-        - includes/mkdocs.md
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -159,41 +129,34 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 
-# Navigation
 nav:
-  - Home: index.md
-  - Getting Started:
-    - Installation: getting-started/installation.md
-    - Quick Start: getting-started/quick-start.md
-    - Configuration: getting-started/configuration.md
-    - Environment Setup: getting-started/environment-setup.md
-  - User Guide:
-    - Overview: user-guide/overview.md
-    - Interactive Features: user-guide/interactive-features.md
-    - ML Predictions: user-guide/ml-predictions.md
-    - Network Analysis: user-guide/network-analysis.md
-    - Notebook Pipeline: user-guide/notebook-pipeline.md
-    - Results Interpretation: user-guide/results-interpretation.md
-  - Developer Guide:
-    - Architecture: developer-guide/architecture.md
-    - API Reference: developer-guide/api-reference.md
-    - Database Schema: developer-guide/database-schema.md
-    - Services Layer: developer-guide/services-layer.md
-    - Testing: developer-guide/testing.md
-    - Contributing: developer-guide/contributing.md
-  - Notebooks:
-    - Overview: notebooks/overview.md
-    - Comprehensive Exploration: notebooks/01-comprehensive-exploration.md
-    - Model Training Pipeline: notebooks/02-model-training-pipeline.md
-    - Prediction Evaluation: notebooks/03-prediction-evaluation.md
-    - Narrative Presentation: notebooks/04-narrative-presentation.md
-  - Advanced Topics:
-    - Custom Models: advanced/custom-models.md
-    - Performance Optimization: advanced/performance-optimization.md
-    - Integration Patterns: advanced/integration-patterns.md
-    - Troubleshooting: advanced/troubleshooting.md
-  - API Reference:
-    - Services: api/services.md
-    - Models: api/models.md
-    - Analytics: api/analytics.md
-    - Data Layer: api/data.md
+  - 🏠 Home: index.md
+  - 🚀 Getting Started:
+      - 📦 Installation: getting-started/installation.md
+      - ⚙️ Configuration: getting-started/configuration.md
+      - ⚡ Quick Start: getting-started/quick-start.md
+      - 🌍 Environment Setup: getting-started/environment-setup.md
+  - 👤 User Guide:
+      - 📋 Overview: user-guide/overview.md
+      - 🤖 ML Predictions: user-guide/ml-predictions.md
+      - 🔗 Network Analysis: user-guide/network-analysis.md
+      - 🎨 Interactive Features: user-guide/interactive-features.md
+      - 📊 Results Interpretation: user-guide/results-interpretation.md
+      - 📓 Notebook Pipeline: user-guide/notebook-pipeline.md
+  - 🔧 Developer Guide:
+      - 🏗️ Architecture: developer-guide/architecture.md
+      - 📚 API Reference: api.md
+      - 🧩 Models: api/models.md
+      - ⚙️ Services: api/services.md
+  - 📓 Notebooks:
+      - 📋 Overview: notebooks/overview.md
+  - 🛠️ Setup: setup.md
+  - 🏗️ Architecture: architecture.md
+  - 📦 Includes:
+      - 📖 MkDocs: includes/mkdocs.md
+  - 📦 Archive:
+      - 📋 Phase 4 Plan: archived_phase_4_plan.md
+      - ⚙️ Phase 4 Implementation: archived_phase_4_implementation.md
+
+watch:
+  - src
