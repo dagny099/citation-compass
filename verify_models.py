@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 def check_model_files() -> Dict[str, Path]:
     """Check if all required model files exist."""
-    base_path = Path("reference-codebases/citation-map-dashboard/models")
+    base_path = Path("models")
     
     required_files = {
         'model': base_path / 'transe_citation_model.pt',

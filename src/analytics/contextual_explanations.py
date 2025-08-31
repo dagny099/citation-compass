@@ -1,5 +1,5 @@
 """
-Contextual explanations system for Phase 4 implementation.
+Contextual explanations system for enhanced research insights.
 
 Provides academic context, benchmarking, and interpretations for all metrics
 displayed in the Academic Citation Platform.
@@ -64,7 +64,7 @@ class ContextualExplanationEngine:
     """
     Engine for generating contextual explanations and academic benchmarking.
     
-    Core component of Phase 4 that transforms raw metrics into actionable insights
+    Core component that transforms raw metrics into actionable research insights
     with academic context and performance benchmarking.
     """
     

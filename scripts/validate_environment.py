@@ -460,7 +460,7 @@ class EnvironmentValidator:
         test_dirs = [
             '.',  # Current directory
             'logs',  # Log directory
-            'reference-codebases/citation-map-dashboard/models'  # Model directory
+            'models'  # Model directory
         ]
         
         issues = []

@@ -60,7 +60,7 @@ dev = [
     "pre-commit>=2.20.0",
 ]
 
-# Machine Learning dependencies (Phase 2)
+# Machine Learning dependencies
 ml = [
     "torch>=1.12.0",
     "scikit-learn>=1.1.0",
@@ -68,7 +68,7 @@ ml = [
     "networkx>=2.8.0",
 ]
 
-# Advanced Analytics dependencies (Phase 3)
+# Advanced Analytics dependencies
 analytics = [
     "networkx>=2.8.0",
     "scipy>=1.9.0",
@@ -81,7 +81,7 @@ analytics = [
     "numpy>=1.21.0",
 ]
 
-# Visualization dependencies (Phase 3) 
+# Visualization dependencies 
 viz = [
     "matplotlib>=3.5.0",
     "seaborn>=0.11.0",
@@ -91,7 +91,7 @@ viz = [
     "altair>=4.2.0",
 ]
 
-# Web interface dependencies (Phase 4)
+# Web interface dependencies
 web = [
     "streamlit>=1.12.0",
     "streamlit-agraph>=0.0.45",

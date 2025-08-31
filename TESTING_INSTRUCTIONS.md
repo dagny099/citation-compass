@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides comprehensive step-by-step instructions for testing the Academic Citation Platform Phase 2 integration. The platform combines interactive web interfaces, ML prediction capabilities, and robust data collection from three reference codebases.
+This document provides comprehensive step-by-step instructions for testing the Academic Citation Platform. The platform combines interactive web interfaces, ML prediction capabilities, and robust data collection from three reference codebases.
 
 ## Prerequisites
 
@@ -28,7 +28,7 @@ pip install -r requirements.txt
 python -c "import torch; print(f'PyTorch version: {torch.__version__}')"
 ```
 
-## Phase 1: Core Infrastructure Testing
+## Section 1: Core Infrastructure Testing
 
 ### 1.1 Data Model Validation
 ```bash
@@ -61,7 +61,7 @@ print(f'API rate limit: {config.semantic_scholar.requests_per_minute}')
 # Expected output: Configuration values should be displayed
 ```
 
-## Phase 2: API Client Testing
+## Section 2: API Client Testing
 
 ### 2.1 Unified API Client Tests
 ```bash
@@ -86,7 +86,7 @@ print(f'API test successful: {len(result.get(\"data\", []))} papers found')
 # Note: This uses real API calls, so run sparingly
 ```
 
-## Phase 3: ML Service Testing
+## Section 3: ML Service Testing
 
 ### 3.1 ML Service Initialization
 ```bash
@@ -114,7 +114,7 @@ python -m pytest tests/test_ml_service.py::TestPredictionCache -v
 # Validates: Cache hit/miss, expiration, memory management
 ```
 
-## Phase 4: Database Integration Testing
+## Section 4: Database Integration Testing
 
 ### 4.1 Database Layer Testing
 ```bash
@@ -133,7 +133,7 @@ python -m pytest tests/test_unified_database.py::TestSchemaValidator -v
 # Expected output: Schema validation tests pass
 ```
 
-## Phase 5: Integration Testing
+## Section 5: Integration Testing
 
 ### 5.1 Service Integration Tests
 ```bash
@@ -153,7 +153,7 @@ python -m pytest tests/test_integration.py::TestServiceIntegration::test_end_to_
 # Validates: ML service + API client coordination
 ```
 
-## Phase 6: Validation and Security Testing
+## Section 6: Validation and Security Testing
 
 ### 6.1 Data Validation Tests
 ```bash
@@ -173,7 +173,7 @@ python -m pytest tests/test_validation.py::TestSecurityValidation -v
 # Validates: Input sanitization, path traversal protection, API key handling
 ```
 
-## Phase 7: Streamlit Application Testing
+## Section 7: Streamlit Application Testing
 
 ### 7.1 Application Structure Validation
 ```bash
@@ -209,7 +209,7 @@ streamlit run app.py
 # - Export functionality works
 ```
 
-## Phase 8: Performance Testing
+## Section 8: Performance Testing
 
 ### 8.1 Performance Validation
 ```bash
@@ -243,7 +243,7 @@ print(f'Results: {len(results)} prediction sets generated')
 # Expected output: Concurrent operations complete successfully
 ```
 
-## Phase 9: Complete System Testing
+## Section 9: Complete System Testing
 
 ### 9.1 Full Test Suite
 ```bash
@@ -266,7 +266,7 @@ python -m pytest tests/ --cov=src --cov-report=html --cov-report=term
 # HTML report available in htmlcov/index.html
 ```
 
-## Phase 10: Production Readiness Testing
+## Section 10: Production Readiness Testing
 
 ### 10.1 Configuration Testing
 ```bash
@@ -314,7 +314,7 @@ pip install streamlit plotly networkx pandas numpy
 #### Issue 3: Model Loading Failures
 ```bash
 # Solution: Check model files exist and are readable
-ls -la reference-codebases/citation-map-dashboard/models/
+ls -la models/
 python -c "import torch; print('PyTorch working correctly')"
 ```
 
@@ -390,4 +390,4 @@ chmod +x run_tests.sh
 ./run_tests.sh
 ```
 
-This completes the comprehensive testing instructions for the Academic Citation Platform Phase 2 integration.
+This completes the comprehensive testing instructions for the Academic Citation Platform.

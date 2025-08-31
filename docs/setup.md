@@ -149,7 +149,7 @@ pip install -e ".[all]"
 
 ### Model Files Setup
 
-The ML models are included in the `reference-codebases/` directory. Verify they're accessible:
+The ML models are included in the `models/` directory. Verify they're accessible:
 
 ```bash
 python -c "
@@ -161,7 +161,7 @@ print('Entities:', health.get('num_entities', 0))
 "
 ```
 
-If models are missing or corrupted, check the `reference-codebases/citation-map-dashboard/models/` directory contains:
+If models are missing or corrupted, check the `models/` directory contains:
 - `transe_citation_model.pt` (~19MB)
 - `entity_mapping.pkl` (~577KB) 
 - `training_metadata.pkl` (~200B)
@@ -233,7 +233,7 @@ python setup_database.py
 **Error:** "Model file not found"
 ```bash
 # Check model files exist
-ls -la reference-codebases/citation-map-dashboard/models/
+ls -la models/
 
 # Verify with script
 python verify_models.py

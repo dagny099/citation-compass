@@ -120,7 +120,7 @@ class SetupValidator:
                 return True
             else:
                 logger.error(f"❌ ML model verification failed: {result.stderr}")
-                self.recommendations.append("Check ML model files in reference-codebases/citation-map-dashboard/models/")
+                self.recommendations.append("Check ML model files in models/ directory")
                 self.results['ml_models'] = False
                 return False
                 

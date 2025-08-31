@@ -22,7 +22,7 @@ A comprehensive web application for academic citation analysis powered by machin
 - **Export Capabilities**: High-quality outputs in multiple formats (PNG, SVG, PDF)
 - **Real-time Updates**: Dynamic visualization updates based on ML predictions
 
-### 📔 Notebook Pipeline (Phase 3)
+### 📔 Notebook Pipeline (Advanced Analytics)
 - **Interactive Analysis**: Jupyter-style notebook execution within Streamlit
 - **Advanced Analytics**: Network analysis, community detection, temporal trends
 - **Batch Processing**: Large-scale citation analysis and reporting
@@ -59,7 +59,7 @@ A comprehensive web application for academic citation analysis powered by machin
 ### Configuration
 
 The app automatically detects and loads:
-- **TransE Model**: Pre-trained model from `reference-codebases/citation-map-dashboard/models/`
+- **TransE Model**: Pre-trained model from `models/` directory
 - **Entity Mapping**: Paper ID to model entity mappings
 - **API Configuration**: Semantic Scholar API settings
 
@@ -113,7 +113,7 @@ The app automatically detects and loads:
    - Time-series analysis of citation patterns
    - Distribution analyses and statistical summaries
 
-### Notebook Pipeline Page (Phase 3)
+### Notebook Pipeline Page (Advanced Analytics)
 
 1. **Interactive Analysis**:
    - Execute pre-built analytical notebooks
@@ -175,12 +175,12 @@ The app automatically detects and loads:
 │   ├── ML_Predictions.py         # Citation prediction interface
 │   ├── Embedding_Explorer.py     # Vector space exploration
 │   ├── Enhanced_Visualizations.py # Network graphs & charts
-│   └── Notebook_Pipeline.py       # Interactive analytics (Phase 3)
+│   └── Notebook_Pipeline.py       # Interactive analytics pipeline
 └── .streamlit/
     └── config.toml
 ```
 
-### Analytics Architecture (Phase 3)
+### Analytics Architecture
 ```
 ├── src/analytics/ (New)
 │   ├── __init__.py
@@ -232,7 +232,7 @@ The app automatically detects and loads:
 ### Common Issues
 
 1. **Model Not Found**:
-   - Ensure `reference-codebases/citation-map-dashboard/models/` contains the trained model
+   - Ensure `models/` directory contains the trained model
    - Check file permissions and paths
 
 2. **Paper Not in Model**:

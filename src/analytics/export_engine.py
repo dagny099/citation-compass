@@ -645,13 +645,13 @@ class ExportEngine:
         
         return html
     
-    def export_phase4_analysis(self,
+    def export_enhanced_analysis(self,
                               metrics: Dict[str, float],
                               explanations: Dict[str, MetricExplanation],
                               domain: str,
                               config: ExportConfiguration) -> ExportResult:
         """
-        Export Phase 4 enhanced analysis with contextual explanations.
+        Export enhanced analysis with contextual explanations and research insights.
         
         Args:
             metrics: Dictionary of metric name -> value
@@ -662,7 +662,7 @@ class ExportEngine:
         Returns:
             ExportResult with export details
         """
-        self.logger.info(f"Exporting Phase 4 analysis to {config.format}")
+        self.logger.info(f"Exporting enhanced analysis to {config.format}")
         
         start_time = datetime.now()
         
@@ -672,11 +672,11 @@ class ExportEngine:
             else:
                 return ExportResult(
                     success=False,
-                    error_message=f"Unsupported Phase 4 format: {config.format}"
+                    error_message=f"Unsupported enhanced analysis format: {config.format}"
                 )
         
         except Exception as e:
-            self.logger.error(f"Phase 4 export failed: {e}")
+            self.logger.error(f"Enhanced analysis export failed: {e}")
             return ExportResult(
                 success=False,
                 error_message=str(e)
