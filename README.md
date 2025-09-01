@@ -127,6 +127,9 @@ communities = analytics.detect_communities('author_id')
 
 ### Testing Your Setup
 ```bash
+# Test basic installation
+python -c "from src.database.connection import Neo4jConnection; from src.services.analytics_service import get_analytics_service; print('✅ Basic installation successful')"
+
 # Run all tests
 python -m pytest tests/ -v
 

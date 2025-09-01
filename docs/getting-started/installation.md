@@ -90,8 +90,8 @@ from src.services.analytics_service import get_analytics_service
 print('✅ Basic installation successful')
 "
 
-# Run the test suite
-python -m pytest tests/test_installation.py -v
+# Run all tests to verify functionality  
+python -m pytest tests/ -v
 
 # Verify Streamlit works
 streamlit --version
