@@ -7,7 +7,7 @@ Unified author model supporting multiple naming conventions and affiliations.
 from __future__ import annotations
 from typing import Optional, List, Dict, Any
 from dataclasses import dataclass, field
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class AuthorBase(BaseModel):
@@ -27,7 +27,8 @@ class AuthorBase(BaseModel):
     url: Optional[str] = Field(None, description="Author profile URL")
     affiliations: Optional[List[str]] = Field(default_factory=list)
     
-    @validator('name')
+    @field_validator('name')
+    @classmethod
     def validate_name(cls, v):
         if not v or len(v.strip()) == 0:
             raise ValueError('Author name cannot be empty')
@@ -59,7 +60,7 @@ class Author(AuthorBase):
     
     class Config:
         """Pydantic configuration."""
-        allow_population_by_field_name = True
+        populate_by_name = True
         validate_assignment = True
     
     @property

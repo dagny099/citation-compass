@@ -16,8 +16,8 @@ Interactive platform for analyzing academic citation networks and predicting res
 
 ### Prerequisites
 - **Python 3.8+** installed on your system
-- **Neo4j database** (local or cloud instance)
 - **Git** for cloning the repository
+- **Neo4j database** (optional - try demo mode first!)
 
 ### Installation & Setup
 
@@ -28,23 +28,27 @@ Interactive platform for analyzing academic citation networks and predicting res
    pip install -e ".[all]"
    ```
 
-2. **Configure Environment** (copy `.env.example` to `.env` and add your Neo4j database):
+2. **Try Demo Mode** (no database required):
+   ```bash
+   # Start interactive dashboard
+   streamlit run app.py
+   # Opens at http://localhost:8501/
+   # Navigate to "Demo Datasets" to explore sample data instantly!
+   ```
+
+3. **For Production Use** (copy `.env.example` to `.env` and add your Neo4j database):
    ```env
    NEO4J_URI=neo4j+s://your-database-url
    NEO4J_USER=neo4j  
    NEO4J_PASSWORD=your-password
    ```
 
-3. **Launch Platform**:
+4. **Additional Options**:
    ```bash
-   # Start interactive dashboard
-   streamlit run app.py
-   # Opens at http://localhost:8501/
-   
-   # OR run Jupyter notebooks
+   # Run Jupyter notebooks
    jupyter notebook notebooks/
    
-   # OR view documentation
+   # View documentation
    mkdocs serve
    # Opens at http://127.0.0.1:8000/
    ```
@@ -58,6 +62,20 @@ Interactive platform for analyzing academic citation networks and predicting res
   - `pip install -e ".[web]"` - Streamlit interface
 
 ## 📱 Interactive Features
+
+### 🎭 Demo Mode & Sample Data
+Explore the platform instantly without any database setup:
+- **Curated Datasets**: Academic papers from AI, NLP, physics, and computer science
+- **Offline Mode**: Full functionality without Neo4j database
+- **Quick Fixtures**: Fast-loading test data for development
+- **Sample ML Predictions**: Pre-configured models with realistic results
+
+### 📥 Data Import Pipeline
+Populate your database with real academic data:
+- **Semantic Scholar Integration**: Import papers by search query or ID list
+- **Progress Tracking**: Resumable imports with real-time progress
+- **Batch Processing**: Efficient handling of large datasets
+- **Citation Networks**: Automatic relationship discovery and creation
 
 ### 🔮 ML Predictions
 Predict citation relationships between papers using TransE embeddings:
@@ -119,6 +137,18 @@ analytics = get_analytics_service()
 communities = analytics.detect_communities('author_id')
 ```
 
+### Command Line Interface
+```bash
+# Import papers by search query
+python -m src.cli.import_data search "machine learning" --max-papers 100
+
+# Import specific paper IDs from file
+python -m src.cli.import_data ids --ids-file paper_ids.txt --batch-size 20
+
+# Import with filtering options  
+python -m src.cli.import_data search "neural networks" --max-papers 100 --year-range 2020 2024
+```
+
 ### Database Schema
 - **Papers**: Connected by citation relationships
 - **Authors**: Linked to papers and institutions  
@@ -142,11 +172,16 @@ python -c "from src.services.analytics_service import get_analytics_service; pri
 
 ## 📊 Sample Workflows
 
-1. **Model Training**: Run training notebook → Train TransE model → Save to local models
-2. **Citation Prediction**: Input a paper → Get predicted citations → Validate with embeddings
-3. **Network Analysis**: Select author/field → Detect communities → Export LaTeX summary
-4. **Temporal Analysis**: Choose date range → Analyze citation trends → Generate insights
-5. **Research Discovery**: Explore embeddings → Find similar papers → Build reading lists
+### New User Experience:
+1. **Try Demo Mode**: Launch Streamlit → Demo Datasets → Load sample data → Explore features
+2. **Import Real Data**: Data Import → Search academic papers → Import with progress tracking
+3. **Train Models**: Run training notebook → Train TransE model → Save to local models
+
+### Analysis Workflows:
+1. **Citation Prediction**: Input a paper → Get predicted citations → Validate with embeddings
+2. **Network Analysis**: Select author/field → Detect communities → Export LaTeX summary
+3. **Temporal Analysis**: Choose date range → Analyze citation trends → Generate insights
+4. **Research Discovery**: Explore embeddings → Find similar papers → Build reading lists
 
 ## 🔧 Advanced Configuration
 

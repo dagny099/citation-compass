@@ -1,0 +1,206 @@
+[
+  {
+    "source_id": "transformer_attention_2017",
+    "target_id": "attention_mechanisms_review_2020",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "e15cf50aa89fee8535703b9f9512fca5bfc43327",
+    "target_id": "transformer_attention_2017",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "attention_mechanisms_review_2020",
+    "target_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "attention_mechanisms_review_2020",
+    "target_id": "e15cf50aa89fee8535703b9f9512fca5bfc43327",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "attention_mechanisms_review_2020",
+    "target_id": "visual_attention_neuroscience_2019",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "attention_psychology_2018",
+    "target_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "7470a1702c8c86e6f28d32cfa315381150102f5b",
+    "target_id": "e15cf50aa89fee8535703b9f9512fca5bfc43327",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "7470a1702c8c86e6f28d32cfa315381150102f5b",
+    "target_id": "transformer_attention_2017",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "multimodal_attention_2021",
+    "target_id": "transformer_attention_2017",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "multimodal_attention_2021",
+    "target_id": "attention_mechanisms_review_2020",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "224537e971d63c5ab906342e1ac93c5de974de39",
+    "target_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "224537e971d63c5ab906342e1ac93c5de974de39",
+    "target_id": "visual_attention_neuroscience_2019",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "medical_ai_attention_2023",
+    "target_id": "224537e971d63c5ab906342e1ac93c5de974de39",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "medical_ai_attention_2023",
+    "target_id": "transformer_attention_2017",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "robotics_visual_attention_2022",
+    "target_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "robotics_visual_attention_2022",
+    "target_id": "multimodal_attention_2021",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "d1c016ad763d3fbbebf79981af54d459c48f0a74",
+    "target_id": "attention_mechanisms_review_2020",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "d1c016ad763d3fbbebf79981af54d459c48f0a74",
+    "target_id": "visual_attention_neuroscience_2019",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "edge_computing_attention_2024",
+    "target_id": "transformer_attention_2017",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "edge_computing_attention_2024",
+    "target_id": "attention_mechanisms_review_2020",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "7470a1702c8c86e6f28d32cfa315381150102f5b",
+    "target_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "target_id": "multimodal_attention_2021",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "attention_mechanisms_review_2020",
+    "target_id": "224537e971d63c5ab906342e1ac93c5de974de39",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "transformer_attention_2017",
+    "target_id": "d1c016ad763d3fbbebf79981af54d459c48f0a74",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "target_id": "edge_computing_attention_2024",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "attention_psychology_2018",
+    "target_id": "7470a1702c8c86e6f28d32cfa315381150102f5b",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "visual_attention_neuroscience_2019",
+    "target_id": "edge_computing_attention_2024",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "robotics_visual_attention_2022",
+    "target_id": "visual_attention_neuroscience_2019",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "e15cf50aa89fee8535703b9f9512fca5bfc43327",
+    "target_id": "edge_computing_attention_2024",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "visual_attention_neuroscience_2019",
+    "target_id": "medical_ai_attention_2023",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "target_id": "d1c016ad763d3fbbebf79981af54d459c48f0a74",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "transformer_attention_2017",
+    "target_id": "e15cf50aa89fee8535703b9f9512fca5bfc43327",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "e15cf50aa89fee8535703b9f9512fca5bfc43327",
+    "target_id": "7470a1702c8c86e6f28d32cfa315381150102f5b",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "224537e971d63c5ab906342e1ac93c5de974de39",
+    "target_id": "transformer_attention_2017",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  }
+]

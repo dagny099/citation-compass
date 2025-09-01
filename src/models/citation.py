@@ -32,7 +32,7 @@ class Citation(CitationBase):
     updated_at: Optional[datetime] = None
     
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
     
     def to_neo4j_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for Neo4j relationship properties."""

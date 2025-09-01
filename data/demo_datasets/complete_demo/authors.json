@@ -1,0 +1,698 @@
+[
+  {
+    "author_id": "author_97947",
+    "name": "Krista A. Ehinger",
+    "paper_count": 18,
+    "citation_count": 2313,
+    "h_index": 15,
+    "affiliations": [
+      "Mayo Clinic",
+      "Google Research"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_50331",
+    "name": "Barbara Hidalgo-Sotelo",
+    "paper_count": 34,
+    "citation_count": 2090,
+    "h_index": 14,
+    "affiliations": [
+      "Oxford University",
+      "Massachusetts General Hospital"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_65332",
+    "name": "Antonio Torralba",
+    "paper_count": 130,
+    "citation_count": 365,
+    "h_index": 6,
+    "affiliations": [
+      "Johns Hopkins University",
+      "ETH Zurich"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_25789",
+    "name": "Aude Oliva",
+    "paper_count": 125,
+    "citation_count": 767,
+    "h_index": 8,
+    "affiliations": [
+      "Google Research",
+      "UC Berkeley"
+    ],
+    "research_fields": [
+      "Robotics",
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_81916",
+    "name": "Christian Szegedy",
+    "paper_count": 103,
+    "citation_count": 4251,
+    "h_index": 20,
+    "affiliations": [
+      "OpenAI"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_39773",
+    "name": "Wei Liu",
+    "paper_count": 117,
+    "citation_count": 2622,
+    "h_index": 16,
+    "affiliations": [
+      "OpenAI"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_21498",
+    "name": "Yangqing Jia",
+    "paper_count": 63,
+    "citation_count": 1949,
+    "h_index": 13,
+    "affiliations": [
+      "Carnegie Mellon University"
+    ],
+    "research_fields": [
+      "Medical Informatics",
+      "Healthcare AI",
+      "Biomedical Engineering"
+    ]
+  },
+  {
+    "author_id": "author_09660",
+    "name": "Pierre Sermanet",
+    "paper_count": 13,
+    "citation_count": 1288,
+    "h_index": 11,
+    "affiliations": [
+      "Carnegie Mellon University"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_12347",
+    "name": "Scott Reed",
+    "paper_count": 60,
+    "citation_count": 1256,
+    "h_index": 11,
+    "affiliations": [
+      "Harvard University"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_49003",
+    "name": "Alexander Kirillov",
+    "paper_count": 95,
+    "citation_count": 3047,
+    "h_index": 17,
+    "affiliations": [
+      "Stanford University"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_31936",
+    "name": "Eric Mintun",
+    "paper_count": 117,
+    "citation_count": 2140,
+    "h_index": 14,
+    "affiliations": [
+      "University of Toronto",
+      "Oxford University"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  },
+  {
+    "author_id": "author_19355",
+    "name": "Nikhila Ravi",
+    "paper_count": 53,
+    "citation_count": 4457,
+    "h_index": 21,
+    "affiliations": [
+      "Facebook AI Research"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  },
+  {
+    "author_id": "author_49884",
+    "name": "Hanzi Mao",
+    "paper_count": 113,
+    "citation_count": 3807,
+    "h_index": 19,
+    "affiliations": [
+      "Harvard University"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  },
+  {
+    "author_id": "author_33929",
+    "name": "Chloe Rolland",
+    "paper_count": 119,
+    "citation_count": 752,
+    "h_index": 8,
+    "affiliations": [
+      "Mayo Clinic"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_60310",
+    "name": "Maria Rodriguez",
+    "paper_count": 110,
+    "citation_count": 1768,
+    "h_index": 13,
+    "affiliations": [
+      "OpenAI",
+      "Johns Hopkins University"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_47852",
+    "name": "James Chen",
+    "paper_count": 7,
+    "citation_count": 326,
+    "h_index": 5,
+    "affiliations": [
+      "Google Research"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  },
+  {
+    "author_id": "author_06163",
+    "name": "Sarah Williams",
+    "paper_count": 8,
+    "citation_count": 2128,
+    "h_index": 14,
+    "affiliations": [
+      "University of Toronto"
+    ],
+    "research_fields": [
+      "Robotics",
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_37468",
+    "name": "Michael Brown",
+    "paper_count": 110,
+    "citation_count": 892,
+    "h_index": 9,
+    "affiliations": [
+      "ETH Zurich",
+      "MIT"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_20319",
+    "name": "Li Zhou",
+    "paper_count": 24,
+    "citation_count": 4468,
+    "h_index": 21,
+    "affiliations": [
+      "Oxford University",
+      "Google Research"
+    ],
+    "research_fields": [
+      "Robotics",
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_41738",
+    "name": "Wei Zhang",
+    "paper_count": 80,
+    "citation_count": 2441,
+    "h_index": 15,
+    "affiliations": [
+      "Harvard University"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  },
+  {
+    "author_id": "author_46253",
+    "name": "Yuki Tanaka",
+    "paper_count": 113,
+    "citation_count": 1263,
+    "h_index": 11,
+    "affiliations": [
+      "UC Berkeley",
+      "ETH Zurich"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_70328",
+    "name": "Anna Schmidt",
+    "paper_count": 134,
+    "citation_count": 3176,
+    "h_index": 17,
+    "affiliations": [
+      "Microsoft Research"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  },
+  {
+    "author_id": "author_19207",
+    "name": "Robert Johnson",
+    "paper_count": 40,
+    "citation_count": 1996,
+    "h_index": 14,
+    "affiliations": [
+      "Massachusetts General Hospital"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_10363",
+    "name": "Emily Davis",
+    "paper_count": 90,
+    "citation_count": 1589,
+    "h_index": 12,
+    "affiliations": [
+      "Mayo Clinic"
+    ],
+    "research_fields": [
+      "Robotics",
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_20373",
+    "name": "Carlos Martinez",
+    "paper_count": 69,
+    "citation_count": 1883,
+    "h_index": 13,
+    "affiliations": [
+      "DeepMind",
+      "Mayo Clinic"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_32103",
+    "name": "Ashish Vaswani",
+    "paper_count": 92,
+    "citation_count": 4501,
+    "h_index": 21,
+    "affiliations": [
+      "Stanford University"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_73872",
+    "name": "Noam Shazeer",
+    "paper_count": 142,
+    "citation_count": 2423,
+    "h_index": 15,
+    "affiliations": [
+      "Stanford University",
+      "OpenAI"
+    ],
+    "research_fields": [
+      "Medical Informatics",
+      "Healthcare AI",
+      "Biomedical Engineering"
+    ]
+  },
+  {
+    "author_id": "author_60621",
+    "name": "Niki Parmar",
+    "paper_count": 39,
+    "citation_count": 1444,
+    "h_index": 12,
+    "affiliations": [
+      "University of Toronto"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_43609",
+    "name": "Jakob Uszkoreit",
+    "paper_count": 40,
+    "citation_count": 2380,
+    "h_index": 15,
+    "affiliations": [
+      "Johns Hopkins University",
+      "Google Research"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_53324",
+    "name": "Jennifer Adams",
+    "paper_count": 5,
+    "citation_count": 438,
+    "h_index": 6,
+    "affiliations": [
+      "Carnegie Mellon University"
+    ],
+    "research_fields": [
+      "Robotics",
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_15826",
+    "name": "David Kim",
+    "paper_count": 110,
+    "citation_count": 4654,
+    "h_index": 21,
+    "affiliations": [
+      "Harvard University",
+      "UC Berkeley"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_01007",
+    "name": "Rachel Thompson",
+    "paper_count": 56,
+    "citation_count": 1681,
+    "h_index": 12,
+    "affiliations": [
+      "Google Research",
+      "Harvard University"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  },
+  {
+    "author_id": "author_34141",
+    "name": "Dr. Patricia Wilson",
+    "paper_count": 17,
+    "citation_count": 2947,
+    "h_index": 17,
+    "affiliations": [
+      "DeepMind"
+    ],
+    "research_fields": [
+      "Medical Informatics",
+      "Healthcare AI",
+      "Biomedical Engineering"
+    ]
+  },
+  {
+    "author_id": "author_88740",
+    "name": "Dr. Ahmed Hassan",
+    "paper_count": 102,
+    "citation_count": 4915,
+    "h_index": 22,
+    "affiliations": [
+      "ETH Zurich"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_98950",
+    "name": "Dr. Lisa Chen",
+    "paper_count": 135,
+    "citation_count": 1459,
+    "h_index": 12,
+    "affiliations": [
+      "Stanford University"
+    ],
+    "research_fields": [
+      "Robotics",
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_66312",
+    "name": "Alex Cooper",
+    "paper_count": 106,
+    "citation_count": 275,
+    "h_index": 5,
+    "affiliations": [
+      "Harvard University"
+    ],
+    "research_fields": [
+      "Medical Informatics",
+      "Healthcare AI",
+      "Biomedical Engineering"
+    ]
+  },
+  {
+    "author_id": "author_67833",
+    "name": "Maria Gonzalez",
+    "paper_count": 34,
+    "citation_count": 584,
+    "h_index": 7,
+    "affiliations": [
+      "Carnegie Mellon University"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  },
+  {
+    "author_id": "author_69168",
+    "name": "Tom Anderson",
+    "paper_count": 27,
+    "citation_count": 3903,
+    "h_index": 19,
+    "affiliations": [
+      "Google Research",
+      "Johns Hopkins University"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_05858",
+    "name": "Mark Taylor",
+    "paper_count": 21,
+    "citation_count": 3106,
+    "h_index": 17,
+    "affiliations": [
+      "Johns Hopkins University"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_27952",
+    "name": "Sophie Laurent",
+    "paper_count": 64,
+    "citation_count": 4191,
+    "h_index": 20,
+    "affiliations": [
+      "Mayo Clinic"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  },
+  {
+    "author_id": "author_06765",
+    "name": "Hiroshi Yamamoto",
+    "paper_count": 36,
+    "citation_count": 1788,
+    "h_index": 13,
+    "affiliations": [
+      "Facebook AI Research"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_64921",
+    "name": "Prof. Margaret Foster",
+    "paper_count": 97,
+    "citation_count": 3784,
+    "h_index": 19,
+    "affiliations": [
+      "MIT"
+    ],
+    "research_fields": [
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_78114",
+    "name": "Dr. James Liu",
+    "paper_count": 100,
+    "citation_count": 1665,
+    "h_index": 12,
+    "affiliations": [
+      "University of Toronto"
+    ],
+    "research_fields": [
+      "Robotics",
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_03660",
+    "name": "Dr. Anna Petrov",
+    "paper_count": 34,
+    "citation_count": 1795,
+    "h_index": 13,
+    "affiliations": [
+      "ETH Zurich"
+    ],
+    "research_fields": [
+      "Neuroscience",
+      "Psychology",
+      "Cognitive Science"
+    ]
+  },
+  {
+    "author_id": "author_12359",
+    "name": "Kevin Wu",
+    "paper_count": 44,
+    "citation_count": 4939,
+    "h_index": 22,
+    "affiliations": [
+      "DeepMind"
+    ],
+    "research_fields": [
+      "Robotics",
+      "Computer Vision",
+      "Machine Learning"
+    ]
+  },
+  {
+    "author_id": "author_40973",
+    "name": "Isabella Romano",
+    "paper_count": 124,
+    "citation_count": 4430,
+    "h_index": 21,
+    "affiliations": [
+      "Facebook AI Research"
+    ],
+    "research_fields": [
+      "Medical Informatics",
+      "Healthcare AI",
+      "Biomedical Engineering"
+    ]
+  },
+  {
+    "author_id": "author_82368",
+    "name": "Chen Wei",
+    "paper_count": 61,
+    "citation_count": 4373,
+    "h_index": 20,
+    "affiliations": [
+      "Mayo Clinic"
+    ],
+    "research_fields": [
+      "Machine Learning",
+      "Artificial Intelligence"
+    ]
+  }
+]

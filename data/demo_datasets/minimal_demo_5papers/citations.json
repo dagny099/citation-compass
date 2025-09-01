@@ -1,0 +1,32 @@
+[
+  {
+    "source_id": "7470a1702c8c86e6f28d32cfa315381150102f5b",
+    "target_id": "e15cf50aa89fee8535703b9f9512fca5bfc43327",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "224537e971d63c5ab906342e1ac93c5de974de39",
+    "target_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "context": "Building on the seminal work in attention mechanisms...",
+    "is_influential": true
+  },
+  {
+    "source_id": "7470a1702c8c86e6f28d32cfa315381150102f5b",
+    "target_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "target_id": "d1c016ad763d3fbbebf79981af54d459c48f0a74",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  },
+  {
+    "source_id": "e15cf50aa89fee8535703b9f9512fca5bfc43327",
+    "target_id": "7470a1702c8c86e6f28d32cfa315381150102f5b",
+    "context": "Related work in attention mechanisms and applications...",
+    "is_influential": false
+  }
+]

@@ -4,7 +4,7 @@ Venue data models for Academic Citation Platform.
 
 from __future__ import annotations
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class VenueBase(BaseModel):
@@ -12,7 +12,8 @@ class VenueBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=500)
     venue_type: Optional[str] = Field(None, description="Journal, Conference, etc.")
     
-    @validator('name')
+    @field_validator('name')
+    @classmethod
     def validate_name(cls, v):
         if not v or len(v.strip()) == 0:
             raise ValueError('Venue name cannot be empty')
@@ -31,7 +32,7 @@ class Venue(VenueBase):
     avg_citations_per_paper: Optional[float] = Field(None, ge=0.0)
     
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
     
     def to_neo4j_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for Neo4j storage."""

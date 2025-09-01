@@ -1,0 +1,106 @@
+[
+  {
+    "venue_id": "venue_2326",
+    "name": "Journal of Vision",
+    "venue_type": "Journal",
+    "paper_count": 1162,
+    "total_citations": 157186,
+    "avg_citations_per_paper": 16
+  },
+  {
+    "venue_id": "venue_9673",
+    "name": "IEEE Conference on Computer Vision and Pattern Recognition",
+    "venue_type": "Conference",
+    "paper_count": 1334,
+    "total_citations": 460126,
+    "avg_citations_per_paper": 77
+  },
+  {
+    "venue_id": "venue_9128",
+    "name": "arXiv preprint arXiv:2304.02643",
+    "venue_type": "Preprint",
+    "paper_count": 1903,
+    "total_citations": 339659,
+    "avg_citations_per_paper": 201
+  },
+  {
+    "venue_id": "venue_8529",
+    "name": "Nature Digital Medicine",
+    "venue_type": "Journal",
+    "paper_count": 404,
+    "total_citations": 326152,
+    "avg_citations_per_paper": 116
+  },
+  {
+    "venue_id": "venue_4000",
+    "name": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+    "venue_type": "Journal",
+    "paper_count": 1402,
+    "total_citations": 278740,
+    "avg_citations_per_paper": 113
+  },
+  {
+    "venue_id": "venue_9545",
+    "name": "IEEE Transactions on Neural Networks and Learning Systems",
+    "venue_type": "Journal",
+    "paper_count": 1319,
+    "total_citations": 36890,
+    "avg_citations_per_paper": 239
+  },
+  {
+    "venue_id": "venue_9714",
+    "name": "Advances in Neural Information Processing Systems",
+    "venue_type": "Conference",
+    "paper_count": 1265,
+    "total_citations": 426929,
+    "avg_citations_per_paper": 167
+  },
+  {
+    "venue_id": "venue_9914",
+    "name": "Nature Neuroscience",
+    "venue_type": "Journal",
+    "paper_count": 1838,
+    "total_citations": 280620,
+    "avg_citations_per_paper": 56
+  },
+  {
+    "venue_id": "venue_3967",
+    "name": "The Lancet Digital Health",
+    "venue_type": "Journal",
+    "paper_count": 1611,
+    "total_citations": 101039,
+    "avg_citations_per_paper": 41
+  },
+  {
+    "venue_id": "venue_6478",
+    "name": "International Conference on Machine Learning",
+    "venue_type": "Conference",
+    "paper_count": 802,
+    "total_citations": 269083,
+    "avg_citations_per_paper": 150
+  },
+  {
+    "venue_id": "venue_8285",
+    "name": "IEEE Robotics and Automation Letters",
+    "venue_type": "Journal",
+    "paper_count": 838,
+    "total_citations": 376043,
+    "avg_citations_per_paper": 101
+  },
+  {
+    "venue_id": "venue_4043",
+    "name": "Psychological Review",
+    "venue_type": "Journal",
+    "paper_count": 1160,
+    "total_citations": 133578,
+    "avg_citations_per_paper": 144
+  },
+  {
+    "venue_id": "venue_0782",
+    "name": "ACM Transactions on Embedded Computing Systems",
+    "venue_type": "Journal",
+    "paper_count": 976,
+    "total_citations": 276895,
+    "avg_citations_per_paper": 177
+  }
+]

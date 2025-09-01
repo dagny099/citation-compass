@@ -1,0 +1,19 @@
+{
+  "name": "minimal_demo_5papers",
+  "description": "Minimal demo dataset with 5 papers for quick testing",
+  "total_papers": 5,
+  "total_citations": 5,
+  "total_authors": 22,
+  "total_venues": 5,
+  "fields_covered": [
+    "Machine Learning",
+    "Medical Informatics",
+    "Computer Vision"
+  ],
+  "year_range": [
+    2009,
+    2024
+  ],
+  "created_at": "2025-09-01 15:15:10.698935",
+  "version": "1.0"
+}

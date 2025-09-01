@@ -15,7 +15,7 @@ from __future__ import annotations
 from typing import List, Dict, Any, Optional, Union, Tuple
 from datetime import datetime
 from enum import Enum
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 import pandas as pd
 
 
@@ -287,21 +287,18 @@ class NetworkGraph(BaseModel):
     num_edges: Optional[int] = Field(None, description="Number of edges")
     density: Optional[float] = Field(None, description="Graph density")
     
-    @validator('nodes')
-    def update_node_count(cls, v, values):
-        """Update node count when nodes are set."""
-        values['num_nodes'] = len(v)
-        return v
-    
-    @validator('edges')
-    def update_edge_count(cls, v, values):
-        """Update edge count when edges are set."""
-        values['num_edges'] = len(v)
-        # Compute density if we have nodes
-        if 'num_nodes' in values and values['num_nodes'] > 1:
-            max_edges = values['num_nodes'] * (values['num_nodes'] - 1)
-            values['density'] = len(v) / max_edges if max_edges > 0 else 0.0
-        return v
+    @model_validator(mode='after')
+    def update_counts_and_density(self):
+        """Update node count, edge count, and density when nodes/edges are set."""
+        if self.nodes:
+            self.num_nodes = len(self.nodes)
+        if self.edges:
+            self.num_edges = len(self.edges)
+            # Compute density if we have nodes
+            if self.num_nodes and self.num_nodes > 1:
+                max_edges = self.num_nodes * (self.num_nodes - 1)
+                self.density = len(self.edges) / max_edges if max_edges > 0 else 0.0
+        return self
     
     def get_node_by_id(self, node_id: str) -> Optional[NetworkNode]:
         """Get node by ID."""
@@ -442,19 +439,14 @@ class VisualizationConfig(BaseModel):
     max_edges: int = Field(default=1000, ge=1, description="Maximum edges to display")
     min_citation_count: int = Field(default=0, ge=0, description="Minimum citation count for nodes")
     
-    @validator('max_node_size')
-    def validate_node_sizes(cls, v, values):
-        """Ensure max node size >= min node size."""
-        if 'min_node_size' in values and v < values['min_node_size']:
+    @model_validator(mode='after')
+    def validate_size_ranges(self):
+        """Ensure max sizes >= min sizes."""
+        if self.max_node_size < self.min_node_size:
             raise ValueError("Maximum node size must be >= minimum node size")
-        return v
-    
-    @validator('max_edge_width')
-    def validate_edge_widths(cls, v, values):
-        """Ensure max edge width >= min edge width."""
-        if 'min_edge_width' in values and v < values['min_edge_width']:
+        if self.max_edge_width < self.min_edge_width:
             raise ValueError("Maximum edge width must be >= minimum edge width")
-        return v
+        return self
 
 
 class NetworkAnalysis(BaseModel):

@@ -4,8 +4,13 @@ Get running with your first citation analysis in under 10 minutes!
 
 ## Before You Start
 
-Make sure you've completed:
+Choose your path:
 
+**🎭 Try Demo Mode** (recommended for first-time users):
+- ✅ [Installation](installation.md) - Platform installed with `pip install -e ".[all]"`
+- ✅ **Skip database setup** - Use demo datasets to explore features instantly!
+
+**🏢 Production Setup**:
 - ✅ [Installation](installation.md) - Platform installed with `pip install -e ".[all]"`
 - ✅ [Configuration](configuration.md) - `.env` file configured with Neo4j credentials
 - ✅ [Environment Setup](environment-setup.md) - Database connection validated
@@ -34,12 +39,29 @@ Choose your preferred interface:
 
     Open `01_comprehensive_exploration.ipynb` to begin analysis.
 
-### Step 2: Explore Your Data
+### Step 2: Choose Your Data Source
 
-Once the platform is running, let's explore your citation network:
+Once the platform is running, choose how you want to explore citation networks:
 
-!!! tip "Demo Mode"
-    If you don't have your own data yet, the platform includes sample data for testing all features.
+=== "🎭 Demo Mode (No Database Required)"
+
+    **Perfect for first-time users!**
+
+    1. **Navigate to Demo Datasets** in the sidebar
+    2. **Browse available datasets**: AI/ML papers, Physics, Computer Science
+    3. **Click "Load Dataset"** for instant sample data
+    4. **Explore all features** without any setup!
+
+    !!! success "Instant Setup"
+        Demo mode provides curated academic papers with realistic citation networks, perfect for learning the platform.
+
+=== "🏢 Your Own Data"
+
+    **For production use with your database:**
+
+    1. **Navigate to Data Import** to populate your database
+    2. **Or use existing Neo4j data** if already configured
+    3. **Follow Step 3 below** for analysis
 
 #### In the Interactive Dashboard:
 

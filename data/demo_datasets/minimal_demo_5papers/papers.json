@@ -1,0 +1,84 @@
+[
+  {
+    "paper_id": "01e77cd46ab75bab8f4b176455f0daa592e5f979",
+    "title": "Visual Cognition Modelling Search for People in 900 Scenes: a Combined Source Model of Eye Guidance",
+    "abstract": "We present a comprehensive computational model of visual attention that combines bottom-up stimulus information with top-down guidance from cognitive tasks. Our model successfully predicts human eye movements during person search in natural scenes with 78% accuracy across 900 diverse scene categories.",
+    "authors": [
+      "Krista A. Ehinger",
+      "Barbara Hidalgo-Sotelo",
+      "Antonio Torralba",
+      "Aude Oliva"
+    ],
+    "venue": "Journal of Vision",
+    "year": 2009,
+    "citation_count": 318,
+    "field": "Computer Vision",
+    "doi": "10.1167/9.2.25"
+  },
+  {
+    "paper_id": "e15cf50aa89fee8535703b9f9512fca5bfc43327",
+    "title": "Going Deeper with Convolutions",
+    "abstract": "We propose a deep convolutional neural network architecture codenamed Inception that achieves state-of-the-art performance on ImageNet classification and detection. The main hallmark of this architecture is the improved utilization of computing resources inside the network through carefully crafted reduction and parallel convolutions.",
+    "authors": [
+      "Christian Szegedy",
+      "Wei Liu",
+      "Yangqing Jia",
+      "Pierre Sermanet",
+      "Scott Reed"
+    ],
+    "venue": "IEEE Conference on Computer Vision and Pattern Recognition",
+    "year": 2015,
+    "citation_count": 41763,
+    "field": "Machine Learning",
+    "doi": "10.1109/CVPR.2015.7298594"
+  },
+  {
+    "paper_id": "7470a1702c8c86e6f28d32cfa315381150102f5b",
+    "title": "Segment Anything",
+    "abstract": "We introduce the Segment Anything (SA) project: a new task, model, and dataset for image segmentation. Using our efficient model in a data collection loop, we built the largest segmentation dataset to date with 1 billion masks on 11 million licensed and privacy respecting images.",
+    "authors": [
+      "Alexander Kirillov",
+      "Eric Mintun",
+      "Nikhila Ravi",
+      "Hanzi Mao",
+      "Chloe Rolland"
+    ],
+    "venue": "arXiv preprint arXiv:2304.02643",
+    "year": 2023,
+    "citation_count": 4734,
+    "field": "Computer Vision",
+    "doi": "10.48550/arXiv.2304.02643"
+  },
+  {
+    "paper_id": "224537e971d63c5ab906342e1ac93c5de974de39",
+    "title": "COLET: A Dataset for Cognitive Workload Estimation based on Eye-tracking",
+    "abstract": "We present COLET, a comprehensive dataset for cognitive workload estimation in healthcare environments using eye-tracking technology. The dataset includes recordings from 127 medical professionals performing various clinical tasks, providing ground truth for workload assessment algorithms.",
+    "authors": [
+      "Maria Rodriguez",
+      "James Chen",
+      "Sarah Williams",
+      "Michael Brown"
+    ],
+    "venue": "Nature Digital Medicine",
+    "year": 2022,
+    "citation_count": 17,
+    "field": "Medical Informatics",
+    "doi": "10.1038/s41746-022-00123-4"
+  },
+  {
+    "paper_id": "d1c016ad763d3fbbebf79981af54d459c48f0a74",
+    "title": "Learning from Observer Gaze: Zero-Shot Attention Prediction Oriented by Human-Object Interaction Recognition",
+    "abstract": "This paper introduces a novel zero-shot attention prediction model that leverages human-object interaction patterns to predict visual attention without task-specific training. Our approach achieves 82% accuracy on the COCO-Attention dataset and demonstrates strong generalization across diverse visual contexts.",
+    "authors": [
+      "Li Zhou",
+      "Wei Zhang",
+      "Yuki Tanaka",
+      "Anna Schmidt"
+    ],
+    "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+    "year": 2024,
+    "citation_count": 12,
+    "field": "Machine Learning",
+    "doi": "10.1109/TPAMI.2024.3234567"
+  }
+]

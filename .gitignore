@@ -67,7 +67,6 @@ logs/
 *.sqlite3
 
 # OS files
-._*
 .Spotlight-V100
 .Trashes
 ehthumbs.db

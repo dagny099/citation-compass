@@ -1,0 +1,23 @@
+{
+  "name": "complete_demo",
+  "description": "Curated academic citation network for demonstrating platform capabilities",
+  "total_papers": 13,
+  "total_citations": 34,
+  "total_authors": 47,
+  "total_venues": 13,
+  "fields_covered": [
+    "Psychology",
+    "Machine Learning",
+    "Computer Vision",
+    "Computer Systems",
+    "Neuroscience",
+    "Medical Informatics",
+    "Robotics"
+  ],
+  "year_range": [
+    2009,
+    2024
+  ],
+  "created_at": "2025-09-01 15:15:10.696740",
+  "version": "1.0"
+}

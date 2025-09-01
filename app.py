@@ -39,6 +39,8 @@ st.set_page_config(
 
 # Define pages for navigation
 home_page = st.Page("pages/Home.py", title="Home", icon="🏠", default=True)
+data_import_page = st.Page("src/streamlit_app/pages/Data_Import.py", title="Data Import", icon="📥")
+demo_datasets_page = st.Page("src/streamlit_app/pages/Demo_Datasets.py", title="Demo Datasets", icon="🎭")
 ml_predictions_page = st.Page("src/streamlit_app/pages/ML_Predictions.py", title="ML Predictions", icon="🤖")
 embedding_explorer_page = st.Page("src/streamlit_app/pages/Embedding_Explorer.py", title="Embedding Explorer", icon="🧭")
 visualization_page = st.Page("src/streamlit_app/pages/Enhanced_Visualizations.py", title="Enhanced Visualizations", icon="📊")
@@ -49,6 +51,7 @@ notebook_pipeline_page = st.Page("src/streamlit_app/pages/Notebook_Pipeline.py",
 pg = st.navigation(
     {
         "Main": [home_page],
+        "Data Management": [data_import_page, demo_datasets_page],
         "Machine Learning": [ml_predictions_page, embedding_explorer_page],
         "Analysis": [visualization_page, results_interpretation_page, notebook_pipeline_page],
     }
