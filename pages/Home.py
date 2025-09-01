@@ -9,56 +9,7 @@ import streamlit as st
 
 st.title("📚 Academic Citation Platform")
 
-st.markdown("""
-Welcome to the Academic Citation Platform! This integrated platform combines machine learning 
-with interactive visualization to help you explore and predict academic citation patterns.
-
-## 🚀 Getting Started
-
-Choose from the features below or use the navigation menu on the left to explore different capabilities:
-
-""")
-
-# Create clickable feature cards
-col1, col2 = st.columns(2)
-
-with col1:
-    st.subheader("🤖 ML Predictions")
-    st.write("Use our trained TransE model to predict which papers are most likely to cite a given paper. Get confidence scores and explore the reasoning behind predictions.")
-    
-    if st.button("🚀 Start ML Predictions", key="ml_pred_btn", use_container_width=True):
-        st.switch_page("src/streamlit_app/pages/ML_Predictions.py")
-
-with col2:
-    st.subheader("🧭 Embedding Explorer")
-    st.write("Dive deep into the learned paper embeddings. Compare papers, visualize similarity relationships, and understand how the model represents academic papers in vector space.")
-    
-    if st.button("🔍 Explore Embeddings", key="embed_btn", use_container_width=True):
-        st.switch_page("src/streamlit_app/pages/Embedding_Explorer.py")
-
-col3, col4 = st.columns(2)
-
-with col3:
-    st.subheader("📊 Enhanced Visualizations")
-    st.write("Explore citation networks with prediction confidence overlays, interactive network graphs, and advanced analysis tools.")
-    
-    if st.button("📈 Create Visualizations", key="viz_btn", use_container_width=True):
-        st.switch_page("src/streamlit_app/pages/Enhanced_Visualizations.py")
-
-with col4:
-    st.subheader("📓 Analysis Pipeline")
-    st.write("Run comprehensive analysis workflows including data exploration, model evaluation, and result visualization based on the reference notebook pipelines.")
-    
-    if st.button("⚙️ Run Analysis Pipeline", key="pipeline_btn", use_container_width=True):
-        st.switch_page("src/streamlit_app/pages/Notebook_Pipeline.py")
-
-st.markdown("""
-""")
-
-# Quick stats and status will be displayed after ML service check
-
-# System status check with integrated metrics
-st.markdown("---")
+# System status check with integrated metrics - moved to top
 st.subheader("📊 Platform Overview")
 
 # Check ML service and display metrics
@@ -160,9 +111,6 @@ with col_status2:
 
 # Show what's available without ML models
 if not ml_service_online:
-    st.markdown("---")
-    st.subheader("🚀 What You Can Do Right Now (No Model Required)")
-    
     st.success("""
     **✅ Available Features Without Trained Models:**
     
@@ -193,6 +141,51 @@ if not ml_service_online:
     3. 🏗️ Then train your model with `notebooks/02_model_training_pipeline.ipynb`
     4. 🤖 Return here for ML-powered predictions!
     """)
+
+st.markdown("---")
+
+st.markdown("""
+Welcome to the Academic Citation Platform! This integrated platform combines machine learning 
+with interactive visualization to help you explore and predict academic citation patterns.
+
+## 🚀 Getting Started
+
+Choose from the features below or use the navigation menu on the left to explore different capabilities:
+
+""")
+
+# Create clickable feature cards
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("🤖 ML Predictions")
+    st.write("Use our trained TransE model to predict which papers are most likely to cite a given paper. Get confidence scores and explore the reasoning behind predictions.")
+    
+    if st.button("🚀 Start ML Predictions", key="ml_pred_btn", use_container_width=True):
+        st.switch_page("src/streamlit_app/pages/ML_Predictions.py")
+
+with col2:
+    st.subheader("🧭 Embedding Explorer")
+    st.write("Dive deep into the learned paper embeddings. Compare papers, visualize similarity relationships, and understand how the model represents academic papers in vector space.")
+    
+    if st.button("🔍 Explore Embeddings", key="embed_btn", use_container_width=True):
+        st.switch_page("src/streamlit_app/pages/Embedding_Explorer.py")
+
+col3, col4 = st.columns(2)
+
+with col3:
+    st.subheader("📊 Enhanced Visualizations")
+    st.write("Explore citation networks with prediction confidence overlays, interactive network graphs, and advanced analysis tools.")
+    
+    if st.button("📈 Create Visualizations", key="viz_btn", use_container_width=True):
+        st.switch_page("src/streamlit_app/pages/Enhanced_Visualizations.py")
+
+with col4:
+    st.subheader("📓 Analysis Pipeline")
+    st.write("Run comprehensive analysis workflows including data exploration, model evaluation, and result visualization based on the reference notebook pipelines.")
+    
+    if st.button("⚙️ Run Analysis Pipeline", key="pipeline_btn", use_container_width=True):
+        st.switch_page("src/streamlit_app/pages/Notebook_Pipeline.py")
 
 # Visual example section
 st.markdown("---")
