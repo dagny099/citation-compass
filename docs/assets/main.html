@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click functionality to mermaid diagrams
+      const mermaidDiagrams = document.querySelectorAll('.mermaid');
+      
+      mermaidDiagrams.forEach(function(diagram) {
+        diagram.addEventListener('click', function() {
+          openDiagramModal(this);
+        });
+        
+        // Add relative positioning for the hover indicator
+        diagram.style.position = 'relative';
+      });
+      
+      function openDiagramModal(diagram) {
+        // Create modal if it doesn't exist
+        let modal = document.getElementById('diagram-modal');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'diagram-modal';
+          modal.className = 'diagram-modal';
+          modal.innerHTML = `
+            <div class="diagram-modal-content">
+              <span class="diagram-close">&times;</span>
+              <div id="modal-diagram-content"></div>
+            </div>
+          `;
+          document.body.appendChild(modal);
+          
+          // Add close functionality
+          const closeBtn = modal.querySelector('.diagram-close');
+          closeBtn.onclick = function() {
+            modal.style.display = 'none';
+          };
+          
+          // Close when clicking outside the modal
+          modal.onclick = function(event) {
+            if (event.target === modal) {
+              modal.style.display = 'none';
+            }
+          };
+          
+          // Close with escape key
+          document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+              modal.style.display = 'none';
+            }
+          });
+        }
+        
+        // Clone the diagram and insert into modal
+        const modalContent = modal.querySelector('#modal-diagram-content');
+        modalContent.innerHTML = '';
+        const clonedDiagram = diagram.cloneNode(true);
+        
+        // Scale up the diagram in the modal
+        clonedDiagram.style.transform = 'scale(1.2)';
+        clonedDiagram.style.cursor = 'default';
+        clonedDiagram.style.margin = '20px auto';
+        clonedDiagram.style.maxWidth = '100%';
+        
+        modalContent.appendChild(clonedDiagram);
+        modal.style.display = 'block';
+      }
+    });
+  </script>
+{% endblock %}

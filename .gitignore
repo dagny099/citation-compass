@@ -100,6 +100,8 @@ docs-public/site/
 mkdocs_macros_cache/
 **/site/
 docs/site/
+docs/assets/.sass-cache/
+docs/assets/js/dist/
 
 # External repositories and reference materials (when used)
 # reference-codebases/

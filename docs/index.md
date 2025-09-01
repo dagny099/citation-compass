@@ -25,10 +25,6 @@
 
 </div>
 
-!!! tip "💡 What Makes This Platform Special"
-
-    🧠 **AI-Powered Predictions** • 🕸️ **Network Analysis** • 📊 **Interactive Visualizations** • 📄 **Academic Reports**
-
 ---
 
 ## 🚀 What This Platform Does

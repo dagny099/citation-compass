@@ -12,15 +12,13 @@ theme:
   name: material
   custom_dir: docs/assets
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
+    - scheme: default
       primary: blue grey
       accent: deep orange
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
+    - scheme: slate
       primary: blue grey
       accent: deep orange
       toggle:
@@ -93,6 +91,7 @@ markdown_extensions:
   - md_in_html
   - toc:
       permalink: true
+      toc_depth: 3
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.betterem:
@@ -149,15 +148,13 @@ nav:
       - 📚 API Reference: api.md
       - 🧩 Models: api/models.md
       - ⚙️ Services: api/services.md
+      - 📝 Development History:
+          - 📋 Phase 4 Plan: archived_phase_4_plan.md
+          - ⚙️ Phase 4 Implementation: archived_phase_4_implementation.md
   - 📓 Notebooks:
       - 📋 Overview: notebooks/overview.md
   - 🛠️ Setup: setup.md
   - 🏗️ Architecture: architecture.md
-  - 📦 Includes:
-      - 📖 MkDocs: includes/mkdocs.md
-  - 📦 Archive:
-      - 📋 Phase 4 Plan: archived_phase_4_plan.md
-      - ⚙️ Phase 4 Implementation: archived_phase_4_implementation.md
 
 watch:
   - src
