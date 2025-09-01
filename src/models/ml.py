@@ -113,6 +113,7 @@ class CitationPrediction(BaseModel):
     prediction_score: float = PydanticField(..., ge=0.0, le=1.0, description="Prediction confidence score (0-1)")
     model_name: str = PydanticField(..., description="Name of the model making the prediction")
     model_version: Optional[str] = PydanticField(None, description="Version of the model")
+    raw_score: Optional[float] = PydanticField(None, description="Raw model output score before normalization")
     predicted_at: datetime = PydanticField(default_factory=datetime.now, description="When prediction was made")
     
     # Additional context
@@ -143,6 +144,7 @@ class CitationPrediction(BaseModel):
             "confidence_level": self.confidence_level.value,
             "model_name": self.model_name,
             "model_version": self.model_version,
+            "raw_score": self.raw_score,
             "predicted_at": self.predicted_at.isoformat(),
             "source_title": self.source_title,
             "target_title": self.target_title,

@@ -19,6 +19,36 @@ import torch.nn as nn
 import numpy as np
 import pandas as pd
 
+# Configure PyTorch to allow loading older model checkpoints
+# This is needed for PyTorch 2.6+ compatibility with models saved in older versions
+try:
+    import collections
+    import torch._utils
+    
+    # Add safe globals for loading older model checkpoints
+    torch.serialization.add_safe_globals([
+        collections.OrderedDict,
+        torch._utils._rebuild_tensor_v2,
+        torch._utils._rebuild_parameter,
+        torch.Size
+    ])
+    
+    # Add numpy globals if available
+    try:
+        import numpy
+        torch.serialization.add_safe_globals([
+            numpy.ndarray,
+            numpy.dtype,
+            numpy.core.multiarray._reconstruct,
+            numpy.core.multiarray.scalar,
+        ])
+    except (ImportError, AttributeError):
+        pass
+        
+except (AttributeError, ImportError):
+    # add_safe_globals might not be available in all PyTorch versions
+    pass
+
 from ..models.ml import (
     PaperEmbedding, 
     CitationPrediction, 
@@ -267,8 +297,12 @@ class TransEModelService:
             raise FileNotFoundError(f"Entity mapping not found: {self.entity_mapping_path}")
         
         self.logger.info(f"Loading entity mapping from {self.entity_mapping_path}")
-        with open(self.entity_mapping_path, 'rb') as f:
-            self.entity_mapping = pickle.load(f)
+        try:
+            with open(self.entity_mapping_path, 'rb') as f:
+                self.entity_mapping = pickle.load(f)
+        except Exception as e:
+            self.logger.error(f"Failed to load entity mapping: {e}")
+            raise RuntimeError(f"Cannot load entity mapping from {self.entity_mapping_path}: {e}")
         
         # Create reverse mapping
         self.reverse_mapping = {v: k for k, v in self.entity_mapping.items()}
@@ -292,8 +326,31 @@ class TransEModelService:
         
         self.logger.info(f"Loading TransE model from {self.model_path}")
         
-        # Load checkpoint
-        checkpoint = torch.load(self.model_path, map_location=self.device, weights_only=False)
+        # Load checkpoint with explicit weights_only=False for compatibility with older models
+        try:
+            # For PyTorch 2.8+ we need to be very explicit about unsafe loading
+            checkpoint = torch.load(
+                self.model_path, 
+                map_location=self.device, 
+                weights_only=False,
+                pickle_module=pickle  # Explicitly use standard pickle module
+            )
+        except Exception as e:
+            self.logger.error(f"Failed to load model checkpoint with standard method: {e}")
+            # Try alternative loading approach for compatibility
+            try:
+                import pickle as pkl
+                with open(self.model_path, 'rb') as f:
+                    # Load using standard pickle first to get the data
+                    checkpoint = pkl.load(f)
+                    # Then move tensors to appropriate device if needed
+                    if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
+                        for key, value in checkpoint['model_state_dict'].items():
+                            if hasattr(value, 'to'):
+                                checkpoint['model_state_dict'][key] = value.to(self.device)
+                    self.logger.info("Successfully loaded checkpoint using alternative method")
+            except Exception as e2:
+                raise RuntimeError(f"Cannot load model from {self.model_path}. Primary error: {e}. Alternative method error: {e2}")
         
         # Extract model configuration
         if "model_config" in checkpoint:
@@ -442,7 +499,7 @@ class TransEModelService:
                     prediction_score=probability_score,
                     model_name="TransE",
                     raw_score=float(score),
-                    created_at=datetime.now()
+                    predicted_at=datetime.now()
                 )
                 predictions.append(prediction)
         
