@@ -7,6 +7,7 @@ performance metrics, and export capabilities.
 
 import pytest
 import numpy as np
+import pandas as pd
 import networkx as nx
 from datetime import datetime, timedelta
 from pathlib import Path

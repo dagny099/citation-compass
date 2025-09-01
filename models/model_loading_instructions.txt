@@ -1,0 +1,47 @@
+
+TransE Citation Model - Loading Instructions
+==========================================
+
+Generated: 2025-08-31 21:00:28
+
+Files in this directory:
+- transe_citation_model.pt: Complete model checkpoint with training state
+- entity_mapping.pkl: Paper ID to entity index mapping
+- training_metadata.json: Human-readable training statistics
+- test_data.pkl: Test data for evaluation
+- model_loading_instructions.txt: This file
+
+Quick Loading Example:
+```python
+import torch
+import pickle
+
+# Load model
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+checkpoint = torch.load('transe_citation_model.pt', map_location=device)
+
+# Recreate model architecture
+from your_model_file import TransE
+arch = checkpoint['model_architecture']
+model = TransE(**arch).to(device)
+model.load_state_dict(checkpoint['model_state_dict'])
+model.eval()
+
+# Load mappings
+with open('entity_mapping.pkl', 'rb') as f:
+    mappings = pickle.load(f)
+    entity_mapping = mappings['entity_mapping']
+```
+
+Model Statistics:
+- Entities: 12,595
+- Embedding Dimension: 128
+- Total Parameters: 1,612,288
+- Final Training Loss: 0.003671
+- Training Time: 0.0 minutes
+
+Next Steps:
+1. Run 03_prediction_evaluation.ipynb for comprehensive evaluation
+2. Use model for citation prediction and recommendation
+3. Generate embeddings for downstream tasks
+

@@ -177,6 +177,8 @@ class QueryLibrary:
     for ML integration and enhanced functionality.
     """
     
+    GET_PAPERS_FOR_TRAINING = "MATCH (p:Paper) RETURN p.paperId as paper_id, p.title as title, p.abstract as abstract, p.citationCount as citationCount"
+
     # Node count queries (from knowledge-cartography)
     GET_PAPERS_COUNT = "MATCH (p:Paper) RETURN count(p) as count"
     GET_AUTHORS_COUNT = "MATCH (a:Author) RETURN count(a) as count"
@@ -477,7 +479,8 @@ class UnifiedDatabaseManager:
             self.logger.error(f"Command: {cypher}")
             self.logger.error(f"Parameters: {params}")
             raise DatabaseError(f"Command execution failed: {str(e)}")
-    
+
+
     def get_paper_details(self, paper_id: str) -> Optional[Dict[str, Any]]:
         """
         Get comprehensive details for a single paper.

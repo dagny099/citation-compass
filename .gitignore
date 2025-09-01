@@ -132,6 +132,7 @@ tensorboard_logs/
 # Streamlit
 .streamlit/secrets.toml
 .streamlit/config.toml
+.streamlit/credentials.toml
 
 # Cache directories (consolidated)
 .cache/
@@ -181,6 +182,8 @@ experiments/
 api_keys.txt
 .secrets
 *.env.sample
+.env.*
+!.env.example
 
 # Large datasets (examples for tracking pattern)
 # !external-data/**/storage/MEGA_paper_*.csv

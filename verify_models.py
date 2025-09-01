@@ -27,7 +27,7 @@ def check_model_files() -> Dict[str, Path]:
     required_files = {
         'model': base_path / 'transe_citation_model.pt',
         'entity_mapping': base_path / 'entity_mapping.pkl', 
-        'metadata': base_path / 'training_metadata.pkl'
+        'metadata': base_path / 'training_metadata.json'
     }
     
     logger.info("Checking model files...")
@@ -98,8 +98,9 @@ def verify_metadata(metadata_path: Path) -> Optional[Dict]:
     logger.info("Verifying training metadata...")
     
     try:
-        with open(metadata_path, 'rb') as f:
-            metadata = pickle.load(f)
+        import json
+        with open(metadata_path, 'r') as f:
+            metadata = json.load(f)
         
         logger.info(f"✅ Metadata loaded: {type(metadata)}")
         
@@ -122,7 +123,7 @@ def verify_model(model_path: Path, entity_mapping: Dict) -> bool:
     try:
         # Load model checkpoint
         device = 'cpu'  # Use CPU for verification
-        checkpoint = torch.load(model_path, map_location=device)
+        checkpoint = torch.load(model_path, map_location=device, weights_only=False)
         
         logger.info(f"✅ Model checkpoint loaded")
         logger.info(f"   Checkpoint keys: {list(checkpoint.keys())}")
@@ -160,18 +161,32 @@ def verify_model(model_path: Path, entity_mapping: Dict) -> bool:
             if "model_config" in checkpoint:
                 config = checkpoint["model_config"]
                 logger.info(f"   Model config: {config}")
+                
+                # Filter config to only include parameters that TransEModel expects
+                model_config = {
+                    "num_entities": len(entity_mapping),
+                    "embedding_dim": config.get("embedding_dim", 128),
+                    "margin": config.get("margin", 1.0),
+                    "p_norm": config.get("norm_p", 1)  # Note: norm_p in config becomes p_norm in model
+                }
             else:
-                config = {
+                model_config = {
                     "num_entities": len(entity_mapping),
                     "embedding_dim": 128,
                     "margin": 1.0,
                     "p_norm": 1
                 }
-                logger.info(f"   Using default config: {config}")
+                logger.info(f"   Using default config: {model_config}")
             
             # Create model instance
-            model = TransEModel(**config)
-            model.load_state_dict(checkpoint["model_state_dict"])
+            model = TransEModel(**model_config)
+            
+            # Fix state dict key mismatch (saved model has "relation_embeddings" but class expects "relation_embedding")
+            state_dict = checkpoint["model_state_dict"]
+            if "relation_embeddings.weight" in state_dict and "relation_embedding.weight" not in state_dict:
+                state_dict["relation_embedding.weight"] = state_dict.pop("relation_embeddings.weight")
+            
+            model.load_state_dict(state_dict)
             model.eval()
             
             logger.info("✅ Model loaded successfully with TransE service")

@@ -1,0 +1,62 @@
+{
+  "dataset": {
+    "num_papers": 12595,
+    "num_citations": 18912,
+    "num_entities": 12595,
+    "train_pos_samples": 15129,
+    "train_neg_samples": 15129,
+    "test_pos_samples": 3783,
+    "test_neg_samples": 3783,
+    "total_training_samples": 30258
+  },
+  "model_config": {
+    "embedding_dim": 128,
+    "margin": 1.0,
+    "learning_rate": 0.01,
+    "l2_regularization": 1e-05,
+    "norm_p": 1,
+    "normalize_embeddings": true
+  },
+  "training_config": {
+    "epochs": 100,
+    "batch_size": 1024,
+    "eval_frequency": 10,
+    "save_frequency": 25,
+    "early_stopping_patience": 20,
+    "verbose": true,
+    "normalize_frequency": 10
+  },
+  "data_config": {
+    "test_size": 0.2,
+    "negative_ratio": 1,
+    "random_state": 42,
+    "min_degree": 1
+  },
+  "training_results": {
+    "epochs_completed": 26,
+    "final_loss": 0.0036706135297815004,
+    "best_loss": 0.0003468224002669255,
+    "loss_improvement_pct": 98.73785426889526,
+    "total_training_time_minutes": 0.027259333333333333,
+    "avg_epoch_time_seconds": 0.06237792307692309,
+    "converged": true
+  },
+  "model_stats": {
+    "total_parameters": 1612288,
+    "entity_embedding_shape": [
+      12595,
+      128
+    ],
+    "relation_embedding_shape": [
+      1,
+      128
+    ],
+    "memory_usage_mb": 6.150390625
+  },
+  "system_info": {
+    "device": "cpu",
+    "pytorch_version": "2.8.0",
+    "python_version": "3.12.2",
+    "training_date": "2025-08-31T21:00:28.849432"
+  }
+}

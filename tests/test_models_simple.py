@@ -42,7 +42,7 @@ def test_citation_prediction():
     assert prediction.source_paper_id == "source123"
     assert prediction.prediction_score == 0.85
     assert prediction.confidence_level == PredictionConfidence.HIGH
-    assert prediction.is_positive_prediction is True
+    assert prediction.is_positive_prediction() is True
 
 
 def test_network_node():

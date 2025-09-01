@@ -116,8 +116,8 @@ print('✅ ML service loaded')
 ```bash
 # Test database queries
 python -c "
-from src.data.unified_database import UnifiedDatabase
-db = UnifiedDatabase()
+from src.data.unified_database import UnifiedDatabaseManager
+db = UnifiedDatabaseManager()
 papers = db.get_papers_sample(limit=5)
 print(f'✅ Retrieved {len(papers)} papers from database')
 db.close()

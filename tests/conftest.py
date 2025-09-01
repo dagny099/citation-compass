@@ -30,12 +30,12 @@ from src.data.api_config import Neo4jConfig, MLConfig
 def sample_paper_data() -> Dict[str, Any]:
     """Sample paper data for testing."""
     return {
-        "paper_id": "paper123",
+        "paperId": "paper123",
         "title": "Advanced ML Techniques for Citation Prediction",
         "abstract": "Novel approaches to predicting citations using GNNs.",
         "year": 2023,
         "authors": ["Dr. Jane Smith", "Prof. John Doe"],
-        "citation_count": 42,
+        "citationCount": 42,
         "fields": ["Computer Science", "Machine Learning"]
     }
 
@@ -43,11 +43,11 @@ def sample_paper_data() -> Dict[str, Any]:
 def sample_author_data() -> Dict[str, Any]:
     """Sample author data for testing."""
     return {
-        "author_id": "author123",
+        "authorId": "author123",
         "name": "Dr. Jane Smith",
-        "paper_count": 45,
-        "citation_count": 1250,
-        "h_index": 18
+        "paperCount": 45,
+        "citationCount": 1250,
+        "hIndex": 18
     }
 
 @pytest.fixture
@@ -96,7 +96,7 @@ def sample_citation_prediction() -> CitationPrediction:
 def sample_papers_list(sample_paper_data: Dict[str, Any]) -> List[Paper]:
     """Create a list of sample papers for batch testing."""
     papers = []
-    for i in range(3):  # Reduced from 5 to 3
+    for i in range(5):  # Back to 5 as expected by tests
         data = sample_paper_data.copy()
         data["paper_id"] = f"paper{i+1}"
         data["title"] = f"Test Paper {i+1}"
@@ -191,6 +191,11 @@ def sample_neo4j_records() -> List[Dict[str, Any]]:
                 "title": "Test Paper 1",
                 "year": 2023,
                 "citationCount": 10
+            },
+            "author": {
+                "authorId": "author1",
+                "name": "Dr. Jane Smith",
+                "paperCount": 45
             }
         },
         {
@@ -199,6 +204,11 @@ def sample_neo4j_records() -> List[Dict[str, Any]]:
                 "title": "Test Paper 2",
                 "year": 2022,
                 "citationCount": 5
+            },
+            "author": {
+                "authorId": "author2",
+                "name": "Prof. John Doe",
+                "paperCount": 32
             }
         }
     ]
@@ -206,7 +216,7 @@ def sample_neo4j_records() -> List[Dict[str, Any]]:
 @pytest.fixture
 def sample_embeddings_matrix() -> np.ndarray:
     """Sample embeddings matrix for testing."""
-    return np.random.rand(5, 8)  # 5 papers, 8 dimensions
+    return np.random.rand(10, 128)  # 10 papers, 128 dimensions
 
 @pytest.fixture
 def sample_predictions_data() -> List[Dict[str, Any]]:

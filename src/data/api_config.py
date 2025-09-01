@@ -25,8 +25,8 @@ class SemanticScholarConfig:
     # Base configuration
     base_url: str = "https://api.semanticscholar.org/graph/v1"
     api_key: Optional[str] = None
-    rate_limit_pause: float = 1.0  # Seconds between requests
-    request_timeout: int = 30      # Request timeout in seconds
+    requests_per_minute: int = 60  # Rate limit in requests per minute
+    timeout: int = 30      # Request timeout in seconds
     
     # Pagination settings
     max_batch_size: int = 500      # Maximum items per batch request
@@ -138,13 +138,16 @@ class MLConfig:
     
     # Model paths (will be populated from reference codebases)
     model_dir: Path = Path("models")
+    model_path: Optional[Path] = None
     transE_model_path: Optional[Path] = None
     entity_mapping_path: Optional[Path] = None
     training_metadata_path: Optional[Path] = None
     
     # Model parameters
     embedding_dim: int = 128
+    batch_size: int = 32
     prediction_batch_size: int = 1000
+    prediction_threshold: float = 0.5
     top_k_predictions: int = 10
     
     # Device configuration
@@ -153,6 +156,8 @@ class MLConfig:
     def __post_init__(self):
         """Initialize model paths and device detection."""
         # Set up model paths relative to project root
+        if self.model_path is None:
+            self.model_path = self.model_dir / "model.pt"
         if self.transE_model_path is None:
             self.transE_model_path = self.model_dir / "transe_citation_model.pt"
         if self.entity_mapping_path is None:

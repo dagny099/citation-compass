@@ -17,6 +17,7 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Tuple, Any
 import subprocess
+import pprint
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -45,6 +46,7 @@ class SetupValidator:
             }
             
             value = os.getenv(var)
+            
             if not value:
                 # Check alternatives
                 for alt_var in alt_vars.get(var, []):

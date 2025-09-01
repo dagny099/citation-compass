@@ -130,7 +130,6 @@ class CitationPrediction(BaseModel):
         else:
             return PredictionConfidence.LOW
     
-    @property
     def is_positive_prediction(self, threshold: float = 0.5) -> bool:
         """Check if this is a positive prediction above threshold."""
         return self.prediction_score >= threshold

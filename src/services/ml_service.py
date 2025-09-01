@@ -259,7 +259,7 @@ class TransEModelService:
     
     def _get_reference_metadata_path(self) -> Path:
         """Get path to training metadata in local models directory."""
-        return Path("models/training_metadata.pkl")
+        return Path("models/training_metadata.json")
     
     def _load_entity_mapping(self) -> None:
         """Load entity mapping from pickle file."""
@@ -275,11 +275,12 @@ class TransEModelService:
         self.logger.info(f"Loaded {len(self.entity_mapping)} entity mappings")
     
     def _load_metadata(self) -> None:
-        """Load training metadata from pickle file."""
+        """Load training metadata from JSON file."""
         if self.metadata_path.exists():
             self.logger.info(f"Loading metadata from {self.metadata_path}")
-            with open(self.metadata_path, 'rb') as f:
-                self.metadata = pickle.load(f)
+            import json
+            with open(self.metadata_path, 'r') as f:
+                self.metadata = json.load(f)
         else:
             self.logger.warning(f"Metadata file not found: {self.metadata_path}")
             self.metadata = {}
@@ -292,11 +293,18 @@ class TransEModelService:
         self.logger.info(f"Loading TransE model from {self.model_path}")
         
         # Load checkpoint
-        checkpoint = torch.load(self.model_path, map_location=self.device)
+        checkpoint = torch.load(self.model_path, map_location=self.device, weights_only=False)
         
         # Extract model configuration
         if "model_config" in checkpoint:
-            config = checkpoint["model_config"]
+            saved_config = checkpoint["model_config"]
+            # Filter config to only include parameters that TransEModel expects
+            config = {
+                "num_entities": len(self.entity_mapping),
+                "embedding_dim": saved_config.get("embedding_dim", 128),
+                "margin": saved_config.get("margin", 1.0),
+                "p_norm": saved_config.get("norm_p", 1)  # Note: norm_p in config becomes p_norm in model
+            }
         else:
             # Fallback configuration if not saved in checkpoint
             config = {
@@ -309,7 +317,12 @@ class TransEModelService:
         
         # Create and load model
         self.model = TransEModel(**config)
-        self.model.load_state_dict(checkpoint["model_state_dict"])
+        
+        # Fix state dict key mismatch (saved model has "relation_embeddings" but class expects "relation_embedding")
+        state_dict = checkpoint["model_state_dict"]
+        if "relation_embeddings.weight" in state_dict and "relation_embedding.weight" not in state_dict:
+            state_dict["relation_embedding.weight"] = state_dict.pop("relation_embeddings.weight")
+        self.model.load_state_dict(state_dict)
         self.model.to(self.device)
         self.model.eval()
         
@@ -480,13 +493,24 @@ class TransEModelService:
         """
         self.ensure_loaded()
         
+        # Get training metadata from the JSON file if available
+        metadata = self.metadata if self.metadata else {}
+        training_config = metadata.get("training_config", {})
+        data_config = metadata.get("data_config", {})
+        model_config = metadata.get("model_config", {})
+        training_results = metadata.get("training_results", {})
+        
         return ModelMetadata(
             model_name="TransE Citation Predictor",
             model_type=ModelType.TRANSE,
-            version="1.0",
+            model_version="1.0",
             embedding_dim=self.model.embedding_dim,
             num_entities=len(self.entity_mapping),
-            training_metadata=self.metadata,
+            num_relations=1,  # TransE typically uses one relation type for citations
+            training_dataset_size=metadata.get("dataset", {}).get("total_training_samples", 0),
+            training_epochs=training_results.get("epochs_completed", training_config.get("epochs", 0)),
+            learning_rate=model_config.get("learning_rate", 0.01),
+            batch_size=training_config.get("batch_size", 1024),
             created_at=datetime.now()
         )
     

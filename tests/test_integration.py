@@ -94,7 +94,7 @@ class TestServiceIntegration:
         """Test ML service initializes correctly."""
         assert self.ml_service is not None
         assert self.ml_service.model_path == self.model_path
-        assert self.ml_service.device == "cpu"
+        assert self.ml_service.device in ["cpu", "cuda", "mps"]  # Device auto-detection
         
         # Test lazy loading
         assert self.ml_service.model is None

@@ -247,7 +247,7 @@ class UnifiedSemanticScholarClient:
         
         # Initialize components
         self.rate_limiter = RateLimiter(
-            base_pause=self.config.rate_limit_pause,
+            base_pause=60.0 / self.config.requests_per_minute,
             max_pause=60.0
         )
         self.cache = APICache(
@@ -320,14 +320,14 @@ class UnifiedSemanticScholarClient:
                 response = self.session.get(
                     url, 
                     params=params, 
-                    timeout=self.config.request_timeout
+                    timeout=self.config.timeout
                 )
             elif method == 'POST':
                 response = self.session.post(
                     url, 
                     params=params, 
                     json=json_data,
-                    timeout=self.config.request_timeout
+                    timeout=self.config.timeout
                 )
             else:
                 raise ValueError(f"Unsupported HTTP method: {method}")
