@@ -68,7 +68,7 @@ plugins:
   - git-committers:
       repository: dagny099/citation-compass
       branch: main
-      # token: !ENV MKDOCS_GIT_COMMITTERS_APIKEY
+      token: !ENV MKDOCS_GIT_COMMITTERS_APIKEY
   - minify:
       minify_html: true
 
@@ -131,6 +131,7 @@ markdown_extensions:
 
 nav:
   - 🏠 Home: index.md
+  - 📖 Overview: overview.md
   - 🚀 Getting Started:
       - 📦 Installation: getting-started/installation.md
       - ⚙️ Configuration: getting-started/configuration.md
