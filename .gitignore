@@ -133,6 +133,8 @@ tensorboard_logs/
 .streamlit/secrets.toml
 .streamlit/config.toml
 .streamlit/credentials.toml
+.streamlit/app_static/
+.streamlit/app_cache/
 
 # Cache directories (consolidated)
 .cache/
@@ -197,9 +199,13 @@ test_*.py
 debug_*.py
 *_test.py
 temp_*.py
+test_click_*.py
+test_visualization_*.py
 
 # Temporary files created during development
 ENHANCED_VISUALIZATION_FIX_SUMMARY.md
+*_SUMMARY.md
+*_FIX_*.md
 
 # Streamlit session state and cache
 .streamlit/
@@ -237,3 +243,12 @@ Desktop.ini
 *.orig
 *.rej
 .#*
+
+# Ruff cache (Python linter)
+.ruff_cache/
+
+# UV package manager (if used)
+.uv/
+
+# Python type stubs
+*.pyi.bak

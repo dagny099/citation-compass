@@ -17,6 +17,7 @@ import networkx as nx
 from typing import List, Dict, Optional, Tuple
 import logging
 import time
+import webbrowser
 
 from src.services.ml_service import get_ml_service
 from src.data.unified_api_client import UnifiedSemanticScholarClient
@@ -201,6 +202,43 @@ def create_rich_hover_text(paper_id: str, paper_metadata: Dict, node_type: str, 
         hover_lines.append(f"📍 Venue: {venue}")
     
     return '<br>'.join(hover_lines)
+
+
+def get_paper_url(paper_metadata: Dict) -> Optional[str]:
+    """
+    Resolve paper URL from metadata using multiple fallback strategies.
+    
+    Priority order:
+    1. Direct URL field from API
+    2. DOI → https://doi.org/{doi}
+    3. ArXiv ID → https://arxiv.org/abs/{arxiv_id}
+    4. Semantic Scholar fallback → https://www.semanticscholar.org/paper/{paperId}
+    
+    Args:
+        paper_metadata: Dictionary containing paper metadata
+        
+    Returns:
+        URL string or None if paper ID not available
+    """
+    # Strategy 1: Direct URL field
+    if 'url' in paper_metadata and paper_metadata['url']:
+        return paper_metadata['url']
+    
+    # Strategy 2: DOI
+    external_ids = paper_metadata.get('externalIds', {})
+    if external_ids and 'DOI' in external_ids:
+        return f"https://doi.org/{external_ids['DOI']}"
+    
+    # Strategy 3: ArXiv ID
+    if external_ids and 'ArXiv' in external_ids:
+        return f"https://arxiv.org/abs/{external_ids['ArXiv']}"
+    
+    # Strategy 4: Semantic Scholar fallback
+    paper_id = paper_metadata.get('paperId')
+    if paper_id:
+        return f"https://www.semanticscholar.org/paper/{paper_id}"
+    
+    return None
 
 
 def get_papers_from_neo4j(paper_ids: List[str]) -> Dict[str, Dict]:
@@ -402,7 +440,7 @@ def fetch_paper_metadata_batch_api_only(api_client, paper_ids: List[str]) -> Dic
     metadata = {}
     
     # Use richer fields for detailed information
-    detailed_fields = "paperId,title,authors,year,citationCount,venue,abstract,publicationDate,fieldsOfStudy"
+    detailed_fields = "paperId,title,authors,year,citationCount,venue,abstract,publicationDate,fieldsOfStudy,externalIds,url"
     
     try:
         # Try batch request first (more efficient)
@@ -780,7 +818,135 @@ if viz_type == "Citation Network with Predictions":
                 height=600
             )
             
-            st.plotly_chart(fig, use_container_width=True)
+            # Display chart with click functionality
+            try:
+                from streamlit_plotly_events import plotly_events
+                
+                # Add click instructions above the chart
+                st.info("💡 **Click any node** in the network below to open the paper in your default browser!")
+                
+                # Use plotly_events to capture click data
+                selected_points = plotly_events(
+                    fig, 
+                    click_event=True, 
+                    hover_event=False,
+                    select_event=False,
+                    override_height=600,
+                    key="citation_network"
+                )
+                
+                # Handle click events
+                if selected_points:
+                    clicked_point = selected_points[0]
+                    point_index = clicked_point.get('pointIndex')
+                    curve_number = clicked_point.get('curveNumber')
+                    
+                    # Determine which node was clicked based on curve number
+                    if curve_number is not None and point_index is not None:
+                        paper_id = None
+                        
+                        # Create dynamic mapping of trace indices to node types
+                        trace_to_node_mapping = {}
+                        current_trace_index = 0
+                        
+                        # Skip edge traces first
+                        edge_count = len(edge_traces)
+                        current_trace_index = edge_count
+                        
+                        # Map node traces in the order they were added to the figure
+                        if center_x:
+                            trace_to_node_mapping[current_trace_index] = {
+                                'type': 'center',
+                                'nodes': [node for node in G.nodes() if G.nodes[node].get('node_type') == 'center']
+                            }
+                            current_trace_index += 1
+                        
+                        if pred_x:
+                            trace_to_node_mapping[current_trace_index] = {
+                                'type': 'predicted', 
+                                'nodes': [node for node in G.nodes() if G.nodes[node].get('node_type') == 'predicted']
+                            }
+                            current_trace_index += 1
+                        
+                        if cited_x:
+                            trace_to_node_mapping[current_trace_index] = {
+                                'type': 'cited',
+                                'nodes': [node for node in G.nodes() if G.nodes[node].get('node_type') == 'cited']
+                            }
+                            current_trace_index += 1
+                        
+                        # Get paper ID from the clicked trace
+                        if curve_number in trace_to_node_mapping:
+                            trace_info = trace_to_node_mapping[curve_number]
+                            if point_index < len(trace_info['nodes']):
+                                paper_id = trace_info['nodes'][point_index]
+                                logger.info(f"Clicked {trace_info['type']} node: {paper_id}")
+                        
+                        # Open paper URL if we found a valid paper ID
+                        if paper_id and paper_id in paper_metadata:
+                            paper_url = get_paper_url(paper_metadata[paper_id])
+                            if paper_url:
+                                try:
+                                    webbrowser.open(paper_url)
+                                    paper_title = paper_metadata[paper_id].get('title', paper_id)[:60]
+                                    st.success(f"🚀 Opening paper in browser: {paper_title}...")
+                                except Exception as e:
+                                    st.error(f"❌ Failed to open browser: {e}")
+                                    st.code(f"Paper URL: {paper_url}")
+                            else:
+                                st.warning(f"⚠️ No URL available for paper: {paper_id}")
+                        elif paper_id:
+                            st.warning(f"⚠️ Paper metadata not found for: {paper_id}")
+                        else:
+                            # Debug information for troubleshooting
+                            st.info(f"🐛 Debug: Clicked curve {curve_number}, point {point_index}. Available traces: {list(trace_to_node_mapping.keys())}")
+                            
+            except ImportError:
+                # Fallback: Display regular chart with manual paper selection
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Alternative: Manual paper selection for opening
+                st.markdown("---")
+                st.subheader("🔗 Open Papers Manually")
+                st.info("💡 Install `streamlit-plotly-events` for click functionality: `pip install streamlit-plotly-events`")
+                
+                # Create a selectbox with all papers in the network
+                all_papers_with_urls = []
+                for paper_id, metadata in paper_metadata.items():
+                    paper_url = get_paper_url(metadata)
+                    if paper_url:
+                        title = metadata.get('title', paper_id)[:60]
+                        all_papers_with_urls.append((paper_id, title, paper_url))
+                
+                if all_papers_with_urls:
+                    selected_paper = st.selectbox(
+                        "Select a paper to open in browser:",
+                        options=all_papers_with_urls,
+                        format_func=lambda x: x[1],  # Show title
+                        index=None,
+                        placeholder="Choose a paper..."
+                    )
+                    
+                    col1, col2 = st.columns([1, 3])
+                    with col1:
+                        if st.button("🚀 Open Paper") and selected_paper:
+                            try:
+                                webbrowser.open(selected_paper[2])
+                                st.success(f"Opening: {selected_paper[1]}")
+                            except Exception as e:
+                                st.error(f"Failed to open browser: {e}")
+                    
+                    with col2:
+                        if selected_paper:
+                            st.code(f"URL: {selected_paper[2]}")
+                else:
+                    st.warning("No papers with available URLs found in the current network.")
+                    
+            except Exception as e:
+                # Final fallback to regular plotly chart
+                st.plotly_chart(fig, use_container_width=True)
+                st.warning(f"⚠️ Interactive features unavailable: {str(e)[:100]}...")
+                logger.error(f"Plotly events error: {e}")
             
             # Enhanced Network Statistics with Contextual Explanations
             st.subheader("📈 Network Analysis with Academic Context")
@@ -1178,6 +1344,10 @@ st.markdown("""
 - **Green nodes**: Actual citations from the academic literature
 - **Edge thickness**: Represents prediction confidence (thicker = higher confidence)
 - **Colors**: Distinguish between prediction types and confidence levels
+
+**🖱️ Interactive Features:**
+- **Click any node** to open the paper in your default browser (uses DOI, ArXiv, or Semantic Scholar links)
+- **Hover over nodes** to see detailed paper information in tooltips
 """)
 
 # Sidebar help
@@ -1190,6 +1360,7 @@ with st.sidebar:
     - Blue = ML predictions  
     - Green = Actual citations
     - Hover for details
+    - **Click nodes to open papers** 🖱️
     
     **Confidence Heatmap:**
     - Darker colors = Higher confidence
