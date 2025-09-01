@@ -2,6 +2,9 @@
 
 Interactive platform for analyzing academic citation networks and predicting research connections using machine learning.
 
+📚 **[View Complete Documentation](http://127.0.0.1:8000/)** (after running `mkdocs serve`)  
+🎯 **[Try Interactive Demo](http://localhost:8501/)** (after running `streamlit run app.py`)
+
 ## 🚀 What This Does
 
 - **Explore Citation Networks**: Interactive visualization of paper relationships
@@ -11,22 +14,48 @@ Interactive platform for analyzing academic citation networks and predicting res
 
 ## 🎯 Quick Start
 
-1. **Install**:
+### Prerequisites
+- **Python 3.8+** installed on your system
+- **Neo4j database** (local or cloud instance)
+- **Git** for cloning the repository
+
+### Installation & Setup
+
+1. **Clone and Install**:
    ```bash
+   git clone https://github.com/dagny099/citation-compass.git
+   cd citation-compass
    pip install -e ".[all]"
    ```
 
-2. **Configure** (copy `.env.example` to `.env` and add your Neo4j database):
+2. **Configure Environment** (copy `.env.example` to `.env` and add your Neo4j database):
    ```env
    NEO4J_URI=neo4j+s://your-database-url
    NEO4J_USER=neo4j  
    NEO4J_PASSWORD=your-password
    ```
 
-3. **Launch Interactive App**:
+3. **Launch Platform**:
    ```bash
+   # Start interactive dashboard
    streamlit run app.py
+   # Opens at http://localhost:8501/
+   
+   # OR run Jupyter notebooks
+   jupyter notebook notebooks/
+   
+   # OR view documentation
+   mkdocs serve
+   # Opens at http://127.0.0.1:8000/
    ```
+
+### Installation Options
+- **Quick Install**: `pip install -e ".[all]"` (recommended)
+- **Custom Install**: Install specific components:
+  - `pip install -e ".[ml]"` - Machine learning features
+  - `pip install -e ".[analytics]"` - Advanced analytics
+  - `pip install -e ".[viz]"` - Visualization tools
+  - `pip install -e ".[web]"` - Streamlit interface
 
 ## 📱 Interactive Features
 
@@ -132,4 +161,19 @@ python -c "from src.services.analytics_service import get_analytics_service; pri
 
 **Need the technical integration details?** See `README_INTEGRATION_SUMMARY.md`
 
-**Getting Started?** Just run `streamlit run app.py` and start exploring!
+## 📚 Documentation
+
+The platform includes comprehensive documentation with:
+- **Getting Started Guide**: Installation, configuration, and first steps
+- **User Guide**: Interactive features and research workflows  
+- **Developer Guide**: Architecture, API reference, and extending the platform
+- **Notebook Documentation**: Complete pipeline from exploration to presentation
+
+**Access Documentation**:
+- **Online**: Run `mkdocs serve` and visit http://127.0.0.1:8000/
+- **Features**: Search, dark/light theme, navigation, and code examples
+
+**Getting Started?** 
+1. Check the [installation guide](http://127.0.0.1:8000/getting-started/installation/) in the docs
+2. Follow the [quick start](http://127.0.0.1:8000/getting-started/quick-start/) tutorial
+3. Try the interactive demo: `streamlit run app.py`

@@ -17,7 +17,7 @@
 
 <div class="hero-buttons" markdown>
 [🚀 Get Started](getting-started/installation.md){ .md-button .md-button--primary }
-[🎯 View Demo](https://citationcompass.barbhs.com){ .md-button }
+[🎯 Local Demo](http://localhost:8501/){ .md-button }
 [📚 API Docs](api.md){ .md-button }
 </div>
 
@@ -79,9 +79,14 @@ Get up and running in minutes:
     ```bash
     # Start the interactive application
     streamlit run app.py
+    # Opens at http://localhost:8501/
     
     # Or run Jupyter notebooks
     jupyter notebook notebooks/
+    
+    # View this documentation locally
+    mkdocs serve
+    # Opens at http://127.0.0.1:8000/
     ```
 
 ---
