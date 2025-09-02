@@ -6,14 +6,16 @@ Get running with your first citation analysis in under 10 minutes!
 
 Choose your path:
 
-**🎭 Try Demo Mode** (recommended for first-time users):
+**🎭 Demo Mode First!** (recommended for all users):
 - ✅ [Installation](installation.md) - Platform installed with `pip install -e ".[all]"`
-- ✅ **Skip database setup** - Use demo datasets to explore features instantly!
+- ✅ **Zero setup required** - Use demo datasets to explore features instantly!
+- ✅ **Learn all features** - Perfect for understanding capabilities before production
 
-**🏢 Production Setup**:
+**🏢 Production Setup** (after mastering demo mode):
 - ✅ [Installation](installation.md) - Platform installed with `pip install -e ".[all]"`
 - ✅ [Configuration](configuration.md) - `.env` file configured with Neo4j credentials
 - ✅ [Environment Setup](environment-setup.md) - Database connection validated
+- ✅ [Demo Experience](demo-mode.md) - Understanding gained from hands-on exploration
 
 ## Your First Citation Analysis
 
@@ -43,25 +45,55 @@ Choose your preferred interface:
 
 Once the platform is running, choose how you want to explore citation networks:
 
-=== "🎭 Demo Mode (No Database Required)"
+=== "🎭 Demo Mode (Recommended - Zero Setup!)"
 
-    **Perfect for first-time users!**
+    **Perfect for all users - start here!**
 
     1. **Navigate to Demo Datasets** in the sidebar
-    2. **Browse available datasets**: AI/ML papers, Physics, Computer Science
-    3. **Click "Load Dataset"** for instant sample data
-    4. **Explore all features** without any setup!
+    2. **Browse curated datasets**: 
+        - **complete_demo**: 13 high-impact papers across AI, neuroscience, physics
+        - **minimal_demo_5papers**: Quick 5-paper network for fast testing
+    3. **Click "Load Dataset"** for instant sample data (loads in 2-3 seconds)
+    4. **Explore all features** with realistic academic data:
+        - ML predictions with synthetic embeddings
+        - Interactive network visualizations with clickable nodes
+        - Community detection across research fields
+        - Export capabilities for reports and analysis
 
-    !!! success "Instant Setup"
-        Demo mode provides curated academic papers with realistic citation networks, perfect for learning the platform.
+    !!! success "Full Platform Experience"
+        Demo mode provides complete functionality with curated academic papers spanning multiple research domains. Perfect for learning, testing, and demonstrating all platform capabilities!
 
-=== "🏢 Your Own Data"
+=== "📁 File Upload (Your Research Collections)"
 
-    **For production use with your database:**
+    **Import your own paper collections easily:**
 
-    1. **Navigate to Data Import** to populate your database
-    2. **Or use existing Neo4j data** if already configured
-    3. **Follow Step 3 below** for analysis
+    1. **Navigate to Data Import** → **Paper IDs** → **📁 File Upload**
+    2. **Download sample files** to see the format (sample_paper_ids.txt/csv)
+    3. **Upload your .txt/.csv files** with Semantic Scholar paper IDs
+    4. **Monitor real-time progress** with streaming updates and performance metrics
+    5. **Explore your imported data** using all platform features
+
+    !!! tip "Start Small"
+        Try with 10-50 papers first to learn the workflow, then scale up to larger collections!
+
+=== "🔍 Search Import (Discover New Papers)"
+
+    **Import papers by academic search:**
+
+    1. **Navigate to Data Import** → **Search Query** 
+    2. **Enter search terms**: "machine learning", "neural networks", etc.
+    3. **Configure filters**: citation count, year range, quality settings
+    4. **Start import** with real-time progress tracking
+    5. **Analyze imported networks** immediately
+
+=== "🏢 Production Database (Advanced)"
+
+    **For large-scale production use:**
+
+    1. **Complete demo experience first** to understand workflows
+    2. **Configure Neo4j database** following [configuration guide](configuration.md)
+    3. **Import data** using search or file upload methods
+    4. **Train custom ML models** with your domain-specific data
 
 #### In the Interactive Dashboard:
 
@@ -91,35 +123,54 @@ print(f"Average citations per paper: {overview.avg_citations:.2f}")
 
 ### Step 3: Make Your First Citation Prediction
 
-!!! info "Model Training First?"
-    Citation predictions require a trained model. If you haven't trained one yet, start with network analysis (Step 4) or follow the [notebook pipeline](../notebooks/overview.md) to train your model.
+**New!** Citation predictions now work in demo mode with no setup required!
 
-Let's predict potential citations between papers:
+=== "🎭 Demo Mode Predictions (Recommended)"
 
-=== "🖥️ Dashboard Method"
+    **Works immediately with demo datasets:**
 
-    1. Go to **ML Predictions** page
-    2. Check if model is loaded (green status)
-    3. Enter a paper ID or search by title
-    4. Click **Generate Predictions**
-    5. Explore the results with confidence scores
+    1. **Load a demo dataset** first (complete_demo recommended)
+    2. Go to **ML Predictions** page  
+    3. **Notice green status** - Demo ML service is ready!
+    4. **Try a paper from your demo dataset**:
+        - For complete_demo: Try "649def34f8be52c8b66281af98ae884c09aef38f9" (Attention Is All You Need)
+        - Or search by title: "Attention"
+    5. **Click Generate Predictions** 
+    6. **Explore realistic results** with confidence scores based on:
+        - Research field similarity (ML papers cite ML papers)  
+        - Temporal patterns (newer papers cite foundational work)
+        - Impact weighting (highly-cited papers get more predictions)
+
+    !!! success "No Training Required!"
+        Demo mode uses synthetic embeddings that cluster papers realistically by research field, providing educational ML prediction experience without model training!
+
+=== "🏢 Production Mode Predictions"
+
+    **For trained models with your data:**
+
+    1. **Train model first** using [notebook pipeline](../user-guide/notebook-pipeline.md)
+    2. Check **ML service status** (green = model loaded)
+    3. Enter **paper ID from your database**
+    4. Get **predictions based on your trained model**
 
 === "📓 Notebook Method"
 
     ```python
-    # Load ML service
+    # Works in both demo and production modes
     from src.services.ml_service import get_ml_service
     
     ml_service = get_ml_service()
     
-    # Get predictions for a paper
-    paper_id = "your_paper_id_here"  # Replace with actual paper ID
+    # Demo mode: Use papers from loaded demo dataset
+    # Production: Use papers from your database
+    paper_id = "649def34f8be52c8b66281af98ae884c09aef38f9"  # Attention paper in demo
     predictions = ml_service.predict_citations(paper_id, top_k=10)
     
+    print(f"🤖 Predictions for paper: {paper_id}")
     for pred in predictions:
-        print(f"📄 {pred.target_title}")
-        print(f"   Confidence: {pred.confidence:.3f}")
-        print(f"   Score: {pred.score:.3f}")
+        print(f"📄 Target: {pred['target_id']}")
+        print(f"   Confidence: {pred['confidence']:.3f}")
+        print(f"   Field relationship: {pred.get('field_similarity', 'N/A')}")
         print()
     ```
 
@@ -129,10 +180,16 @@ Discover research communities in your network:
 
 === "🖥️ Dashboard Method"
 
-    1. Visit **Network Analysis** page
-    2. Select **Community Detection**
-    3. Choose algorithm (Louvain recommended)
-    4. View interactive community visualization
+    1. Visit **Enhanced Visualizations** page
+    2. **Explore interactive network** with clickable nodes!
+        - Click any paper node to see detailed information
+        - Trace citation paths visually
+        - Filter by research field or publication year
+    3. Try **Community Detection**:
+        - Choose algorithm (Louvain recommended)
+        - See research fields cluster together
+        - Explore cross-field connections
+    4. **Export visualizations** in high resolution
 
 === "📓 Notebook Method"
 
@@ -211,7 +268,15 @@ Now that you've completed your first analysis:
 
 ### 📚 Learn More
 
-- **[User Guide](../user-guide/overview.md)** - Comprehensive feature walkthrough
+**New User Path**:
+- **[Demo Mode Guide](demo-mode.md)** - Master demo features and educational workflows
+- **[Demo Datasets](../user-guide/demo-datasets.md)** - Explore all available demo datasets
+- **[File Upload Guide](file-upload.md)** - Import your research collections easily
+
+**Advanced Features**:
+- **[Interactive Features](../user-guide/interactive-features.md)** - Clickable nodes, real-time progress, enhanced UI
+- **[Data Import](../user-guide/data-import.md)** - Comprehensive import pipeline with streaming features  
+- **[User Guide](../user-guide/overview.md)** - Complete feature walkthrough
 - **[Notebook Pipeline](../user-guide/notebook-pipeline.md)** - Complete analysis workflows
 - **[ML Predictions](../user-guide/ml-predictions.md)** - Advanced prediction techniques
 

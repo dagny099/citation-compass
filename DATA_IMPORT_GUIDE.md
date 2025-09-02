@@ -1,6 +1,14 @@
 # Data Import Pipeline Guide
 
+> 📚 **For the most comprehensive and up-to-date documentation, see the [Data Import Guide](http://127.0.0.1:8000/user-guide/data-import/) in our complete documentation (run `mkdocs serve` to access).**
+
 The Academic Citation Platform now includes a comprehensive data import pipeline for importing papers and citations from Semantic Scholar into your Neo4j database.
+
+## 🔗 **Related Documentation**
+- **[Data Import Pipeline](docs/user-guide/data-import.md)** - Complete comprehensive guide with all features
+- **[File Upload Guide](docs/getting-started/file-upload.md)** - Upload your research collections easily
+- **[Demo Mode](docs/getting-started/demo-mode.md)** - Try import features with sample data first
+- **[Interactive Features](docs/user-guide/interactive-features.md)** - Using import features in the web interface
 
 ## ✨ New Features
 

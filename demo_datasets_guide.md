@@ -1,5 +1,13 @@
 # Understanding Demo Datasets: Your Gateway to Academic Research Analytics
 
+> 📚 **For the most comprehensive and up-to-date documentation, see the [Demo Datasets Guide](http://127.0.0.1:8000/user-guide/demo-datasets/) and [Demo Mode Guide](http://127.0.0.1:8000/getting-started/demo-mode/) in our complete documentation (run `mkdocs serve` to access).**
+
+## 🔗 **Related Documentation**
+- **[Demo Datasets - User Guide](docs/user-guide/demo-datasets.md)** - Complete comprehensive guide to all demo features
+- **[Demo Mode - Getting Started](docs/getting-started/demo-mode.md)** - Quick start guide for immediate exploration
+- **[Interactive Features](docs/user-guide/interactive-features.md)** - Using demo datasets in the web interface
+- **[Quick Start Guide](docs/getting-started/quick-start.md)** - Demo-first workflow recommendations
+
 ## Introduction
 
 Have you ever wondered how researchers discover new papers to cite, or how machine learning can predict which studies will influence each other? The Demo Datasets in this Academic Citation Platform provide a perfect starting point to explore these questions without needing any technical setup or real data.
