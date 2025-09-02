@@ -224,24 +224,118 @@ with col1:
     elif import_method == "Paper IDs":
         st.subheader("📋 Import by Paper IDs")
         
-        paper_ids_text = st.text_area(
-            "Paper IDs (one per line)",
-            height=150,
-            help="Enter Semantic Scholar paper IDs, one per line"
-        )
+        # Add tabs for different input methods
+        id_input_tab1, id_input_tab2 = st.tabs(["📝 Manual Input", "📁 File Upload"])
         
-        paper_ids = [id.strip() for id in paper_ids_text.split('\n') if id.strip()]
+        paper_ids = []
         
+        with id_input_tab1:
+            paper_ids_text = st.text_area(
+                "Paper IDs (one per line)",
+                height=150,
+                help="Enter Semantic Scholar paper IDs, one per line"
+            )
+            
+            manual_paper_ids = [id.strip() for id in paper_ids_text.split('\n') if id.strip()]
+            if manual_paper_ids:
+                paper_ids = manual_paper_ids
+                st.info(f"✅ Found {len(paper_ids)} paper IDs from manual input")
+        
+        with id_input_tab2:
+            uploaded_file = st.file_uploader(
+                "Choose a file with paper IDs",
+                type=['txt', 'csv'],
+                help="Upload a text file with paper IDs (one per line) or CSV file with paper IDs in the first column"
+            )
+            
+            if uploaded_file is not None:
+                try:
+                    # Read the uploaded file
+                    if uploaded_file.type == "text/plain":
+                        # Handle text files
+                        content = str(uploaded_file.read(), "utf-8")
+                        uploaded_paper_ids = [id.strip() for id in content.split('\n') if id.strip()]
+                    else:
+                        # Handle CSV files
+                        import pandas as pd
+                        df = pd.read_csv(uploaded_file)
+                        # Take the first column as paper IDs
+                        uploaded_paper_ids = df.iloc[:, 0].astype(str).str.strip().tolist()
+                        uploaded_paper_ids = [id for id in uploaded_paper_ids if id and id != 'nan']
+                    
+                    if uploaded_paper_ids:
+                        paper_ids = uploaded_paper_ids
+                        st.success(f"✅ Successfully loaded {len(paper_ids)} paper IDs from {uploaded_file.name}")
+                        
+                        # Show preview of first few IDs
+                        with st.expander("🔍 Preview first 10 paper IDs"):
+                            for i, paper_id in enumerate(paper_ids[:10]):
+                                st.text(f"{i+1}. {paper_id}")
+                            if len(paper_ids) > 10:
+                                st.text(f"... and {len(paper_ids) - 10} more")
+                    else:
+                        st.error("❌ No valid paper IDs found in the uploaded file")
+                        
+                except Exception as e:
+                    st.error(f"❌ Error reading file: {str(e)}")
+        
+        # Show total count and warnings
         if paper_ids:
-            st.info(f"Found {len(paper_ids)} paper IDs")
-            if len(paper_ids) > 10:
-                st.warning(f"Large number of paper IDs may take significant time to process")
+            if len(paper_ids) > 100:
+                st.warning(f"⚠️ Large dataset ({len(paper_ids)} papers) may take significant time to process")
+            elif len(paper_ids) > 10:
+                st.info(f"📊 Medium dataset: {len(paper_ids)} papers")
+        
+        st.markdown("""
+        **📋 Supported File Formats:**
+        - **Text files (.txt)**: One paper ID per line
+        - **CSV files (.csv)**: Paper IDs in the first column
+        """)
+        
+        # Add sample file downloads
+        with st.expander("📁 Download Sample Files"):
+            st.markdown("Use these sample files to test the upload functionality:")
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                # Sample TXT file
+                try:
+                    with open("sample_data/sample_paper_ids.txt", "r") as f:
+                        sample_txt = f.read()
+                    
+                    st.download_button(
+                        label="📄 Download sample_paper_ids.txt",
+                        data=sample_txt,
+                        file_name="sample_paper_ids.txt",
+                        mime="text/plain",
+                        help="Sample text file with paper IDs (one per line)"
+                    )
+                except FileNotFoundError:
+                    st.info("Sample TXT file not available")
+            
+            with col2:
+                # Sample CSV file
+                try:
+                    with open("sample_data/sample_paper_ids.csv", "r") as f:
+                        sample_csv = f.read()
+                    
+                    st.download_button(
+                        label="📊 Download sample_paper_ids.csv", 
+                        data=sample_csv,
+                        file_name="sample_paper_ids.csv",
+                        mime="text/csv",
+                        help="Sample CSV file with paper IDs and metadata"
+                    )
+                except FileNotFoundError:
+                    st.info("Sample CSV file not available")
         
         st.markdown("""
         **Example Paper IDs:**
         ```
         649def34f8be52c8b66281af98ae884c09aef38f9
         204e3073870fae3d05bcbc2f6a8e263d9b72e776
+        2b8a9c9c9d8f7e6d5c4b3a29f8e7d6c5b4a39f8e
         ```
         """)
         
