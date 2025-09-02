@@ -389,12 +389,20 @@ class DataImportPipeline:
             papers_data = []
             processed_count = 0
             
+            # Create progress callback for API calls
+            def api_progress_callback(progress_info):
+                """Handle progress updates from API client."""
+                self.progress.processed_papers = progress_info.get('total_retrieved', 0)
+                self._notify_progress()
+
             # Use the API client's search functionality with pagination
             for paper_batch in self.api_client.search_papers_paginated(
                 query=search_query,
+                bulk=True,
                 limit=max_results,
                 fields=['paperId', 'title', 'abstract', 'citationCount', 'year', 
-                       'publicationDate', 'authors', 'venue', 's2FieldsOfStudy', 'citations', 'references']
+                       'publicationDate', 'authors', 'venue', 's2FieldsOfStudy', 'citations', 'references'],
+                progress_callback=api_progress_callback
             ):
                 if self._cancelled:
                     break
@@ -402,6 +410,7 @@ class DataImportPipeline:
                 while self._paused:
                     time.sleep(1)
                 
+                # paper_batch is now a list of papers from the paginated API
                 # Filter papers based on configuration
                 filtered_papers = self._filter_papers(paper_batch)
                 
@@ -411,7 +420,8 @@ class DataImportPipeline:
                     papers_data.extend(batch_results)
                     
                     processed_count += len(filtered_papers)
-                    self.progress.processed_papers = processed_count
+                    # Don't override the progress from API callback, just sync
+                    self.progress.processed_papers = max(self.progress.processed_papers, processed_count)
                     self._notify_progress()
                 
                 # Save state periodically

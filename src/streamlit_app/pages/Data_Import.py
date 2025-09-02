@@ -61,11 +61,37 @@ def update_progress_display(progress: ImportProgress):
     st.session_state.import_progress = progress
 
 
+import asyncio
+
 def run_import_in_background(config: ImportConfiguration, import_type: str, **kwargs):
-    """Run import operation in a separate thread."""
+    """Run import operation in a separate thread with async support."""
     try:
         pipeline = DataImportPipeline(config)
-        pipeline.add_progress_callback(update_progress_display)
+        
+        # Create enhanced progress callback with real-time updates
+        def enhanced_progress_callback(progress: ImportProgress):
+            """Enhanced callback with more detailed progress tracking."""
+            update_progress_display(progress)
+            # Force Streamlit to update more frequently for real-time feedback
+            if hasattr(st, 'session_state') and 'last_progress_update' in st.session_state:
+                import time
+                now = time.time()
+                if now - st.session_state.get('last_progress_update', 0) > 0.5:  # Update every 0.5 seconds
+                    st.session_state.last_progress_update = now
+                    try:
+                        # This will trigger a rerun only if UI is waiting
+                        if st.session_state.get('import_running', False):
+                            st.rerun()
+                    except:
+                        pass  # Ignore rerun errors in background thread
+        
+        pipeline.add_progress_callback(enhanced_progress_callback)
+        
+        # Initialize progress immediately
+        initial_progress = ImportProgress()
+        initial_progress.status = ImportStatus.IN_PROGRESS
+        initial_progress.start_time = datetime.now()
+        st.session_state.import_progress = initial_progress
         
         if import_type == "search":
             progress = pipeline.import_papers_by_search(
@@ -84,7 +110,12 @@ def run_import_in_background(config: ImportConfiguration, import_type: str, **kw
         error_progress = ImportProgress()
         error_progress.status = ImportStatus.FAILED
         error_progress.errors.append(str(e))
+        error_progress.end_time = datetime.now()
         st.session_state.import_progress = error_progress
+        
+        # Log the error for debugging
+        import logging
+        logging.error(f"Import failed: {e}", exc_info=True)
     
     finally:
         st.session_state.import_running = False
@@ -311,7 +342,7 @@ Year Range: {sample_config.year_range}
         
         st.subheader("📊 Import Progress")
         
-        # Status indicator
+        # Status indicator with enhanced information
         status_colors = {
             ImportStatus.PENDING: "🟡",
             ImportStatus.IN_PROGRESS: "🔵", 
@@ -321,47 +352,129 @@ Year Range: {sample_config.year_range}
             ImportStatus.PAUSED: "🟤"
         }
         
-        st.markdown(f"**Status:** {status_colors.get(progress.status, '⚪')} {progress.status.value.title()}")
+        # Create two columns for status and elapsed time
+        status_col1, status_col2 = st.columns([2, 1])
         
-        # Progress bars
-        if progress.total_papers > 0:
-            papers_progress = progress.papers_progress_percent / 100.0
-            st.progress(papers_progress, text=f"Papers: {progress.processed_papers}/{progress.total_papers} ({progress.papers_progress_percent:.1f}%)")
+        with status_col1:
+            st.markdown(f"**Status:** {status_colors.get(progress.status, '⚪')} {progress.status.value.title()}")
         
-        if progress.total_citations > 0:
-            citations_progress = progress.citations_progress_percent / 100.0
-            st.progress(citations_progress, text=f"Citations: {progress.processed_citations}/{progress.total_citations} ({progress.citations_progress_percent:.1f}%)")
+        with status_col2:
+            # Elapsed time with live updates
+            if progress.elapsed_time:
+                elapsed_str = str(progress.elapsed_time).split('.')[0]
+                st.markdown(f"**Elapsed:** {elapsed_str}")
+            elif progress.start_time and progress.status == ImportStatus.IN_PROGRESS:
+                # Calculate live elapsed time for in-progress imports
+                from datetime import datetime
+                live_elapsed = datetime.now() - progress.start_time
+                elapsed_str = str(live_elapsed).split('.')[0]
+                st.markdown(f"**Elapsed:** {elapsed_str}")
         
-        # Statistics
+        # Enhanced progress bars with better visualization
+        progress_container = st.container()
+        
+        with progress_container:
+            # Papers progress
+            if progress.total_papers > 0:
+                papers_progress = progress.papers_progress_percent / 100.0
+                st.progress(
+                    papers_progress, 
+                    text=f"📄 Papers: {progress.processed_papers:,}/{progress.total_papers:,} ({progress.papers_progress_percent:.1f}%)"
+                )
+            elif progress.processed_papers > 0:
+                # Show indeterminate progress for unknown total
+                st.progress(0.0, text=f"📄 Papers: {progress.processed_papers:,} processed (searching...)")
+            
+            # Citations progress
+            if progress.total_citations > 0:
+                citations_progress = progress.citations_progress_percent / 100.0
+                st.progress(
+                    citations_progress, 
+                    text=f"🔗 Citations: {progress.processed_citations:,}/{progress.total_citations:,} ({progress.citations_progress_percent:.1f}%)"
+                )
+            elif progress.processed_citations > 0:
+                st.progress(0.0, text=f"🔗 Citations: {progress.processed_citations:,} processed")
+            
+            # Overall progress (if we have totals for both)
+            if progress.total_papers > 0 and progress.total_citations > 0:
+                overall_progress = progress.overall_progress_percent / 100.0
+                st.progress(
+                    overall_progress,
+                    text=f"🎯 Overall Progress: {progress.overall_progress_percent:.1f}%"
+                )
+        
+        # Enhanced statistics with delta indicators
+        st.subheader("📈 Statistics")
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            st.metric("Papers Created", progress.papers_created)
+            # Show rate if import is in progress
+            if progress.status == ImportStatus.IN_PROGRESS and progress.elapsed_time:
+                papers_per_sec = progress.papers_created / progress.elapsed_time.total_seconds()
+                st.metric(
+                    "Papers Created", 
+                    f"{progress.papers_created:,}",
+                    delta=f"{papers_per_sec:.1f}/sec" if papers_per_sec > 0 else None
+                )
+            else:
+                st.metric("Papers Created", f"{progress.papers_created:,}")
+        
         with col2:
-            st.metric("Citations Created", progress.citations_created)
+            if progress.status == ImportStatus.IN_PROGRESS and progress.elapsed_time:
+                citations_per_sec = progress.citations_created / progress.elapsed_time.total_seconds()
+                st.metric(
+                    "Citations Created", 
+                    f"{progress.citations_created:,}",
+                    delta=f"{citations_per_sec:.1f}/sec" if citations_per_sec > 0 else None
+                )
+            else:
+                st.metric("Citations Created", f"{progress.citations_created:,}")
+        
         with col3:
-            st.metric("Authors Created", progress.authors_created)
+            st.metric("Authors Created", f"{progress.authors_created:,}")
+        
         with col4:
-            st.metric("Venues Created", progress.venues_created)
+            st.metric("Venues Created", f"{progress.venues_created:,}")
         
-        # Elapsed time
-        if progress.elapsed_time:
-            st.markdown(f"**Elapsed Time:** {str(progress.elapsed_time).split('.')[0]}")
+        # Performance indicators
+        if progress.status == ImportStatus.IN_PROGRESS and progress.elapsed_time:
+            st.subheader("⚡ Performance")
+            perf_col1, perf_col2, perf_col3 = st.columns(3)
+            
+            total_seconds = progress.elapsed_time.total_seconds()
+            if total_seconds > 0:
+                with perf_col1:
+                    items_per_sec = (progress.papers_created + progress.citations_created) / total_seconds
+                    st.metric("Items/Second", f"{items_per_sec:.1f}")
+                
+                with perf_col2:
+                    if progress.total_papers > 0 and progress.papers_progress_percent > 0:
+                        estimated_total_time = total_seconds * (100 / progress.papers_progress_percent)
+                        eta_seconds = estimated_total_time - total_seconds
+                        eta_str = f"{int(eta_seconds//60)}m {int(eta_seconds%60)}s"
+                        st.metric("ETA", eta_str)
+                
+                with perf_col3:
+                    completion_rate = progress.overall_progress_percent if progress.overall_progress_percent > 0 else progress.papers_progress_percent
+                    st.metric("Completion", f"{completion_rate:.1f}%")
         
-        # Errors and warnings
-        if progress.errors:
-            with st.expander("❌ Errors", expanded=True):
-                for error in progress.errors[-5:]:  # Show last 5 errors
-                    st.error(error)
-                if len(progress.errors) > 5:
-                    st.info(f"... and {len(progress.errors) - 5} more errors")
+        # Errors and warnings with better formatting
+        error_warning_container = st.container()
         
-        if progress.warnings:
-            with st.expander("⚠️ Warnings"):
-                for warning in progress.warnings[-10:]:  # Show last 10 warnings
-                    st.warning(warning)
-                if len(progress.warnings) > 10:
-                    st.info(f"... and {len(progress.warnings) - 10} more warnings")
+        with error_warning_container:
+            if progress.errors:
+                with st.expander(f"❌ Errors ({len(progress.errors)})", expanded=len(progress.errors) <= 3):
+                    for i, error in enumerate(progress.errors[-5:], 1):  # Show last 5 errors
+                        st.error(f"**Error {len(progress.errors)-5+i}:** {error}")
+                    if len(progress.errors) > 5:
+                        st.info(f"... and {len(progress.errors) - 5} more errors (check logs for details)")
+            
+            if progress.warnings:
+                with st.expander(f"⚠️ Warnings ({len(progress.warnings)})"):
+                    for i, warning in enumerate(progress.warnings[-10:], 1):  # Show last 10 warnings
+                        st.warning(f"**Warning {len(progress.warnings)-10+i}:** {warning}")
+                    if len(progress.warnings) > 10:
+                        st.info(f"... and {len(progress.warnings) - 10} more warnings")
 
 with col2:
     st.subheader("💾 Database Status")
@@ -435,11 +548,31 @@ with col2:
                 mime="application/json"
             )
 
-# Auto-refresh for active imports
-if st.session_state.import_running:
-    # Add a small delay and rerun to update progress
-    time.sleep(2)
-    st.rerun()
+# Auto-refresh for active imports with more responsive updates
+if st.session_state.get('import_running', False):
+    # Initialize last update time if not exists
+    if 'last_progress_update' not in st.session_state:
+        st.session_state.last_progress_update = time.time()
+    
+    # Check if we should update (every 1 second instead of 2)
+    now = time.time()
+    time_since_update = now - st.session_state.last_progress_update
+    
+    if time_since_update >= 1.0:  # Update every 1 second
+        st.session_state.last_progress_update = now
+        
+        # Add a status indicator for real-time updates
+        if st.session_state.get('import_progress'):
+            progress = st.session_state.import_progress
+            if progress.status == ImportStatus.IN_PROGRESS:
+                # Show a small "live" indicator
+                st.sidebar.success("🔴 Live Updates Active")
+        
+        st.rerun()
+    else:
+        # Sleep for remaining time to next update
+        time.sleep(max(0.1, 1.0 - time_since_update))
+        st.rerun()
 
 # Footer with tips
 st.markdown("---")

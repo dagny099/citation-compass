@@ -13,7 +13,7 @@ API interactions across the integrated platform.
 import asyncio
 import logging
 import time
-from typing import Dict, List, Optional, Generator, Union, Tuple, Any
+from typing import Dict, List, Optional, Generator, Union, Tuple, Any, Callable
 from urllib.parse import urlencode
 import json
 from dataclasses import dataclass
@@ -391,6 +391,111 @@ class UnifiedSemanticScholarClient:
         response = self._make_request(url, params)
         return response.json()
     
+    def search_papers_paginated(self, query: str, bulk: bool = True, fields: List[str] = None,
+                               limit: int = None, progress_callback: Optional[callable] = None) -> Generator[List[Dict], None, None]:
+        """
+        Search for papers with automatic pagination and streaming results.
+        
+        This method provides immediate results as they become available, instead of
+        waiting for all results to be fetched. Perfect for UI integration with progress tracking.
+        
+        Args:
+            query: Search query (paper title, keywords, etc.)
+            bulk: Use bulk search endpoint for more results
+            fields: List of fields to retrieve for each paper
+            limit: Maximum total number of results to return
+            progress_callback: Optional callback function to receive progress updates
+            
+        Yields:
+            Batches of paper dictionaries as they are fetched from the API
+        """
+        endpoint = (self.config.endpoints['paper_search_bulk'] if bulk 
+                   else self.config.endpoints['paper_search'])
+        endpoint_url = f"{self.config.base_url}{endpoint}"
+        
+        # Convert fields list to comma-separated string
+        fields_str = ','.join(fields) if fields else self.config.paper_fields
+        
+        params = {
+            'query': query,
+            'fields': fields_str
+        }
+        
+        self.logger.info(f"Starting paginated search for: '{query}' (bulk={bulk}, limit={limit})")
+        
+        total_retrieved = 0
+        max_retrieve = limit or self.config.max_pagination_limit
+        batch_count = 0
+        
+        try:
+            for paper_data in self.paginate_api_requests(
+                endpoint_url, 
+                params, 
+                page_size=self.config.default_page_size
+            ):
+                # Collect papers in batches for better performance
+                if not hasattr(self, '_current_search_batch'):
+                    self._current_search_batch = []
+                
+                self._current_search_batch.append(paper_data)
+                total_retrieved += 1
+                
+                # Yield batch when it reaches a reasonable size or we hit limits
+                if (len(self._current_search_batch) >= self.config.default_page_size or 
+                    total_retrieved >= max_retrieve):
+                    
+                    batch_count += 1
+                    batch_size = len(self._current_search_batch)
+                    
+                    # Call progress callback if provided
+                    if progress_callback:
+                        try:
+                            progress_info = {
+                                'total_retrieved': total_retrieved,
+                                'batch_count': batch_count,
+                                'batch_size': batch_size,
+                                'query': query
+                            }
+                            progress_callback(progress_info)
+                        except Exception as e:
+                            self.logger.warning(f"Progress callback failed: {e}")
+                    
+                    # Yield the current batch
+                    yield list(self._current_search_batch)
+                    self._current_search_batch = []
+                    
+                    # Check if we've hit our limit
+                    if total_retrieved >= max_retrieve:
+                        break
+            
+            # Yield any remaining papers in the final batch
+            if hasattr(self, '_current_search_batch') and self._current_search_batch:
+                batch_count += 1
+                if progress_callback:
+                    try:
+                        progress_info = {
+                            'total_retrieved': total_retrieved,
+                            'batch_count': batch_count,
+                            'batch_size': len(self._current_search_batch),
+                            'query': query,
+                            'final_batch': True
+                        }
+                        progress_callback(progress_info)
+                    except Exception as e:
+                        self.logger.warning(f"Progress callback failed: {e}")
+                
+                yield list(self._current_search_batch)
+                self._current_search_batch = []
+            
+            self.logger.info(f"Paginated search completed: {total_retrieved} papers retrieved in {batch_count} batches")
+            
+        except Exception as e:
+            self.logger.error(f"Error in paginated search for '{query}': {e}")
+            # Clean up batch storage
+            if hasattr(self, '_current_search_batch'):
+                delattr(self, '_current_search_batch')
+            raise
+    
     def get_paper_details(self, paper_id: str, fields: str = None) -> Optional[Dict]:
         """
         Get detailed information for a single paper.
@@ -535,7 +640,7 @@ class UnifiedSemanticScholarClient:
     def paginate_api_requests(self, endpoint_url: str, params: Dict = None,
                              offset_key: str = 'offset', limit_key: str = 'limit',
                              next_key: str = 'next', data_key: str = 'data',
-                             page_size: int = None) -> Generator[Dict, None, None]:
+                             page_size: int = None, progress_callback: Optional[Callable] = None) -> Generator[Dict, None, None]:
         """
         Generic pagination handler for any Semantic Scholar API endpoint.
         
@@ -550,6 +655,7 @@ class UnifiedSemanticScholarClient:
             next_key: Key in response containing next offset
             data_key: Key in response containing data array
             page_size: Items per page (uses config default if None)
+            progress_callback: Optional callback to receive pagination progress updates
             
         Yields:
             Individual items from paginated responses
@@ -558,6 +664,7 @@ class UnifiedSemanticScholarClient:
         offset = 0
         total_retrieved = 0
         page_size = page_size or self.config.default_page_size
+        page_count = 0
         
         while True:
             # Prepare request parameters
@@ -584,6 +691,22 @@ class UnifiedSemanticScholarClient:
                 if not items:
                     self.logger.debug("Pagination complete: empty response")
                     break
+                
+                page_count += 1
+                
+                # Call progress callback before yielding items
+                if progress_callback:
+                    try:
+                        progress_info = {
+                            'current_offset': offset,
+                            'page_count': page_count,
+                            'items_in_page': len(items),
+                            'total_retrieved': total_retrieved,
+                            'endpoint_url': endpoint_url
+                        }
+                        progress_callback(progress_info)
+                    except Exception as e:
+                        self.logger.warning(f"Pagination progress callback failed: {e}")
                 
                 # Yield each item
                 for item in items:
