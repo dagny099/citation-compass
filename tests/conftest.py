@@ -30,12 +30,12 @@ from src.data.api_config import Neo4jConfig, MLConfig
 def sample_paper_data() -> Dict[str, Any]:
     """Sample paper data for testing."""
     return {
-        "paperId": "paper123",
-        "title": "Advanced ML Techniques for Citation Prediction",
+        "paper_id": "paper123",
+        "title": "Advanced Machine Learning Techniques for Citation Prediction",
         "abstract": "Novel approaches to predicting citations using GNNs.",
         "year": 2023,
         "authors": ["Dr. Jane Smith", "Prof. John Doe"],
-        "citationCount": 42,
+        "citation_count": 42,
         "fields": ["Computer Science", "Machine Learning"]
     }
 
@@ -43,11 +43,11 @@ def sample_paper_data() -> Dict[str, Any]:
 def sample_author_data() -> Dict[str, Any]:
     """Sample author data for testing."""
     return {
-        "authorId": "author123",
+        "author_id": "author123",
         "name": "Dr. Jane Smith",
-        "paperCount": 45,
-        "citationCount": 1250,
-        "hIndex": 18
+        "paper_count": 45,
+        "citation_count": 1250,
+        "h_index": 18
     }
 
 @pytest.fixture

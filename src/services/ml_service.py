@@ -39,9 +39,22 @@ try:
         torch.serialization.add_safe_globals([
             numpy.ndarray,
             numpy.dtype,
-            numpy.core.multiarray._reconstruct,
-            numpy.core.multiarray.scalar,
         ])
+        # Try to add multiarray functions with fallback for newer numpy versions
+        try:
+            torch.serialization.add_safe_globals([
+                numpy._core.multiarray._reconstruct,
+                numpy._core.multiarray.scalar,
+            ])
+        except AttributeError:
+            # Fallback for older numpy versions
+            try:
+                torch.serialization.add_safe_globals([
+                    numpy.core.multiarray._reconstruct,
+                    numpy.core.multiarray.scalar,
+                ])
+            except AttributeError:
+                pass
     except (ImportError, AttributeError):
         pass
         

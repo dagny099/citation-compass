@@ -188,7 +188,12 @@ markers = [
     "analytics: marks tests as analytics tests",
     "performance: marks tests as performance tests",
     "stress: marks tests as stress tests",
+    "ml: marks tests as ML model tests",
+    "network: marks tests as network analysis tests",
+    "api: marks tests that require API access",
+    "database: marks tests that require database connection",
 ]
+asyncio_default_fixture_loop_scope = "function"
 
 [tool.coverage.run]
 source = ["src"]

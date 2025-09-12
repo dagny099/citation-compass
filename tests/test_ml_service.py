@@ -152,7 +152,7 @@ class TestTransEModelService:
         self.temp_dir = tempfile.mkdtemp()
         self.model_path = Path(self.temp_dir) / "test_model.pt"
         self.entity_mapping_path = Path(self.temp_dir) / "entity_mapping.pkl" 
-        self.metadata_path = Path(self.temp_dir) / "metadata.pkl"
+        self.metadata_path = Path(self.temp_dir) / "metadata.json"
         
         # Create test entity mapping
         self.test_entity_mapping = {
@@ -170,11 +170,31 @@ class TestTransEModelService:
         test_metadata = {
             "training_date": "2024-01-01",
             "num_epochs": 100,
-            "loss": 0.15
+            "loss": 0.15,
+            "dataset": {
+                "num_papers": 5,
+                "num_citations": 10,
+                "total_training_samples": 100
+            },
+            "model_config": {
+                "embedding_dim": 8,
+                "margin": 1.0,
+                "learning_rate": 0.01,
+                "norm_p": 1
+            },
+            "training_config": {
+                "batch_size": 1024,
+                "epochs": 100
+            },
+            "training_results": {
+                "epochs_completed": 100,
+                "final_loss": 0.15
+            }
         }
         
-        with open(self.metadata_path, 'wb') as f:
-            pickle.dump(test_metadata, f)
+        import json
+        with open(self.metadata_path, 'w') as f:
+            json.dump(test_metadata, f)
         
         # Create test model checkpoint
         model = TransEModel(num_entities=5, embedding_dim=8)

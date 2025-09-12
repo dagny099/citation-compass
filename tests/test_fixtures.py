@@ -37,17 +37,17 @@ class TestDataFixtures:
     def test_sample_author_data_fixture(self, sample_author_data):
         """Test sample author data fixture."""
         assert isinstance(sample_author_data, dict)
-        assert "authorId" in sample_author_data
+        assert "author_id" in sample_author_data
         assert "name" in sample_author_data
         assert sample_author_data["name"] == "Dr. Jane Smith"
-        assert sample_author_data["paperCount"] == 45
+        assert sample_author_data["paper_count"] == 45
 
     def test_sample_paper_data_fixture(self, sample_paper_data):
         """Test sample paper data fixture.""" 
         assert isinstance(sample_paper_data, dict)
-        assert "paperId" in sample_paper_data
+        assert "paper_id" in sample_paper_data
         assert "title" in sample_paper_data
-        assert sample_paper_data["paperId"] == "paper123"
+        assert sample_paper_data["paper_id"] == "paper123"
         assert sample_paper_data["year"] == 2023
 
     def test_sample_venue_data_fixture(self, sample_venue_data):
