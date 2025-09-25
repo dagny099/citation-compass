@@ -2,7 +2,7 @@
 
 **ML-powered research discovery platform predicting citation relationships using TransE embeddings on 12K+ academic papers. Interactive visualization, community detection, and temporal analysis with Neo4j graph database backend.**
 
-*Combines network analysis, machine learning, and data visualization to accelerate academic research discovery.*
+*Combines network analysis, machine learning, and data visualization to facilitate academic research discovery.*
 
 ![Citation Network](docs/assets/images/logo.svg)
 
