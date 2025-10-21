@@ -4,12 +4,11 @@
 
 *Combines network analysis, machine learning, and data visualization to facilitate academic research discovery.*
 
-![Citation Network](docs/assets/images/logo.svg)
+An interactive platform for analyzing academic citation networks and predicting research connections using machine learning.
 
-Interactive platform for analyzing academic citation networks and predicting research connections using machine learning.
-
-📚 **[View Complete Documentation](http://127.0.0.1:8000/)** (after running `mkdocs serve`)  
-🎯 **[Try Interactive Demo](http://localhost:8501/)** (after running `streamlit run app.py`)
+📚 **[View Complete Documentation](https://docs.barbhs.com/citation-compass/)** 
+🎯 **[Try Interactive Demo](https://cartography.barbhs.com/)** 
+🩺 **[Neo4j Ping Playbook](docs/neo4j-ping-guide.md)** 
 
 ## 🚀 What This Does
 
@@ -67,6 +66,15 @@ Interactive platform for analyzing academic citation networks and predicting res
    mkdocs serve
    # Opens at http://127.0.0.1:8000/
    ```
+
+*A note about how to register your environment as a kernel in Jupyter:*. 
+*Pre-req: `pip install ipykernel`*   
+
+```
+python -m ipykernel install --user --name=myenv --display-name="Python (myenv)"
+
+# The --user flag installs it for the current user, and --name is a unique internal name, while --display-name is what you'll see in the Jupyter UI. 
+```
 
 ### Installation Options
 - **Quick Install**: `pip install -e ".[all]"` (recommended)
