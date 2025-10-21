@@ -67,14 +67,13 @@ An interactive platform for analyzing academic citation networks and predicting 
    # Opens at http://127.0.0.1:8000/
    ```
 
-*A note about how to register your environment as a kernel in Jupyter:*. 
-*Pre-req: `pip install ipykernel`*   
+   *A note about how to register your environment as a kernel in Jupyter:*. 
+   *Pre-req: `pip install ipykernel`*   
+   ```
+   python -m ipykernel install --user --name=myenv --display-name="Python (myenv)"
 
-```
-python -m ipykernel install --user --name=myenv --display-name="Python (myenv)"
-
-# The --user flag installs it for the current user, and --name is a unique internal name, while --display-name is what you'll see in the Jupyter UI. 
-```
+   # The --user flag installs it for the current user, and --name is a unique internal name, while --display-name is what you'll see in the Jupyter UI. 
+   ```
 
 ### Installation Options
 - **Quick Install**: `pip install -e ".[all]"` (recommended)
