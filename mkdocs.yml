@@ -157,8 +157,27 @@ nav:
           - ⚙️ Phase 4 Implementation: archived_phase_4_implementation.md
   - 📓 Notebooks:
       - 📋 Overview: notebooks/overview.md
+      - 01 – Comprehensive Exploration: notebooks/01-comprehensive-exploration.md
+      - 02 – Model Training Pipeline: notebooks/02-model-training-pipeline.md
+      - 03 – Prediction Evaluation: notebooks/03-prediction-evaluation.md
+      - 04 – Narrative Presentation: notebooks/04-narrative-presentation.md
   - 🛠️ Setup: setup.md
   - 🏗️ Architecture: architecture.md
+
+  - 🗄️ Archived:
+      - 📊 Visual Assets Index: VISUAL_ASSETS_INDEX.md
+      - 🩺 Neo4j Ping Playbook: neo4j-ping-guide.md
+      - 📁 Archive:
+          - Contextual Examples: archive/CONTEXTUAL_EXAMPLES.md
+          - Example Papers for Exploration: archive/EXAMPLE_PAPERS_FOR_EXPLORATION.md
+          - Import Standards: archive/IMPORT_STANDARDS.md
+          - Performance Improvements: archive/PERFORMANCE_IMPROVEMENTS.md
+      - 🧪 Development Docs:
+          - Data Import Guide: development/DATA_IMPORT_GUIDE.md
+          - File Upload Guide: development/FILE_UPLOAD_GUIDE.md
+          - Streamlit README: development/STREAMLIT_README.md
+          - Testing Instructions: development/TESTING_INSTRUCTIONS.md
+      - ⚙️ Includes: includes/mkdocs.md
 
 watch:
   - src
