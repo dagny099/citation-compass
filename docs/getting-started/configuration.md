@@ -1,6 +1,6 @@
 # Configuration Guide
 
-Configure your Academic Citation Platform for optimal performance and security.
+Configure Citation Compass for optimal performance and security.
 
 ## Environment Configuration
 
@@ -100,7 +100,7 @@ SEMANTIC_SCHOLAR_TIMEOUT=30      # Request timeout in seconds
 
 ```env
 # Application Settings
-APP_NAME=Academic Citation Platform
+APP_NAME=Citation Compass
 APP_VERSION=0.1.0
 DEBUG=false
 LOG_LEVEL=INFO
@@ -211,7 +211,7 @@ streamlit run app.py --check-config
 
 ```env title=".env.production"
 # Production Configuration
-APP_NAME=Academic Citation Platform
+APP_NAME=Citation Compass
 DEBUG=false
 LOG_LEVEL=INFO
 SECRET_KEY=your-production-secret-key
@@ -237,7 +237,7 @@ ML_DEVICE=cuda
 
 ```env title=".env.development"
 # Development Configuration
-APP_NAME=Academic Citation Platform (Dev)
+APP_NAME=Citation Compass (Dev)
 DEBUG=true
 LOG_LEVEL=DEBUG
 

@@ -1,7 +1,7 @@
-site_name: Academic Citation Platform
-site_description: Comprehensive platform for academic citation network analysis, prediction, and exploration
+site_name: Citation Compass
+site_description: Tools for exploring academic citation networks, predictions, and analysis
 site_url: https://citationcompass.barbhs.com
-site_author: Academic Citation Platform Team
+site_author: Citation Compass Team
 copyright: Copyright © 2025 Academic Citation Platform Team
 
 repo_name: dagny099/citation-compass
@@ -148,7 +148,7 @@ nav:
       - 📊 Results Interpretation: user-guide/results-interpretation.md
       - 📓 Notebook Pipeline: user-guide/notebook-pipeline.md
   - 🔧 Developer Guide:
-      - 🏗️ Architecture: developer-guide/architecture.md
+      - 🏗️ Architecture: architecture.md
       - 📚 API Reference: api.md
       - 🧩 Models: api/models.md
       - ⚙️ Services: api/services.md

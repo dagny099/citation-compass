@@ -1,6 +1,6 @@
 # 🔍 Academic Citation Network: Fascinating Papers to Explore
 
-Welcome to the Academic Citation Platform! This document showcases compelling papers from our citation network that demonstrate the platform's power and versatility. Each example represents different aspects of research that you can explore, analyze, and discover connections between.
+Welcome to Citation Compass. This document lists example papers from our citation network that demonstrate capabilities. Each example represents different aspects of research that you can explore, analyze, and connect.
 
 ## 🌟 Start Here: The Original Seed Paper
 

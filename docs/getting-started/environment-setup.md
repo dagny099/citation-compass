@@ -1,6 +1,6 @@
 # Environment Setup & Validation
 
-Ensure your Academic Citation Platform environment is properly configured and ready for analysis.
+Ensure your Citation Compass environment is properly configured and ready for analysis.
 
 ## Database Initialization
 
@@ -332,4 +332,4 @@ Once your environment is validated:
 
 !!! success "Environment Ready!"
     
-    Your Academic Citation Platform environment is now properly configured and validated. You're ready to start analyzing citation networks! 🎉
+    Your Citation Compass environment is now properly configured and validated. You're ready to start analyzing citation networks!

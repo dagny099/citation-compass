@@ -1,8 +1,12 @@
-# Academic Citation Platform Architecture
+# Citation Compass Architecture
 
 ## Overview
 
-The Academic Citation Platform is a comprehensive system for academic citation network analysis, prediction, and exploration. It integrates the best features from three reference codebases to provide a unified solution for citation analysis, machine learning predictions, and interactive visualization.
+Citation Compass is a system for academic citation network analysis, prediction, and exploration. It integrates features from multiple components to provide a unified solution for citation analysis, machine learning predictions, and interactive visualization.
+
+![System architecture](assets/diagrams/system-architecture.png){ width="900" }
+
+![User journey flow](assets/diagrams/user-journey-flow.png){ width="900" }
 
 ## System Architecture
 

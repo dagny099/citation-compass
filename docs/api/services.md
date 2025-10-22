@@ -1,6 +1,6 @@
 # Services API Reference
 
-Comprehensive API documentation for the Academic Citation Platform service layer.
+Comprehensive API documentation for the Citation Compass service layer.
 
 *Note: Service documentation is currently being updated. The service implementations are available in the `src/services/` directory.*
 

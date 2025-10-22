@@ -1,6 +1,6 @@
 # Documentation Development Guide
 
-This directory contains the comprehensive documentation for the Academic Citation Platform, built with **Material for MkDocs**.
+This directory contains the comprehensive documentation for Citation Compass, built with **Material for MkDocs**.
 
 ## 📁 Documentation Structure
 
@@ -278,8 +278,8 @@ Key configuration options in `mkdocs.yml`:
 
 ```yaml
 # Site information
-site_name: Academic Citation Platform
-site_description: Comprehensive platform for academic citation analysis
+site_name: Citation Compass
+site_description: Tools for academic citation analysis
 site_url: https://citationcompass.barbhs.com
 
 # Repository

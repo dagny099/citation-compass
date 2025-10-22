@@ -1,12 +1,12 @@
-# Academic Citation Platform
+# Citation Compass
 
 <div class="hero-section" markdown>
 
 <div align="center" markdown>
 
-![Citation Platform Logo](assets/images/logo.svg){ width="200" .hero-logo }
+![Citation Compass Logo](assets/images/logo.svg){ width="200" .hero-logo }
 
-<h2 class="hero-tagline">Comprehensive platform for academic citation network analysis, prediction, and exploration</h2>
+<h2 class="hero-tagline">Tools for exploring citation networks, predictions, and analysis</h2>
 
 <div class="badge-container" markdown>
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
@@ -27,9 +27,9 @@
 
 ---
 
-## 🚀 What This Platform Does
+## What It Does
 
-The **Academic Citation Platform** is a sophisticated research tool that combines **machine learning**, **graph analysis**, and **interactive visualization** to provide deep insights into academic citation networks.
+**Citation Compass** combines **machine learning**, **graph analysis**, and **interactive visualization** to help you analyze academic citation networks.
 
 ### :material-brain: **ML-Powered Predictions**
 Discover hidden connections between research papers using advanced **TransE embeddings** and citation prediction algorithms.
@@ -157,7 +157,7 @@ Get up and running in minutes:
     
     Complete walkthrough of interactive features and workflows
 
--   [:material-code-braces: **Developer Guide**](developer-guide/architecture.md)
+-   [:material-code-braces: **Developer Guide**](architecture.md)
     
     Architecture, APIs, and extending the platform
 

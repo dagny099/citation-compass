@@ -7,12 +7,12 @@ Get running with your first citation analysis in under 10 minutes!
 Choose your path:
 
 **🎭 Demo Mode First!** (recommended for all users):
-- ✅ [Installation](installation.md) - Platform installed with `pip install -e ".[all]"`
-- ✅ **Zero setup required** - Use demo datasets to explore features instantly!
-- ✅ **Learn all features** - Perfect for understanding capabilities before production
+- ✅ [Installation](installation.md) - Install with `pip install -e ".[all]"`
+- ✅ **No database required** - Use demo datasets to explore features
+- ✅ **Learn features** - Get familiar before full setup
 
 **🏢 Production Setup** (after mastering demo mode):
-- ✅ [Installation](installation.md) - Platform installed with `pip install -e ".[all]"`
+- ✅ [Installation](installation.md) - Install with `pip install -e ".[all]"`
 - ✅ [Configuration](configuration.md) - `.env` file configured with Neo4j credentials
 - ✅ [Environment Setup](environment-setup.md) - Database connection validated
 - ✅ [Demo Experience](demo-mode.md) - Understanding gained from hands-on exploration
@@ -53,7 +53,7 @@ Once the platform is running, choose how you want to explore citation networks:
     2. **Browse curated datasets**: 
         - **complete_demo**: 13 high-impact papers across AI, neuroscience, physics
         - **minimal_demo_5papers**: Quick 5-paper network for fast testing
-    3. **Click "Load Dataset"** for instant sample data (loads in 2-3 seconds)
+    3. **Click "Load Dataset"** to load sample data
     4. **Explore all features** with realistic academic data:
         - ML predictions with synthetic embeddings
         - Interactive network visualizations with clickable nodes
@@ -284,7 +284,7 @@ Now that you've completed your first analysis:
 
 - **[Model Training Notebook](../notebooks/overview.md)** - Train models for your domain
 - **[API Reference](../api/services.md)** - Scale for large datasets
-- **[Developer Guide](../developer-guide/architecture.md)** - Connect with other tools
+- **[Developer Guide](../architecture.md)** - Connect with other tools
 
 ### 🤝 Get Help
 

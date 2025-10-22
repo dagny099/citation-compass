@@ -1,4 +1,4 @@
-# 📚 Academic Citation Platform - Streamlit App
+# 📚 Citation Compass - Streamlit App
 
 A comprehensive web application for academic citation analysis powered by machine learning.
 
@@ -263,7 +263,7 @@ STREAMLIT_LOGGER_LEVEL=debug streamlit run app.py
 
 ## 📄 License
 
-This project is part of the Academic Citation Platform and follows the same licensing terms.
+This project is part of Citation Compass and follows the same licensing terms.
 
 ---
 

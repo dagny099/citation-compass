@@ -1,6 +1,6 @@
 # Notebook Pipeline Overview
 
-The Academic Citation Platform provides a comprehensive **4-notebook analysis pipeline** that guides you through complete citation network analysis, from initial exploration to compelling presentation of results.
+Citation Compass provides a comprehensive **4-notebook analysis pipeline** that guides you through citation network analysis, from initial exploration to presentation of results.
 
 ## 📊 Pipeline Architecture
 
@@ -112,11 +112,11 @@ flowchart TD
 ### **Notebook 4: Narrative Presentation**
 [:material-presentation: View Details](04-narrative-presentation.md)
 
-**Purpose**: Story-driven presentation with compelling visualizations
+**Purpose**: Story-driven presentation with clear visualizations
 
 **Key Features**:
-- **"Scholarly Matchmaking" Story**: 4-act dramatic structure
-- **Portfolio Visualizations**: Publication-ready graphics
+- **"Scholarly Matchmaking" Story**: 4-act structure
+- **Presentation-ready Visualizations**: Publication-quality graphics
 - **Academic Reporting**: LaTeX tables and statistical summaries
 - **Interactive Dashboards**: Plotly-based exploration tools
 - **Export Integration**: Multiple format support (PDF, HTML, LaTeX)

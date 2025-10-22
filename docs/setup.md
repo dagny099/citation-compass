@@ -1,7 +1,7 @@
 # Setup Guide
 
-!!! info "🚀 Setup Overview"
-    Get your Academic Citation Platform running in 4 simple steps: Clone → Configure → Database → Launch
+!!! info "Setup Overview"
+    Get Citation Compass running in 4 simple steps: Clone → Configure → Database → Launch
 
 ```mermaid
 flowchart LR
@@ -29,8 +29,8 @@ flowchart LR
 
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd academic-citation-platform
+git clone https://github.com/dagny099/citation-compass.git
+cd citation-compass
 
 # Create virtual environment
 python -m venv venv
@@ -352,16 +352,16 @@ LOG_LEVEL=WARNING
 NEO4J_URI=neo4j+s://production-database-url
 
 # Enable monitoring
-LOG_FILE=/var/log/citation-platform/app.log
+LOG_FILE=/var/log/citation-compass/app.log
 ```
 
 ### Docker Deployment
 ```bash
 # Build container (Dockerfile not included, but recommended structure)
-docker build -t citation-platform .
+docker build -t citation-compass .
 
 # Run with environment
-docker run -p 8501:8501 --env-file .env citation-platform
+docker run -p 8501:8501 --env-file .env citation-compass
 ```
 
 ### Health Monitoring
