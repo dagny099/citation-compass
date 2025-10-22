@@ -2,13 +2,13 @@
 
 > 📚 **For the most comprehensive and up-to-date documentation, see the [File Upload Guide](http://127.0.0.1:8000/getting-started/file-upload/) in our complete documentation (run `mkdocs serve` to access).**
 
-The Academic Citation Platform now supports **file upload** for importing paper IDs, making it easy to import large lists of papers from your research collections, literature reviews, or bibliographic databases.
+Citation Compass supports **file upload** for importing paper IDs, making it easy to import large lists of papers from your research collections, literature reviews, or bibliographic databases.
 
 ## 🔗 **Related Documentation**
-- **[Getting Started with File Upload](docs/getting-started/file-upload.md)** - Complete step-by-step guide
-- **[Demo Mode](docs/getting-started/demo-mode.md)** - Try file upload with sample data first  
-- **[Data Import Pipeline](docs/user-guide/data-import.md)** - Advanced import features and configuration
-- **[Interactive Features](docs/user-guide/interactive-features.md)** - Using file upload in the web interface
+- **[Getting Started with File Upload](../getting-started/file-upload.md)** - Complete step-by-step guide
+- **[Demo Mode](../getting-started/demo-mode.md)** - Try file upload with sample data first  
+- **[Data Import Pipeline](../user-guide/data-import.md)** - Advanced import features and configuration
+- **[Interactive Features](../user-guide/interactive-features.md)** - Using file upload in the web interface
 
 ## 🚀 **New File Upload Features**
 
@@ -244,4 +244,4 @@ progress = quick_import_by_ids(
 3. **Prepare your own files** using the format guidelines
 4. **Start importing** your research paper collections!
 
-The file upload feature makes it easy to import large collections of papers from your research workflow into the Academic Citation Platform. 🚀
+The file upload feature makes it easy to import large collections of papers from your research workflow into Citation Compass.

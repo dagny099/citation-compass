@@ -1,16 +1,16 @@
 # 📊 Visual Assets Index
 
-*A comprehensive catalog of all diagrams, screenshots, and visual documentation for the Academic Citation Platform project*
+*A catalog of diagrams, screenshots, and visual documentation for the Citation Compass project*
 
 ## 📋 Table of Contents
 
 | Asset Title | Path | Description |
 |------------|------|-------------|
-| **System Architecture Diagram** | `assets/diagrams/system-architecture.png` | **Professional multi-layered architecture overview showing component relationships, data flow, and technical complexity** |
-| **Data Flow Pipeline** | `assets/diagrams/data-flow-pipeline.png` | **Linear pipeline view showing academic paper journey through 6 processing stages with improved visibility** |
-| **Data Flow Radial** | `assets/diagrams/data-flow-radial.png` | **Circular/radial visualization of data processing flow with central citation network and radiating components** |
-| **Database Schema** | `assets/diagrams/database-schema.png` | **Neo4j graph database schema with nodes, relationships, constraints, and performance optimizations** |
-| **User Journey Flow** | `assets/diagrams/user-journey-flow.png` | **Multi-persona workflow diagram showing user paths across Streamlit, CLI, and Jupyter interfaces** |
+| **System Architecture Diagram** | `assets/diagrams/system-architecture.png` | **Multi-layered architecture overview showing component relationships and data flow** |
+| **Data Flow Pipeline** | `assets/diagrams/data-flow-pipeline.png` | **Linear pipeline view showing academic paper journey through processing stages** |
+| **Data Flow Radial** | `assets/diagrams/data-flow-radial.png` | **Circular visualization of data processing flow with a central citation network** |
+| **Database Schema** | `assets/diagrams/database-schema.png` | **Neo4j graph database schema with nodes, relationships, and constraints** |
+| **User Journey Flow** | `assets/diagrams/user-journey-flow.png` | **Workflow diagram showing user paths across Streamlit, CLI, and Jupyter interfaces** |
 | Home Dashboard | `assets/screenshots/01-home-dashboard.png` | Complete overview of the platform with feature cards, status indicators, and the "Going Deeper with Convolutions" demo example |
 | ML Predictions Interface | `assets/screenshots/02-ml-predictions-interface.png` | Initial ML predictions page showing paper input options and model information |
 | ML Predictions with Interface | `assets/screenshots/03-ml-predictions-with-interface.png` | ML predictions page with loaded paper details and prediction controls |
@@ -90,19 +90,19 @@ docs/assets/
 │   ├── 05-embedding-explorer.png
 │   └── 06-analysis-pipeline.png
 ├── charts/               # Standalone analysis charts (TBD)
-└── presentations/        # Marketing/presentation materials (TBD)
+└── presentations/        # Presentation materials (TBD)
 ```
 
 ## 💡 Usage Guidelines
 
 ### For README Integration
-- Use **system-architecture.png** to lead with technical sophistication
-- Use **user-journey-flow.png** to demonstrate UX thinking and multi-interface design
-- Use **database-schema.png** to demonstrate graph database expertise
-- Use **data-flow-pipeline.png** or **data-flow-radial.png** to show processing complexity (choose based on audience preference)
-- Use **01-home-dashboard.png** as the primary "hero" screenshot
-- Feature **06-analysis-pipeline.png** to show advanced capabilities
-- Include **04-enhanced-visualizations-interface.png** to demonstrate network analysis
+- Use **system-architecture.png** to summarize system components
+- Use **user-journey-flow.png** to show interfaces and user paths
+- Use **database-schema.png** for graph database context
+- Use **data-flow-pipeline.png** or **data-flow-radial.png** to show processing flow
+- Use **01-home-dashboard.png** as the primary overview screenshot
+- Include **06-analysis-pipeline.png** for advanced features
+- Include **04-enhanced-visualizations-interface.png** for network analysis
 
 ### For Documentation
 - Link to specific screenshots when explaining features
@@ -110,22 +110,22 @@ docs/assets/
 - Reference the analysis pipeline outputs for performance metrics
 
 ### For Presentations
-- System architecture diagram demonstrates technical depth and complexity
-- User journey flow showcases UX design thinking and multi-interface coordination
-- Database schema showcases graph database modeling expertise (Neo4j specialization)
-- Data flow pipeline shows linear processing sophistication (familiar format)
-- Data flow radial provides unique visual impact (distinctive circular approach)
-- Home dashboard shows immediate value and "wow factor"
-- Analysis pipeline demonstrates ML sophistication
-- Network visualizations prove the system works with real data
+- System architecture diagram: technical overview and relationships
+- User journey flow: UX and multi-interface coordination
+- Database schema: graph database modeling context (Neo4j)
+- Data flow pipeline: linear processing view
+- Data flow radial: alternative circular view
+- Home dashboard: overview of features
+- Analysis pipeline: analytics and ML capabilities
+- Network visualizations: example outputs on real data
 
-## 🚀 Portfolio Impact
+## Use Cases for Visuals
 
-These visual assets address the key portfolio needs:
-- **Visual Proof**: Screenshots show the system actually works
-- **Technical Depth**: Analysis pipeline demonstrates ML sophistication
-- **User Experience**: Clean, professional interfaces show design thinking
-- **Real Results**: Embedded charts and metrics prove impact
+Suggested ways to use these assets:
+- **System overview**: Architecture and data flow diagrams
+- **Feature walkthroughs**: Screenshots for user-facing pages
+- **Technical documentation**: Database schema and model visuals
+- **Reports**: Export selected charts and figures as needed
 
 ---
 

@@ -4,7 +4,9 @@ Build your academic citation database using the platform's sophisticated data im
 
 ## 🚀 Import Pipeline Overview
 
-The Academic Citation Platform provides **multiple import methods** with advanced features for building comprehensive academic databases:
+![Data flow pipeline](../assets/diagrams/data-flow-pipeline.png){ width="800" }
+
+Citation Compass provides **multiple import methods** with features for building academic databases:
 
 ### Key Capabilities
 - **🔍 Search-based import** - Find and import papers using academic search queries
@@ -305,7 +307,7 @@ for error in progress.errors[-5:]:
 The platform uses **advanced streaming pagination** for improved performance:
 
 **Benefits**:
-- **25x faster** than traditional pagination for large imports
+- **Faster** than traditional pagination for large imports
 - **Real-time progress** updates during data fetching
 - **Memory efficient** processing of large result sets
 - **Resumable operations** with state preservation
@@ -650,7 +652,7 @@ After successful data import:
 2. **[Analyze Networks](network-analysis.md)** - Explore citation and collaboration networks
 3. **[Interactive Exploration](interactive-features.md)** - Visualize and interact with your data
 4. **[Generate Reports](results-interpretation.md)** - Create publication-ready analysis
-5. **[API Integration](../developer-guide/architecture.md)** - Build custom applications
+5. **[API Integration](../architecture.md)** - Build custom applications
 
 ---
 
@@ -659,7 +661,7 @@ After successful data import:
 **Getting Started**:
 - **[Demo Datasets](demo-datasets.md)** - Try import features with sample data first!
 - **[File Upload Guide](../getting-started/file-upload.md)** - Step-by-step file upload tutorial
-- **[Demo Mode](../getting-started/demo-mode.md)** - Zero-setup exploration
+- **[Demo Mode](../getting-started/demo-mode.md)** - No database required
 
 **Using Your Imported Data**:
 - **[ML Predictions](ml-predictions.md)** - Citation prediction with your data
@@ -672,4 +674,4 @@ After successful data import:
 - **[Quick Start](../getting-started/quick-start.md)** - Complete workflow guide
 - **[Notebook Pipeline](notebook-pipeline.md)** - Programmatic analysis workflows
 
-**Ready to build your research database?** Start with a [demo dataset](demo-datasets.md) to learn the workflow, then use [file upload](../getting-started/file-upload.md) for your research collections! 🚀
+**Ready to build your research database?** Start with a [demo dataset](demo-datasets.md) to learn the workflow, then use [file upload](../getting-started/file-upload.md) for your research collections.

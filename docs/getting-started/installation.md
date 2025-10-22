@@ -1,6 +1,6 @@
 # Installation Guide
 
-Get the Academic Citation Platform up and running on your system.
+Get Citation Compass up and running on your system.
 
 ## Prerequisites
 
