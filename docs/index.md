@@ -16,8 +16,8 @@
 </div>
 
 <div class="hero-buttons" markdown>
-[🚀 Get Started](getting-started/installation.md){ .md-button .md-button--primary }
-[🎯 Local Demo](http://localhost:8501/){ .md-button }
+[🔗 Installation Guide](getting-started/installation.md){ .md-button }
+[▶️ Interactive Demo](https://cartography.barbhs.com/){ .md-button .md-button--primary }
 [📚 API Docs](api.md){ .md-button }
 </div>
 
