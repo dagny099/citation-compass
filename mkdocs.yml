@@ -130,14 +130,7 @@ markdown_extensions:
 
 nav:
   - 🏠 Home: index.md
-  - 📖 Overview: overview.md
-  - 🚀 Getting Started:
-      - 📦 Installation: getting-started/installation.md
-      - 🎭 Demo Mode: getting-started/demo-mode.md
-      - 📁 File Upload: getting-started/file-upload.md
-      - ⚙️ Configuration: getting-started/configuration.md
-      - ⚡ Quick Start: getting-started/quick-start.md
-      - 🌍 Environment Setup: getting-started/environment-setup.md
+  - 📖 Getting Started: getting-started.md
   - 👤 User Guide:
       - 📋 Overview: user-guide/overview.md
       - 🎭 Demo Datasets: user-guide/demo-datasets.md
@@ -147,31 +140,32 @@ nav:
       - 🎨 Interactive Features: user-guide/interactive-features.md
       - 📊 Results Interpretation: user-guide/results-interpretation.md
       - 📓 Notebook Pipeline: user-guide/notebook-pipeline.md
-  - 🔧 Developer Guide:
-      - 🏗️ Architecture: architecture.md
-      - 📚 API Reference: api.md
-      - 🧩 Models: api/models.md
-      - ⚙️ Services: api/services.md
-      - 📝 Development History:
-          - 📋 Phase 4 Plan: archived_phase_4_plan.md
-          - ⚙️ Phase 4 Implementation: archived_phase_4_implementation.md
   - 📓 Notebooks:
       - 📋 Overview: notebooks/overview.md
       - 01 – Comprehensive Exploration: notebooks/01-comprehensive-exploration.md
       - 02 – Model Training Pipeline: notebooks/02-model-training-pipeline.md
       - 03 – Prediction Evaluation: notebooks/03-prediction-evaluation.md
       - 04 – Narrative Presentation: notebooks/04-narrative-presentation.md
-  - 🛠️ Setup: setup.md
-  - 🏗️ Architecture: architecture.md
-
+  - 🔧 Developer Guide:
+      - 🏗️ Architecture & Design: architecture.md
+      - 📚 API Reference: api.md
+      - 🧩 Models: api/models.md
+      - ⚙️ Services: api/services.md
+  - 🛠️ Resources:
+      - 🩺 Neo4j Health Monitoring: resources/neo4j-health-monitoring.md
   - 🗄️ Archived:
       - 📊 Visual Assets Index: VISUAL_ASSETS_INDEX.md
-      - 🩺 Neo4j Ping Playbook: neo4j-ping-guide.md
+      - 📝 Development History:
+          - 📋 Phase 4 Plan: archived_phase_4_plan.md
+          - ⚙️ Phase 4 Implementation: archived_phase_4_implementation.md
       - 📁 Archive:
           - Contextual Examples: archive/CONTEXTUAL_EXAMPLES.md
           - Example Papers for Exploration: archive/EXAMPLE_PAPERS_FOR_EXPLORATION.md
           - Import Standards: archive/IMPORT_STANDARDS.md
           - Performance Improvements: archive/PERFORMANCE_IMPROVEMENTS.md
+          - Overview (legacy): overview.md
+          - Setup (legacy): setup.md
+          - Getting Started (legacy): getting-started/
       - 🧪 Development Docs:
           - Data Import Guide: development/DATA_IMPORT_GUIDE.md
           - File Upload Guide: development/FILE_UPLOAD_GUIDE.md

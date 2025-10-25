@@ -1,4 +1,9 @@
-# Citation Compass Architecture
+# Developer Guide: Architecture & Design
+
+Welcome to the technical heart of Citation Compass! This guide explains the system architecture, design decisions, and implementation patterns that power the platform. Whether you're extending functionality, debugging issues, or just curious about how it all works, you're in the right place.
+
+!!! tip "Just Getting Started?"
+    If you haven't set up the platform yet, check out the [Getting Started](getting-started.md) guide first. This document assumes you have a working installation.
 
 ## Overview
 
@@ -367,4 +372,56 @@ Cloud Infrastructure
 
 ---
 
-*This architecture document is maintained as the system evolves. Last updated: September 2025*
+## Developer Resources
+
+### Helpful Guides
+- **[Neo4j Health Monitoring](resources/neo4j-health-monitoring.md)** - Keep your database alive with automated pings (essential for free tier users!)
+- **[API Reference](api.md)** - Complete API documentation with examples
+- **[Models Documentation](api/models.md)** - Pydantic data models
+- **[Services Documentation](api/services.md)** - Service layer details
+
+### Common Development Tasks
+
+**Running Tests:**
+```bash
+# All tests
+python -m pytest tests/ -v
+
+# Specific modules
+python -m pytest tests/test_ml_service.py -v
+
+# With coverage
+python -m pytest tests/ --cov=src --cov-report=html
+```
+
+**Code Quality:**
+```bash
+# Format code
+black src/ tests/ --line-length 100
+isort src/ tests/ --profile black
+
+# Type checking
+mypy src/
+
+# Linting
+flake8 src/ tests/
+```
+
+**Documentation:**
+```bash
+# Serve documentation locally
+mkdocs serve
+
+# Build documentation
+mkdocs build
+```
+
+### Getting Help
+
+- **[GitHub Issues](https://github.com/dagny099/citation-compass/issues)** - Report bugs or request features
+- **[User Guide](user-guide/overview.md)** - End-user documentation
+- **[Notebooks](notebooks/overview.md)** - Analysis pipeline examples
+
+---
+
+*This developer guide is maintained as the system evolves. Last updated: October 2025*
