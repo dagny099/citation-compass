@@ -23,7 +23,7 @@ from src.services.ml_service import get_ml_service
 from src.data.unified_api_client import UnifiedSemanticScholarClient
 from src.models.ml import CitationPrediction
 from src.analytics.contextual_explanations import ContextualExplanationEngine
-from src.database.connection import create_connection, Neo4jError
+from src.database.connection import create_connection, Neo4jError, get_random_featured_paper_id
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -94,7 +94,7 @@ max_papers = st.sidebar.slider("Maximum papers to analyze", 5, 100, 20)
 if max_papers > 75:
     st.sidebar.warning("⚠️ Large networks may take longer to load and visualize")
 confidence_threshold = st.sidebar.slider("Confidence threshold", 0.0, 1.0, 0.3, 0.05)
-show_predictions = st.sidebar.checkbox("Show ML predictions", value=ml_available, disabled=not ml_available)
+show_predictions = st.sidebar.checkbox("Show ML predictions", value=False, disabled=not ml_available)
 show_actual_citations = st.sidebar.checkbox("Show actual citations", value=True)
 
 # Paper input
@@ -144,6 +144,21 @@ elif paper_input_method == "Search and Select":
         )
         
         center_papers = [st.session_state['search_results'][i]['paperId'] for i in selected_indices]
+
+# Auto-seed a default paper if none selected
+if not center_papers:
+    if 'default_center_papers' in st.session_state and st.session_state['default_center_papers']:
+        center_papers = list(st.session_state['default_center_papers'])
+        st.info("Showing a featured paper from Home. Add more papers using the sidebar.")
+    else:
+        try:
+            db = create_connection(validate=False)
+            featured = get_random_featured_paper_id(db, top_n=50)
+            if featured:
+                center_papers = [featured]
+                st.info("Auto-selected a featured paper. Use the sidebar to change selection.")
+        except Exception:
+            pass
 
 # Helper function to create rich hover text
 def create_rich_hover_text(paper_id: str, paper_metadata: Dict, node_type: str, confidence: Optional[float] = None) -> str:

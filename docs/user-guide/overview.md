@@ -1,116 +1,113 @@
 # User Guide Overview
 
-Welcome to the user guide for Citation Compass. This guide walks you through the main features and workflows.
+Welcome to Citation Compass! This guide helps you choose the right interface for your needs and get started with common workflows.
 
-## Platform Components
+---
 
-Citation Compass provides multiple interfaces for different types of users and workflows:
+## Platform Access
 
-### 🖥️ Interactive Dashboard (Streamlit)
+Choose your interface based on how you work:
 
-The main interface for interactive exploration and analysis:
+| Interface | When to Use | Quick Start |
+|-----------|-------------|-------------|
+| **🖥️ Dashboard** | Interactive exploration, demos, quick analysis | `streamlit run app.py` |
+| **📓 Notebooks** | Reproducible research, custom analysis, model training | `jupyter notebook notebooks/` |
+| **🔌 Python API** | Automation, integration with existing tools | `from src.services import get_ml_service` |
 
-- **Real-time visualization** of citation networks
-- **Point-and-click analysis** tools
-- **Export capabilities** for research reports
-- **Multi-page workflow** for different analysis types
+**New to Citation Compass?** Start with the dashboard—it requires no code and provides immediate visualization.
 
-### 📓 Jupyter Notebooks
-
-Comprehensive analysis pipelines for researchers:
-
-- **4-notebook workflow** covering exploration to presentation
-- **Customizable analysis** parameters
-- **Reproducible research** workflows
-- **Advanced visualizations** and exports
-
-### 🔌 Python API
-
-Programmatic access for integration and automation:
-
-- **Service layer APIs** for analytics and ML
-- **Database abstraction** for data access
-- **Export engines** for automated reporting
-- **Custom model training** capabilities
+---
 
 ## User Personas
 
+Different users have different needs. We've designed Citation Compass to support three main personas, each with tailored workflows and entry points.
+
+![User Journey](../assets/diagrams/user-journey-flow.png){ width="600" align=right }
+
 ### 🎓 Academic Researchers
+**You want**: Citation analysis, research discovery, network visualization
 
-**Primary needs**: Citation analysis, research discovery, publication metrics
+**Start here**:
 
-**Recommended workflow**:
-1. Start with [Interactive Features](interactive-features.md)
-2. Use [Network Analysis](network-analysis.md) for community detection
-3. Export results with [Results Interpretation](results-interpretation.md)
+1. [Interactive Features](interactive-features.md) - Dashboard walkthrough
+
+2. [Network Analysis](network-analysis.md) - Community detection and metrics
+
+3. [Results Interpretation](results-interpretation.md) - Export for publications
 
 ### 🤖 Data Scientists
+**You want**: Custom models, batch predictions, reproducible pipelines
 
-**Primary needs**: Model training, prediction accuracy, custom analysis
+**Start here**:
 
-**Recommended workflow**:
-1. Begin with [Notebook Pipeline](notebook-pipeline.md)
-2. Explore [ML Predictions](ml-predictions.md) capabilities
-3. Review [Developer Guide](../architecture.md) for customization
+1. [Notebook Pipeline](notebook-pipeline.md) - 4-notebook workflow
+
+2. [ML Predictions](ml-predictions.md) - Model training and evaluation
+
+3. [Developer Guide](../architecture.md) - API customization
 
 ### 📊 Research Administrators
+**You want**: Usage monitoring, team reports, performance tracking
 
-**Primary needs**: Performance monitoring, usage analytics, reporting
+**Start here**:
 
-**Recommended workflow**:
-1. Use [Interactive Features](interactive-features.md) for overview
-2. Generate reports with [Results Interpretation](results-interpretation.md)
-3. Monitor performance using built-in metrics
+1. [Interactive Features](interactive-features.md) - Dashboard overview
 
-## Feature Matrix
+2. [Results Interpretation](results-interpretation.md) - Report generation
 
-| Feature | Dashboard | Notebooks | API |
-|---------|-----------|-----------|-----|
-| Citation Prediction | ✅ Interactive | ✅ Customizable | ✅ Programmatic |
-| Network Analysis | ✅ Visual | ✅ Detailed | ✅ Batch Processing |
-| Community Detection | ✅ Real-time | ✅ Multiple Algorithms | ✅ Scalable |
-| Temporal Analysis | ✅ Interactive | ✅ Advanced | ✅ Automated |
-| Export Capabilities | ✅ Basic | ✅ Advanced | ✅ Custom Formats |
-| Model Training | ❌ | ✅ Full Pipeline | ✅ Programmatic |
-| Custom Visualization | ❌ | ✅ Matplotlib/Plotly | ✅ Programmatic |
-| Batch Processing | ❌ | ✅ | ✅ Scalable |
+3. [Network Analysis](network-analysis.md) - Performance metrics
+
+<br clear="all">
+
+The user journey diagram shows the typical flow from initial exploration through data analysis to final publication. Notice how most users start with demo mode to learn features before importing their own data.
+
+---
 
 ## Getting Started Paths
 
-Choose your path based on your goals:
-
 === "🚀 Quick Exploration"
 
-    **Goal**: Understand your citation network quickly
+    **Goal**: Try features with demo data (no setup required)
 
-    **Path**:
-    1. Launch Streamlit dashboard
-    2. Explore [Interactive Features](interactive-features.md)
-    3. Try [Network Analysis](network-analysis.md) tools
-    4. Export initial findings
+    **Steps**:
+    1. Launch: `streamlit run app.py`
+    2. Load demo dataset from sidebar
+    3. Try [Interactive Features](interactive-features.md)
+    4. Export results
+
+    **Time**: 10 minutes
 
 === "🔬 Research Analysis"
 
-    **Goal**: Comprehensive citation analysis for research
+    **Goal**: Analyze your citation network comprehensively
 
-    **Path**:
-    1. Start with [Notebook Pipeline](notebook-pipeline.md)
-    2. Follow 4-notebook workflow
-    3. Use [ML Predictions](ml-predictions.md) for discovery
-    4. Generate publication-ready reports
+    **Steps**:
+    1. Configure Neo4j database ([setup guide](../getting-started.md#database-setup))
+    2. Import data via [Data Import](data-import.md)
+    3. Follow [Notebook Pipeline](notebook-pipeline.md)
+    4. Train models with [ML Predictions](ml-predictions.md)
+
+    **Time**: 2-3 hours
 
 === "⚙️ Custom Integration"
 
-    **Goal**: Integrate platform into existing workflows
+    **Goal**: Integrate into existing research workflows
 
-    **Path**:
+    **Steps**:
     1. Review [Developer Guide](../architecture.md)
-    2. Use [API Reference](../api/services.md)
-    3. Explore the Python API for custom integrations
+    2. Check [API Reference](../api/services.md)
+    3. Use Python API for automation
+    4. Build custom dashboards/reports
+
+    **Time**: Varies by complexity
+
+---
 
 ## Common Workflows
 
-### Citation Discovery Workflow
+### 🔍 Citation Discovery
+
+**Goal**: Find related papers you might have missed
 
 ```mermaid
 flowchart LR
@@ -118,47 +115,171 @@ flowchart LR
     B --> C[Explore Embeddings]
     C --> D[Validate Results]
     D --> E[Export Reading List]
+
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style C fill:#e8f5e8
+    style D fill:#fce4ec
+    style E fill:#f1f8e9
 ```
 
-1. **Input**: Start with a paper of interest
-2. **Predict**: Generate citation predictions using ML
-3. **Explore**: Visualize paper relationships in embedding space
-4. **Validate**: Check predictions against known citations
-5. **Export**: Create reading list with confidence scores
+1. **Input**: Choose a paper from your network
+2. **Predict**: Run ML predictions ([guide](ml-predictions.md))
+3. **Explore**: Visualize in embedding space
+4. **Validate**: Check against known citations
+5. **Export**: Save reading list with scores
 
-### Network Analysis Workflow
+### 🕸️ Network Analysis
+
+**Goal**: Understand citation communities and influence
 
 ```mermaid
 flowchart LR
-    A[Load Network] --> B[Compute Statistics]
+    A[Load Network] --> B[Compute Metrics]
     B --> C[Detect Communities]
     C --> D[Analyze Trends]
     D --> E[Generate Report]
+
+    style A fill:#ffebee
+    style B fill:#e0f2f1
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style E fill:#fff3e0
 ```
 
-1. **Load**: Import or connect to citation network
-2. **Statistics**: Compute centrality and clustering metrics
-3. **Communities**: Identify research communities
-4. **Trends**: Analyze temporal citation patterns
-5. **Report**: Generate LaTeX or PDF report
+1. **Load**: Import data or use demo
+2. **Metrics**: Calculate centrality ([guide](network-analysis.md))
+3. **Communities**: Run Louvain or label propagation
+4. **Trends**: Analyze temporal patterns
+5. **Report**: Export LaTeX tables
 
-### Model Training Workflow
+### 🤖 Model Training
+
+**Goal**: Train custom ML model on your data
 
 ```mermaid
 flowchart LR
     A[Prepare Data] --> B[Train Model]
-    B --> C[Evaluate Performance]
-    C --> D[Generate Predictions]
-    D --> E[Deploy Model]
+    B --> C[Evaluate]
+    C --> D[Predict]
+    D --> E[Deploy]
+
+    style A fill:#f1f8e9
+    style B fill:#e3f2fd
+    style C fill:#fce4ec
+    style D fill:#fff3e0
+    style E fill:#e8f5e8
 ```
 
-1. **Data**: Load and prepare citation network data
-2. **Train**: Train TransE model with hyperparameter optimization
-3. **Evaluate**: Test with MRR, Hits@K, and AUC metrics
-4. **Predict**: Generate citation predictions
-5. **Deploy**: Save model for production use
+1. **Data**: Import citation network
+2. **Train**: Use [notebook 02](notebook-pipeline.md) for TransE training
+3. **Evaluate**: Check MRR, Hits@K metrics
+4. **Predict**: Generate citations
+5. **Deploy**: Save model for dashboard use
 
-## Feature Deep Dives
+---
+
+## Feature Matrix
+
+??? info "Feature Availability by Interface (click to expand)"
+
+    | Feature | Dashboard | Notebooks | API |
+    |---------|-----------|-----------|-----|
+    | Citation Prediction | ✅ Interactive | ✅ Customizable | ✅ Programmatic |
+    | Network Analysis | ✅ Visual | ✅ Detailed | ✅ Batch |
+    | Community Detection | ✅ Real-time | ✅ Multiple Algorithms | ✅ Scalable |
+    | Temporal Analysis | ✅ Interactive | ✅ Advanced | ✅ Automated |
+    | Export Capabilities | ✅ Basic | ✅ Advanced | ✅ Custom |
+    | Model Training | ❌ | ✅ Full Pipeline | ✅ Programmatic |
+    | Custom Visualization | ❌ | ✅ Matplotlib/Plotly | ✅ Programmatic |
+    | Batch Processing | ❌ | ✅ Yes | ✅ Scalable |
+
+    **Dashboard**: Best for exploration and demos
+    **Notebooks**: Best for research and custom analysis
+    **API**: Best for automation and integration
+
+---
+
+## Best Practices
+
+### Analysis Tips
+- **Start small**: Use demo datasets before loading large networks
+- **Validate results**: Cross-check predictions with domain expertise
+- **Document settings**: Record parameters for reproducibility
+- **Iterate**: Dashboard for exploration → notebooks for final analysis
+
+### Technical Tips
+- **Monitor resources**: Track memory usage with large datasets
+- **Enable caching**: Speeds up repeated analyses significantly
+- **Check logs**: Look in `logs/` directory for debugging
+- **Version control**: Track notebooks and config files
+
+### Reporting Tips
+- **Document methodology**: Explain analysis approach clearly
+- **Consistent styling**: Use same color schemes across visualizations
+- **Include metrics**: Add confidence intervals and statistical tests
+- **High resolution**: Export figures at 300+ DPI for publications
+
+---
+
+## Support & Community
+
+**Documentation**:
+
+- [API Reference](../api/services.md) - Technical details
+
+- [Developer Guide](../architecture.md) - Architecture and customization
+
+- [Resources](../resources/neo4j-health-monitoring.md) - Helpful guides
+
+**Get Help**:
+
+- [GitHub Issues](https://github.com/dagny099/citation-compass/issues) - Bug reports and feature requests
+
+- [GitHub Discussions](https://github.com/dagny099/citation-compass/discussions) - Community support
+
+- [Documentation Source](https://github.com/dagny099/citation-compass/tree/main/docs) - Contribute improvements
+
+---
+
+## Next Steps
+
+Choose your path forward:
+
+<div class="grid cards" markdown>
+
+-   [:material-mouse: **Interactive Features**](interactive-features.md)
+
+    Explore the dashboard with clickable nodes and real-time progress
+
+-   [:material-robot: **ML Predictions**](ml-predictions.md)
+
+    Learn citation prediction and embedding visualization
+
+-   [:material-graph: **Network Analysis**](network-analysis.md)
+
+    Discover communities, centrality, and temporal patterns
+
+-   [:material-notebook: **Notebook Pipeline**](notebook-pipeline.md)
+
+    Master the 4-notebook analysis workflow
+
+-   [:material-file-import: **Data Import**](data-import.md)
+
+    Import your research collections with file upload or search
+
+-   [:material-chart-line: **Demo Datasets**](demo-datasets.md)
+
+    Try curated datasets spanning AI, neuroscience, and physics
+
+</div>
+
+---
+
+*Happy analyzing! 🔬✨*
+
+<!--
+## Feature Deep Dives (Commented out - use specific guides instead)
 
 ### 🧠 Machine Learning Capabilities
 
@@ -186,69 +307,4 @@ flowchart LR
 - **Custom Formats**: JSON, CSV, and more
 
 **Learn more**: [Results Interpretation Guide](results-interpretation.md)
-
-## Best Practices
-
-### 🎯 Analysis Best Practices
-
-1. **Start Small**: Begin with sample datasets before full analysis
-2. **Validate Results**: Cross-check predictions with domain knowledge
-3. **Document Parameters**: Record analysis settings for reproducibility
-4. **Iterate Quickly**: Use dashboard for exploration, notebooks for final analysis
-
-### 🔧 Technical Best Practices
-
-1. **Resource Management**: Monitor memory and CPU usage with large datasets
-2. **Caching Strategy**: Enable caching for repeated analyses
-3. **Error Handling**: Check logs for debugging information
-4. **Version Control**: Track analysis notebooks and configurations
-
-### 📊 Reporting Best Practices
-
-1. **Clear Methodology**: Document analysis approaches
-2. **Visual Clarity**: Use consistent styling across visualizations
-3. **Statistical Rigor**: Include confidence intervals and significance tests
-4. **Export Quality**: Use high-resolution formats for publications
-
-## Support & Community
-
-### 📖 Documentation Resources
-
-- **[API Reference](../api/services.md)**: Complete technical documentation
-- **[Developer Guide](../architecture.md)**: Architecture and customization
-- **[GitHub Issues](https://github.com/dagny099/citation-compass/issues)**: Common issues and community solutions
-
-### 🤝 Getting Help
-
-- **GitHub Issues**: Report bugs and request features
-- **Community Discussions**: Share experiences and get advice
-- **GitHub Support**: [Create an issue](https://github.com/dagny099/citation-compass/issues)
-- **Documentation Updates**: Contribute improvements to guides
-
----
-
-## Next Steps
-
-Ready to dive in? Choose your next destination:
-
-<div class="grid cards" markdown>
-
--   [:material-mouse: **Interactive Features**](interactive-features.md)
-    
-    Explore the Streamlit dashboard and point-and-click analysis tools
-
--   [:material-robot: **ML Predictions**](ml-predictions.md)
-    
-    Learn citation prediction and embedding visualization techniques
-
--   [:material-graph: **Network Analysis**](network-analysis.md)
-    
-    Discover communities, centrality, and temporal analysis features
-
--   [:material-notebook: **Notebook Pipeline**](notebook-pipeline.md)
-    
-    Master the comprehensive 4-notebook analysis workflow
-
-</div>
-
-*Happy analyzing! 🔬✨*
+-->
