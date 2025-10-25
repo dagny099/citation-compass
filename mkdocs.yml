@@ -8,6 +8,11 @@ repo_name: dagny099/citation-compass
 repo_url: https://github.com/dagny099/citation-compass
 edit_uri: edit/main/docs/
 
+validation:
+  omitted_files: ignore
+  absolute_links: warn
+  unrecognized_links: warn
+
 theme:
   name: material
   custom_dir: docs/assets
@@ -91,7 +96,7 @@ markdown_extensions:
   - md_in_html
   - toc:
       permalink: true
-      toc_depth: 3
+      toc_depth: 2
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.betterem:
@@ -165,7 +170,6 @@ nav:
           - Performance Improvements: archive/PERFORMANCE_IMPROVEMENTS.md
           - Overview (legacy): overview.md
           - Setup (legacy): setup.md
-          - Getting Started (legacy): getting-started/
       - 🧪 Development Docs:
           - Data Import Guide: development/DATA_IMPORT_GUIDE.md
           - File Upload Guide: development/FILE_UPLOAD_GUIDE.md
