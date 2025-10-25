@@ -249,6 +249,8 @@ with col_right:
                 ego = get_home_ego_network(db, selected_paper_id, max_cited=6, max_citing=6, max_fields=3)
                 fig, edge_traces_count, node_trace_map = _build_welcome_graph_fig(ego)
                 st.subheader("One-Hop Snippet of the Existing KG")
+                # Store ego for left-side stats rendering
+                st.session_state["home_last_ego"] = ego
                 selected_points = plotly_events(
                     fig,
                     click_event=True,
@@ -291,15 +293,14 @@ with col_right:
 
                 # plotly_events renders the chart; no second render needed
 
-                act_cols = st.columns([1, 1])
-                with act_cols[0]:
-                    if st.button("📈 Open full explorer"):
+                # Guidance and primary action below the graph
+                st.info("Tip: Click any paper node to open it on Semantic Scholar.")
+
+                btn_cols = st.columns([3, 2, 3])
+                with btn_cols[1]:
+                    if st.button("📈 Open Full Prediction Visualization", use_container_width=True):
                         st.session_state["default_center_papers"] = [selected_paper_id]
                         st.switch_page("src/streamlit_app/pages/Enhanced_Visualizations.py")
-                with act_cols[1]:
-                    st.empty()
-
-                st.info("Tip: Click any paper node to open it on Semantic Scholar.")
 
                 # (Schema & Counts now lives in the top section)
 
@@ -310,17 +311,39 @@ with col_right:
     else:
         st.info("Start Neo4j and reload to see the live snapshot.")
 
-# Add spacing under controls and move legend text to the left
+# Add spacing under controls and show actual paper statistics instead of a legend
 with col_left:
     st.write("")
     st.write("")
     if selected_paper_id and db_ok:
-        st.markdown("**Network Graph Conventions**")
-        st.markdown("- Red: center paper")
-        st.markdown("- Blue: references the center paper cites (outgoing)")
-        st.markdown("- Teal: papers that cite the center (incoming)")
-        st.markdown("- Purple: fields (topics)")
-        st.markdown("- Green edges: cites • Purple edges: is about")
+        try:
+            details_df = get_paper_details(db, selected_paper_id)
+            ego = st.session_state.get("home_last_ego")
+            cited_n = len(ego.get("cited", [])) if isinstance(ego, dict) else 0
+            citing_n = len(ego.get("citing", [])) if isinstance(ego, dict) else 0
+            fields_list = ego.get("fields", []) if isinstance(ego, dict) else []
+
+            if not details_df.empty:
+                row = details_df.iloc[0]
+                authors = [a for a in (row.get("authors") or []) if a]
+                author_str = ", ".join([str(a) for a in authors[:3]])
+                if len(authors) > 3:
+                    author_str += f" (+{len(authors)-3} more)"
+                venue = (row.get("venues") or [])
+                venue_str = venue[0] if venue else None
+
+                st.markdown("**📊 Paper Snapshot**")
+                st.markdown(f"**📄 Title:** {row.get('title') or selected_paper_id}")
+                st.markdown(f"**👥 Authors:** {author_str or 'Unknown'}")
+                st.markdown(f"**📅 Year:** {row.get('year') or '—'}    **🔗 Citations:** {int(row.get('citationCount') or 0):,}")
+                if venue_str:
+                    st.markdown(f"**🏛️ Venue:** {venue_str}")
+                st.markdown(f"**🧭 References shown:** {cited_n}    **🧲 Citers shown:** {citing_n}")
+                if fields_list:
+                    fields_preview = ", ".join(fields_list[:3]) + (" …" if len(fields_list) > 3 else "")
+                    st.markdown(f"**🏷️ Fields:** {fields_preview}")
+        except Exception:
+            pass
 
 # Quick Links
 st.markdown("---")
