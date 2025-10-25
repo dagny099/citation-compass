@@ -22,11 +22,47 @@ from src.database.connection import (
 )
 
 st.title("📚 Academic Citation Platform")
-st.caption("Explore your existing Neo4j knowledge graph. Use Search or Surprise me, then dive deeper in Enhanced Visualizations.")
+st.caption("Explore my existing Neo4j knowledge graph. Use Search or Surprise me, then dive deeper in Enhanced Visualizations.")
 
 st.markdown("---")
-st.markdown("## 🚀 Explore an Existing Graph Snippet")
-st.subheader("🕕 Explore an Existing Graph Snippet")
+st.subheader("🧭 My Knowledge Graph at a Glance")
+
+# Above-the-fold stats + schema
+db = None
+db_ok = True
+stats = {}
+try:
+    db = create_connection(validate=False)
+    stats = db.get_network_statistics()
+except Exception:
+    db_ok = False
+
+top_left, top_right = st.columns([2, 1])
+with top_left:
+    c1, c2, c3, c4, c5 = st.columns(5)
+    with c1:
+        st.metric("📄 Papers", f"{stats.get('papers', 0):,}")
+    with c2:
+        st.metric("👤 Authors", f"{stats.get('authors', 0):,}")
+    with c3:
+        st.metric("🏛️ Venues", f"{stats.get('venues', 0):,}")
+    with c4:
+        st.metric("🏷️ Fields", f"{stats.get('fields', 0):,}")
+    with c5:
+        st.metric("🔗 Citations", f"{stats.get('citations', 0):,}")
+
+    st.caption("Legend: Red = center paper • Blue = references (outgoing) • Teal = papers that cite the center (incoming) • Purple = fields (topics). Edges: green = cites, purple = is about.")
+
+with top_right:
+    show_schema = st.checkbox("Show schema diagram", value=True)
+    if show_schema:
+        try:
+            st.image("docs/assets/diagrams/database-schema.png", caption="Schema overview", use_column_width=True)
+        except Exception:
+            st.info("Schema diagram not found. Add it at docs/assets/diagrams/database-schema.png")
+
+st.markdown("---")
+st.subheader("🚀 Explore an Existing Graph Snippet")
 
 
 def _build_welcome_graph_fig(ego_data: Dict[str, Any]):
@@ -109,17 +145,13 @@ def _build_welcome_graph_fig(ego_data: Dict[str, Any]):
     return fig, edge_traces_count, node_trace_map
 
 
-db_ok = True
 selected_paper_id = st.session_state.get("home_selected_paper_id")
 
 col_left, col_right = st.columns([1, 2])
 
 with col_left:
-    st.write("Find a paper by keywords or ID, or let us surprise you.")
-    try:
-        db = create_connection(validate=False)
-    except Exception:
-        db_ok = False
+    st.write("Find a paper by keywords or ID, or let me surprise you.")
+    if not db_ok:
         st.warning("Neo4j not available. This snapshot requires a running database.")
 
     search_query = st.text_input(
@@ -208,7 +240,7 @@ with col_right:
                                     url = f"https://www.semanticscholar.org/paper/{paper_id}"
                                     try:
                                         webbrowser.open(url)
-                                        st.success("Opening paper in your browser…")
+                                        st.success("Opening paper in a new tab…")
                                     except Exception as e:
                                         st.error(f"Failed to open browser: {e}")
                                         st.code(url)
@@ -217,12 +249,12 @@ with col_right:
                                     url = f"https://www.semanticscholar.org/search?q={field_name}"
                                     try:
                                         webbrowser.open(url)
-                                        st.info("Opening field search in your browser…")
+                                        st.info("Opening field search in a new tab…")
                                     except Exception as e:
                                         st.error(f"Failed to open browser: {e}")
                                         st.code(url)
 
-                st.plotly_chart(fig, use_container_width=True)
+                # plotly_events renders the chart; no second render needed
 
                 act_cols = st.columns([1, 1])
                 with act_cols[0]:
@@ -232,17 +264,7 @@ with col_right:
                 with act_cols[1]:
                     st.caption("Legend: Red = center paper • Blue = references (outgoing) • Teal = papers that cite the center (incoming) • Purple = fields (topics). Edges: green = cites, purple = is about.")
 
-                try:
-                    stats = db.get_network_statistics()
-                    st.markdown(
-                        f"""
-                        **Schema & Counts**
-                        - Nodes: Papers ({stats.get('papers', 0):,}) · Authors ({stats.get('authors', 0):,}) · Venues ({stats.get('venues', 0):,}) · Fields ({stats.get('fields', 0):,})
-                        - Relationships: CITES ({stats.get('citations', 0):,}) · AUTHORED ({stats.get('authorships', 0):,}) · PUBLISHED_IN ({stats.get('publications', 0):,}) · IS_ABOUT ({stats.get('field_associations', 0):,})
-                        """
-                    )
-                except Exception:
-                    pass
+                # (Schema & Counts now lives in the top section)
 
             except Neo4jError as e:
                 st.warning(f"Unable to load snapshot: {e}")
@@ -284,4 +306,3 @@ with col4:
     - Model evaluation
     - Data exploration notebooks
     """)
-

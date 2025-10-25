@@ -51,10 +51,10 @@ notebook_pipeline_page = st.Page("src/streamlit_app/pages/Notebook_Pipeline.py",
 # Set up navigation
 pg = st.navigation(
     {
-        "Main": [home_page, overview_training_page],
+        "Main": [home_page, overview_training_page, visualization_page],
         "Data Management": [data_import_page, demo_datasets_page],
         "Machine Learning": [ml_predictions_page, embedding_explorer_page],
-        "Analysis": [visualization_page, results_interpretation_page, notebook_pipeline_page],
+        "Analysis": [results_interpretation_page, notebook_pipeline_page],
     }
 )
 
