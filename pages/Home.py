@@ -6,6 +6,20 @@ and quick links to all features.
 """
 
 import streamlit as st
+import networkx as nx
+import plotly.graph_objects as go
+from typing import Dict, Any, List
+import webbrowser
+
+from streamlit_plotly_events import plotly_events
+
+from src.database.connection import (
+    create_connection,
+    Neo4jError,
+    get_random_featured_paper_id,
+    get_home_ego_network,
+    find_papers_by_keyword,
+)
 
 st.title("📚 Academic Citation Platform")
 
@@ -153,6 +167,300 @@ with interactive visualization to help you explore and predict academic citation
 Choose from the features below or use the navigation menu on the left to explore different capabilities:
 
 """)
+
+# --- New: Explore the Existing Graph (Welcome Snapshot) ---
+st.markdown("---")
+st.subheader("🕸️ Explore the Existing Graph")
+
+def _build_welcome_graph_fig(ego_data: Dict[str, Any]):
+    """
+    Create a small plotly graph for the Home page ego network.
+
+    Returns:
+        fig: Plotly Figure
+        edge_traces_count: number of edge traces added (for mapping)
+        node_trace_map: list of dicts in the order traces were added for nodes,
+                        each dict has {'type': str, 'node_ids': List[str]}
+    """
+    G = nx.Graph()
+
+    center = ego_data.get("center") or {}
+    center_id = center.get("paperId") or "center"
+    G.add_node(center_id, node_type="center", label=center.get("title", center_id))
+
+    # Fields (highlighted schema concept)
+    for field in ego_data.get("fields", []):
+        field_id = f"field::{field}"
+        G.add_node(field_id, node_type="field", label=field)
+        G.add_edge(center_id, field_id, edge_type="IS_ABOUT")
+
+    # Cited (outgoing)
+    for n in ego_data.get("cited", []):
+        pid = n.get("paperId")
+        if not pid:
+            continue
+        G.add_node(pid, node_type="cited", label=n.get("title", pid))
+        G.add_edge(center_id, pid, edge_type="CITES")
+
+    # Citing (incoming)
+    for n in ego_data.get("citing", []):
+        pid = n.get("paperId")
+        if not pid:
+            continue
+        G.add_node(pid, node_type="citing", label=n.get("title", pid))
+        G.add_edge(pid, center_id, edge_type="CITES")
+
+    pos = nx.spring_layout(G, seed=42)
+
+    # Helper to add node traces by type
+    def add_nodes(fig: go.Figure, node_type: str, color: str, size: int, name: str):
+        xs, ys, texts = [], [], []
+        for n, data in G.nodes(data=True):
+            if data.get("node_type") == node_type:
+                xs.append(pos[n][0])
+                ys.append(pos[n][1])
+                texts.append(data.get("label", n))
+        if xs:
+            fig.add_trace(
+                go.Scatter(
+                    x=xs,
+                    y=ys,
+                    mode="markers",
+                    marker=dict(size=size, color=color),
+                    name=name,
+                    text=texts,
+                    hoverinfo="text",
+                )
+            )
+
+    # Build figure and collect mapping info
+    fig = go.Figure()
+    node_trace_map: List[Dict[str, Any]] = []
+    edge_traces_count = 0
+
+    # Edges: CITES (green), IS_ABOUT (purple)
+    def add_edges(edge_type: str, color: str, width: int):
+        ex, ey = [], []
+        for u, v, edata in G.edges(data=True):
+            if edata.get("edge_type") == edge_type:
+                x0, y0 = pos[u]
+                x1, y1 = pos[v]
+                ex += [x0, x1, None]
+                ey += [y0, y1, None]
+        if ex:
+            fig.add_trace(
+                go.Scatter(
+                    x=ex,
+                    y=ey,
+                    mode="lines",
+                    line=dict(color=color, width=width),
+                    hoverinfo="none",
+                    showlegend=True,
+                    name=f"{edge_type}"
+                )
+            )
+            # Edge trace added; edge_traces_count is updated after each add_edges call
+
+    # Add CITES edges
+    ex_before = len(fig.data)
+    add_edges("CITES", "#2ca02c", 2)
+    edge_traces_count += len(fig.data) - ex_before
+
+    # Add IS_ABOUT edges
+    ex_before = len(fig.data)
+    add_edges("IS_ABOUT", "#9467bd", 2)
+    edge_traces_count += len(fig.data) - ex_before
+
+    # Helper that also captures node ids in the same order
+    def add_nodes_with_map(fig: go.Figure, node_type: str, color: str, size: int, name: str):
+        xs, ys, texts, node_ids = [], [], [], []
+        for n, data in G.nodes(data=True):
+            if data.get("node_type") == node_type:
+                xs.append(pos[n][0])
+                ys.append(pos[n][1])
+                texts.append(data.get("label", n))
+                node_ids.append(n)
+        if xs:
+            fig.add_trace(
+                go.Scatter(
+                    x=xs,
+                    y=ys,
+                    mode="markers",
+                    marker=dict(size=size, color=color),
+                    name=name,
+                    text=texts,
+                    hoverinfo="text",
+                )
+            )
+            node_trace_map.append({"type": node_type, "node_ids": node_ids})
+
+    add_nodes_with_map(fig, "center", "#d62728", 22, "Center Paper")
+    add_nodes_with_map(fig, "cited", "#1f77b4", 14, "Cited by Center")
+    add_nodes_with_map(fig, "citing", "#17becf", 14, "Citing Center")
+    add_nodes_with_map(fig, "field", "#9467bd", 12, "Fields")
+
+    fig.update_layout(
+        title="1-hop Snapshot (Paper + Citations + Fields)",
+        showlegend=True,
+        margin=dict(b=10, l=10, r=10, t=40),
+        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        height=460,
+    )
+    return fig, edge_traces_count, node_trace_map
+
+db_ok = True
+selected_paper_id = st.session_state.get("home_selected_paper_id")
+
+col_left, col_right = st.columns([1, 2])
+
+with col_left:
+    st.write("Find a paper by keywords or ID, or let us surprise you.")
+    try:
+        db = create_connection(validate=False)
+    except Exception as e:
+        db_ok = False
+        st.warning("Neo4j not available. This snapshot requires a running database.")
+
+    # Quick explore input
+    search_query = st.text_input(
+        "Quick Explore",
+        placeholder="e.g., graph neural networks OR a Semantic Scholar paperId",
+        key="home_search_query",
+    )
+
+    explore_cols = st.columns([1, 1])
+    with explore_cols[0]:
+        do_explore = st.button("🔍 Explore")
+    with explore_cols[1]:
+        do_surprise = st.button("🎲 Surprise me")
+
+    if db_ok:
+        if do_surprise and not selected_paper_id:
+            with st.spinner("Picking a featured paper..."):
+                featured = get_random_featured_paper_id(db, top_n=50)
+                if featured:
+                    st.session_state["home_selected_paper_id"] = featured
+                    selected_paper_id = featured
+                    st.success("Showing a featured paper from the citation graph")
+                else:
+                    st.info("No featured paper found. Try a search.")
+
+        if do_explore and search_query:
+            # Try as paperId first, then fallback to keyword search
+            attempted_id = search_query.strip()
+            try:
+                ego = get_home_ego_network(db, attempted_id)
+                # If we got here, ID worked
+                st.session_state["home_selected_paper_id"] = attempted_id
+                selected_paper_id = attempted_id
+            except Exception:
+                # Keyword search fallback – pick top result
+                try:
+                    hits = find_papers_by_keyword(db, search_query)
+                    if not hits.empty:
+                        picked = hits.iloc[0]["paperId"]
+                        st.session_state["home_selected_paper_id"] = picked
+                        selected_paper_id = picked
+                        st.success("Found a match. Showing top result.")
+                    else:
+                        st.info("No matches found for that query.")
+                except Exception as e:
+                    st.error(f"Search error: {e}")
+
+with col_right:
+    if db_ok:
+        # If nothing selected yet, auto-seed a featured paper for first-time wow
+        if not selected_paper_id:
+            try:
+                with st.spinner("Loading featured paper snapshot..."):
+                    featured = get_random_featured_paper_id(db, top_n=50)
+                    if featured:
+                        st.session_state["home_selected_paper_id"] = featured
+                        selected_paper_id = featured
+                        st.info("Auto-selected a featured paper to get you started.")
+            except Exception:
+                pass
+
+        if selected_paper_id:
+            try:
+                ego = get_home_ego_network(db, selected_paper_id, max_cited=6, max_citing=6, max_fields=3)
+                fig, edge_traces_count, node_trace_map = _build_welcome_graph_fig(ego)
+
+                st.info("Tip: Click any paper node to open it on Semantic Scholar.")
+                selected_points = plotly_events(
+                    fig,
+                    click_event=True,
+                    hover_event=False,
+                    select_event=False,
+                    override_height=460,
+                    key="home_snapshot_network",
+                )
+
+                # Handle click events on nodes
+                if selected_points:
+                    point = selected_points[0]
+                    curve_no = point.get("curveNumber")
+                    point_index = point.get("pointIndex")
+                    if curve_no is not None and point_index is not None:
+                        # Map curve number to node trace based on how we added traces
+                        node_trace_index = curve_no - edge_traces_count
+                        if 0 <= node_trace_index < len(node_trace_map):
+                            trace_info = node_trace_map[node_trace_index]
+                            node_type = trace_info.get("type")
+                            node_ids = trace_info.get("node_ids", [])
+                            if 0 <= point_index < len(node_ids):
+                                node_id = node_ids[point_index]
+                                # Paper nodes: open in browser
+                                if node_type in {"center", "cited", "citing"}:
+                                    paper_id = node_id
+                                    url = f"https://www.semanticscholar.org/paper/{paper_id}"
+                                    try:
+                                        webbrowser.open(url)
+                                        st.success("Opening paper in your browser…")
+                                    except Exception as e:
+                                        st.error(f"Failed to open browser: {e}")
+                                        st.code(url)
+                                elif node_type == "field":
+                                    # Optional: open a field search on Semantic Scholar
+                                    field_name = node_id.split("field::", 1)[-1]
+                                    url = f"https://www.semanticscholar.org/search?q={field_name}"
+                                    try:
+                                        webbrowser.open(url)
+                                        st.info("Opening field search in your browser…")
+                                    except Exception as e:
+                                        st.error(f"Failed to open browser: {e}")
+                                        st.code(url)
+
+                # Actions
+                act_cols = st.columns([1, 1])
+                with act_cols[0]:
+                    if st.button("📈 Open full explorer"):
+                        st.session_state["default_center_papers"] = [selected_paper_id]
+                        st.switch_page("src/streamlit_app/pages/Enhanced_Visualizations.py")
+                with act_cols[1]:
+                    st.caption("Red: center | Blue/Teal: citations | Purple: fields")
+
+                # Schema legend and counts
+                try:
+                    stats = db.get_network_statistics()
+                    st.markdown(
+                        f"""
+                        **Schema & Counts**
+                        - Nodes: Papers ({stats.get('papers', 0):,}) · Authors ({stats.get('authors', 0):,}) · Venues ({stats.get('venues', 0):,}) · Fields ({stats.get('fields', 0):,})
+                        - Relationships: CITES ({stats.get('citations', 0):,}) · AUTHORED ({stats.get('authorships', 0):,}) · PUBLISHED_IN ({stats.get('publications', 0):,}) · IS_ABOUT ({stats.get('field_associations', 0):,})
+                        """
+                    )
+                except Exception:
+                    pass
+
+            except Neo4jError as e:
+                st.warning(f"Unable to load snapshot: {e}")
+        else:
+            st.info("Use Quick Explore or Surprise me to view a snapshot.")
+
+    else:
+        st.info("Start Neo4j and reload to see the live snapshot.")
 
 # Create clickable feature cards
 col1, col2 = st.columns(2)
