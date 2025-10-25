@@ -19,6 +19,7 @@ from src.database.connection import (
     get_random_featured_paper_id,
     get_home_ego_network,
     find_papers_by_keyword,
+    get_paper_details,
 )
 
 st.title("📚 Academic Citation Platform")
@@ -51,15 +52,23 @@ with top_left:
     with c5:
         st.metric("🔗 Citations", f"{stats.get('citations', 0):,}")
 
-    st.caption("Legend: Red = center paper • Blue = references (outgoing) • Teal = papers that cite the center (incoming) • Purple = fields (topics). Edges: green = cites, purple = is about.")
+    # (Legend moved below the graph for better readability)
 
 with top_right:
     show_schema = st.checkbox("Show schema diagram", value=True)
-    if show_schema:
-        try:
-            st.image("docs/assets/diagrams/database-schema.png", caption="Schema overview", use_column_width=True)
-        except Exception:
-            st.info("Schema diagram not found. Add it at docs/assets/diagrams/database-schema.png")
+
+# Centered schema diagram (larger)
+if show_schema:
+    try:
+        pad_l, mid, pad_r = st.columns([1, 2.5, 1])
+        with mid:
+            st.image(
+                "docs/assets/diagrams/database-schema.png",
+                caption="Schema overview",
+                use_container_width=True,
+            )
+    except Exception:
+        st.info("Schema diagram not found. Add it at docs/assets/diagrams/database-schema.png")
 
 st.markdown("---")
 st.subheader("🚀 Explore an Existing Graph Snippet")
@@ -150,6 +159,33 @@ selected_paper_id = st.session_state.get("home_selected_paper_id")
 col_left, col_right = st.columns([1, 2])
 
 with col_left:
+    # Show center paper details prominently (above controls)
+    if selected_paper_id and db_ok:
+        try:
+            details_df = get_paper_details(db, selected_paper_id)
+            if not details_df.empty:
+                row = details_df.iloc[0]
+                authors = [a for a in (row.get("authors") or []) if a]
+                author_str = ", ".join([str(a) for a in authors[:3]])
+                if len(authors) > 3:
+                    author_str += f" (+{len(authors)-3} more)"
+                venue = (row.get("venues") or [])
+                venue_str = venue[0] if venue else None
+                st.markdown("**📍 Center Paper**")
+                st.markdown(
+                    f"""
+                    **📄 Title:** {row.get('title') or selected_paper_id}
+
+                    **👥 Authors:** {author_str or 'Unknown'}
+
+                    **📅 Year:** {row.get('year') or '—'}    **🔗 Citations:** {int(row.get('citationCount') or 0):,}
+
+                    {f"**🏛️ Venue:** {venue_str}" if venue_str else ''}
+                    """
+                )
+        except Exception:
+            pass
+
     st.write("Find a paper by keywords or ID, or let me surprise you.")
     if not db_ok:
         st.warning("Neo4j not available. This snapshot requires a running database.")
@@ -212,8 +248,7 @@ with col_right:
             try:
                 ego = get_home_ego_network(db, selected_paper_id, max_cited=6, max_citing=6, max_fields=3)
                 fig, edge_traces_count, node_trace_map = _build_welcome_graph_fig(ego)
-
-                st.info("Tip: Click any paper node to open it on Semantic Scholar.")
+                st.subheader("One-Hop Snippet of the Existing KG")
                 selected_points = plotly_events(
                     fig,
                     click_event=True,
@@ -262,7 +297,9 @@ with col_right:
                         st.session_state["default_center_papers"] = [selected_paper_id]
                         st.switch_page("src/streamlit_app/pages/Enhanced_Visualizations.py")
                 with act_cols[1]:
-                    st.caption("Legend: Red = center paper • Blue = references (outgoing) • Teal = papers that cite the center (incoming) • Purple = fields (topics). Edges: green = cites, purple = is about.")
+                    st.empty()
+
+                st.info("Tip: Click any paper node to open it on Semantic Scholar.")
 
                 # (Schema & Counts now lives in the top section)
 
@@ -272,6 +309,18 @@ with col_right:
             st.info("Use Quick Explore or Surprise me to view a snapshot.")
     else:
         st.info("Start Neo4j and reload to see the live snapshot.")
+
+# Add spacing under controls and move legend text to the left
+with col_left:
+    st.write("")
+    st.write("")
+    if selected_paper_id and db_ok:
+        st.markdown("**Network Graph Conventions**")
+        st.markdown("- Red: center paper")
+        st.markdown("- Blue: references the center paper cites (outgoing)")
+        st.markdown("- Teal: papers that cite the center (incoming)")
+        st.markdown("- Purple: fields (topics)")
+        st.markdown("- Green edges: cites • Purple edges: is about")
 
 # Quick Links
 st.markdown("---")
