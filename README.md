@@ -2,8 +2,9 @@
 
 Citation Compass helps you explore academic citation networks, analyze relationships, and generate citation predictions. It combines an interactive Streamlit app with analytics services, an optional Neo4j graph backend, and a small ML pipeline (TransE embeddings).
 
-📚 [Documentation](https://docs.barbhs.com/citation-compass/)  
-▶️ [Interactive Demo](https://cartography.barbhs.com/)  
+📚 [Documentation](https://docs.barbhs.com/citation-compass/)
+▶️ [Interactive Demo](https://cartography.barbhs.com/)
+📋 [Changelog](CHANGELOG.md)
 🩺 [Neo4j Ping Playbook](docs/neo4j-ping-guide.md)
 
 ## What It Does
