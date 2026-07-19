@@ -133,7 +133,6 @@ nav:
   - 📖 Overview: overview.md
   - 🚀 Getting Started:
       - 📦 Installation: getting-started/installation.md
-      - 🎭 Demo Mode: getting-started/demo-mode.md
       - 📁 File Upload: getting-started/file-upload.md
       - ⚙️ Configuration: getting-started/configuration.md
       - ⚡ Quick Start: getting-started/quick-start.md
@@ -148,7 +147,7 @@ nav:
       - 📊 Results Interpretation: user-guide/results-interpretation.md
       - 📓 Notebook Pipeline: user-guide/notebook-pipeline.md
   - 🔧 Developer Guide:
-      - 🏗️ Architecture: developer-guide/architecture.md
+      - 🏗️ Architecture: architecture.md
       - 📚 API Reference: api.md
       - 🧩 Models: api/models.md
       - ⚙️ Services: api/services.md
@@ -158,7 +157,6 @@ nav:
   - 📓 Notebooks:
       - 📋 Overview: notebooks/overview.md
   - 🛠️ Setup: setup.md
-  - 🏗️ Architecture: architecture.md
 
 watch:
   - src

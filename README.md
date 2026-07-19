@@ -8,8 +8,10 @@
 
 Interactive platform for analyzing academic citation networks and predicting research connections using machine learning.
 
-📚 **[View Complete Documentation](http://127.0.0.1:8000/)** (after running `mkdocs serve`)  
-🎯 **[Try Interactive Demo](http://localhost:8501/)** (after running `streamlit run app.py`)
+📚 **[View Complete Documentation](https://citationcompass.barbhs.com)** (or run `mkdocs serve` for a local copy at http://127.0.0.1:8000/)  
+🎯 **Try the Interactive Demo**: run `streamlit run app.py` and open http://localhost:8501/
+
+> **Note:** This is a personal portfolio project maintained by a single author. It is provided as-is for demonstration and learning.
 
 ## 🚀 What This Does
 
@@ -99,7 +101,7 @@ Populate your database with real academic data using multiple methods:
 - **🔍 Search Queries** - Import papers by academic search terms
 - **🆔 Paper ID Lists** - Import specific papers by Semantic Scholar ID
 - **📁 File Upload** - Bulk import from your research file collections
-- **⚡ Streaming Performance** - 25x faster imports with real-time progress tracking
+- **⚡ Streaming Performance** - Streaming pagination with real-time progress tracking
 - **🛡️ Error Handling** - Graceful failure recovery with detailed reporting
 - **🎯 Quality Filters** - Citation count, year range, and content filtering
 
@@ -224,7 +226,7 @@ python -c "from src.services.analytics_service import get_analytics_service; pri
 ### New User Experience (Enhanced!):
 1. **🎭 Start with Demo Mode**: Launch Streamlit → Demo Datasets → Load "complete_demo" → Explore all features with zero setup
 2. **📁 Upload Your Research**: Data Import → File Upload → Drag-and-drop your .txt/.csv paper collections → Monitor real-time progress  
-3. **🔍 Search & Import**: Search academic papers → Apply quality filters → Stream import with 25x faster performance
+3. **🔍 Search & Import**: Search academic papers → Apply quality filters → Stream import with live progress tracking
 4. **🤖 Train Models**: Run training notebook → Train TransE model → Save to local models
 
 ### Enhanced Analysis Workflows:
@@ -241,8 +243,8 @@ python -c "from src.services.analytics_service import get_analytics_service; pri
 - Rate limiting and caching built-in
 - Handles large dataset imports
 
-### Performance (Recently Enhanced!)
-- **⚡ Streaming Data Import** - 25x faster imports with real-time progress tracking  
+### Performance
+- **⚡ Streaming Data Import** - Streaming pagination with real-time progress tracking  
 - **🚀 Intelligent Batching** - Adaptive batch sizing for optimal performance
 - **🧠 Smart Caching** - Intelligent caching for ML predictions and analytics
 - **📊 Real-time Updates** - Live progress monitoring without blocking UI
@@ -251,7 +253,21 @@ python -c "from src.services.analytics_service import get_analytics_service; pri
 
 ---
 
-**Need the technical integration details?** See `README_INTEGRATION_SUMMARY.md`
+**Need the technical integration details?** See the [architecture guide](docs/architecture.md) (and the archived integration notes under `docs/archive/`).
+
+## 🚀 Deployment
+
+The platform ships with Docker and Google Cloud Run support:
+
+```bash
+# Local, with Neo4j, via Docker Compose
+docker-compose up -d          # app at http://localhost:8080
+
+# Deploy to Google Cloud Run
+./deploy_cloud_run_container.sh
+```
+
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the full guide (secrets, custom domain, troubleshooting).
 
 ## 📚 Documentation
 
@@ -262,10 +278,11 @@ The platform includes comprehensive documentation with:
 - **Notebook Documentation**: Complete pipeline from exploration to presentation
 
 **Access Documentation**:
-- **Online**: Run `mkdocs serve` and visit http://127.0.0.1:8000/
+- **Online**: [citationcompass.barbhs.com](https://citationcompass.barbhs.com)
+- **Local**: Run `mkdocs serve` and visit http://127.0.0.1:8000/
 - **Features**: Search, dark/light theme, navigation, and code examples
 
 **Getting Started?** 
-1. Check the [installation guide](http://127.0.0.1:8000/getting-started/installation/) in the docs
-2. Follow the [quick start](http://127.0.0.1:8000/getting-started/quick-start/) tutorial
+1. Check the [installation guide](https://citationcompass.barbhs.com/getting-started/installation/) in the docs
+2. Follow the [quick start](https://citationcompass.barbhs.com/getting-started/quick-start/) tutorial
 3. Try the interactive demo: `streamlit run app.py`

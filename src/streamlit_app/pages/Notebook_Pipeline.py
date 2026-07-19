@@ -332,7 +332,14 @@ if run_pipeline and selected_steps:
         progress_bar.progress(3/6)
         
         st.header("📈 Performance Metrics & Evaluation")
-        
+
+        st.warning(
+            "⚠️ **Illustrative metrics.** The values below are *simulated for "
+            "demonstration* — they are randomly generated, not computed from the "
+            "trained model. To produce real numbers, evaluate the model on "
+            "`models/test_data.pkl` and wire the results in here."
+        )
+
         # Simulated evaluation metrics (would use actual test data)
         evaluation_metrics = {
             'mrr': np.random.uniform(0.08, 0.15),
@@ -898,11 +905,12 @@ else:
     
     with example_col1:
         st.markdown("""
-        **Model Performance Metrics:**
-        - Mean Reciprocal Rank: 0.112
-        - Hits@1: 3.6% (top-1 accuracy)  
-        - Hits@10: 26.1% (top-10 accuracy)
-        - AUC Score: 98.5% (classification)
+        **Model Performance Metrics** *(illustrative example — simulated, not measured):*
+        - Mean Reciprocal Rank: e.g. ~0.11
+        - Hits@1 / Hits@10 (top-k ranking accuracy)
+        - AUC Score (citation vs. non-citation classification)
+
+        *Run a real evaluation to populate these with measured values.*
         """)
     
     with example_col2:

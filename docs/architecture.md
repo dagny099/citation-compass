@@ -12,6 +12,8 @@ The Academic Citation Platform is a comprehensive system for academic citation n
 ├─────────────────────────────────────────────────────────────┤
 │  Streamlit Application (app.py)                             │
 │  ├── Home Page                                              │
+│  ├── Data Import                                            │
+│  ├── Demo Datasets                                          │
 │  ├── ML Predictions                                         │
 │  ├── Embedding Explorer                                     │
 │  ├── Enhanced Visualizations                                │

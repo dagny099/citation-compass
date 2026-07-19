@@ -95,7 +95,7 @@ Get up and running in minutes:
 
 -   :material-robot: **TransE Model Training**
     
-    Train citation prediction models using graph neural networks with comprehensive evaluation metrics (MRR, Hits@K, AUC).
+    Train citation prediction models with a knowledge-graph embedding approach and a ranking/classification evaluation harness (MRR, Hits@K, AUC).
 
 -   :material-chart-bell-curve: **Prediction Confidence**
     
@@ -157,7 +157,7 @@ Get up and running in minutes:
     
     Complete walkthrough of interactive features and workflows
 
--   [:material-code-braces: **Developer Guide**](developer-guide/architecture.md)
+-   [:material-code-braces: **Developer Guide**](architecture.md)
     
     Architecture, APIs, and extending the platform
 
