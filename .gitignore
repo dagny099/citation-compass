@@ -253,3 +253,8 @@ Desktop.ini
 
 # Python type stubs
 *.pyi.bak
+
+# OTHER
+output/
+.venv*
+.playwright-mcp/
