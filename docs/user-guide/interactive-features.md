@@ -344,7 +344,7 @@ Ready to dive deeper? Explore these related guides:
 
 === "⚙️ Technical Path"
     1. **[Configuration](../getting-started/configuration.md)** - Database and API setup
-    2. **[Developer Guide](../developer-guide/architecture.md)** - Platform architecture
+    2. **[Developer Guide](../architecture.md)** - Platform architecture
     3. **[API Reference](../api/services.md)** - Programmatic interfaces
     4. **[Performance Optimization](../getting-started/configuration.md)** - Scaling and tuning
 

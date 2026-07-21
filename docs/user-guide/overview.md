@@ -51,7 +51,7 @@ Programmatic access for integration and automation:
 **Recommended workflow**:
 1. Begin with [Notebook Pipeline](notebook-pipeline.md)
 2. Explore [ML Predictions](ml-predictions.md) capabilities
-3. Review [Developer Guide](../developer-guide/architecture.md) for customization
+3. Review [Developer Guide](../architecture.md) for customization
 
 ### 📊 Research Administrators
 
@@ -104,7 +104,7 @@ Choose your path based on your goals:
     **Goal**: Integrate platform into existing workflows
 
     **Path**:
-    1. Review [Developer Guide](../developer-guide/architecture.md)
+    1. Review [Developer Guide](../architecture.md)
     2. Use [API Reference](../api/services.md)
     3. Explore the Python API for custom integrations
 
@@ -215,7 +215,7 @@ flowchart LR
 ### 📖 Documentation Resources
 
 - **[API Reference](../api/services.md)**: Complete technical documentation
-- **[Developer Guide](../developer-guide/architecture.md)**: Architecture and customization
+- **[Developer Guide](../architecture.md)**: Architecture and customization
 - **[API Reference](../api/services.md)**: Complete technical documentation
 - **[GitHub Issues](https://github.com/dagny099/citation-compass/issues)**: Common issues and community solutions
 

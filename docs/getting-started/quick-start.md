@@ -284,7 +284,7 @@ Now that you've completed your first analysis:
 
 - **[Model Training Notebook](../notebooks/overview.md)** - Train models for your domain
 - **[API Reference](../api/services.md)** - Scale for large datasets
-- **[Developer Guide](../developer-guide/architecture.md)** - Connect with other tools
+- **[Developer Guide](../architecture.md)** - Connect with other tools
 
 ### 🤝 Get Help
 

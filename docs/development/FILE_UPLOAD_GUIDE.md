@@ -5,10 +5,10 @@
 The Academic Citation Platform now supports **file upload** for importing paper IDs, making it easy to import large lists of papers from your research collections, literature reviews, or bibliographic databases.
 
 ## 🔗 **Related Documentation**
-- **[Getting Started with File Upload](docs/getting-started/file-upload.md)** - Complete step-by-step guide
-- **[Demo Mode](docs/getting-started/demo-mode.md)** - Try file upload with sample data first  
-- **[Data Import Pipeline](docs/user-guide/data-import.md)** - Advanced import features and configuration
-- **[Interactive Features](docs/user-guide/interactive-features.md)** - Using file upload in the web interface
+- **[Getting Started with File Upload](../getting-started/file-upload.md)** - Complete step-by-step guide
+- **[Demo Mode](../getting-started/demo-mode.md)** - Try file upload with sample data first  
+- **[Data Import Pipeline](../user-guide/data-import.md)** - Advanced import features and configuration
+- **[Interactive Features](../user-guide/interactive-features.md)** - Using file upload in the web interface
 
 ## 🚀 **New File Upload Features**
 

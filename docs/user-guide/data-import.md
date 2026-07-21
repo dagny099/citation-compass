@@ -650,7 +650,7 @@ After successful data import:
 2. **[Analyze Networks](network-analysis.md)** - Explore citation and collaboration networks
 3. **[Interactive Exploration](interactive-features.md)** - Visualize and interact with your data
 4. **[Generate Reports](results-interpretation.md)** - Create publication-ready analysis
-5. **[API Integration](../developer-guide/architecture.md)** - Build custom applications
+5. **[API Integration](../architecture.md)** - Build custom applications
 
 ---
 

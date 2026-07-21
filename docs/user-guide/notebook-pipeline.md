@@ -472,7 +472,7 @@ The notebooks integrate seamlessly with the interactive dashboard:
 - **[Network Analysis](network-analysis.md)** - Theoretical background
 - **[ML Predictions](ml-predictions.md)** - Model usage details  
 - **[Results Interpretation](results-interpretation.md)** - Understanding outputs
-- **[Developer Guide](../developer-guide/architecture.md)** - Technical implementation
+- **[Developer Guide](../architecture.md)** - Technical implementation
 
 ---
 
