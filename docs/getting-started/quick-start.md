@@ -51,7 +51,7 @@ Once the platform is running, choose how you want to explore citation networks:
 
     1. **Navigate to Demo Datasets** in the sidebar
     2. **Browse curated datasets**: 
-        - **complete_demo**: 13 high-impact papers across AI, neuroscience, physics
+        - **complete_demo**: 13 high-impact papers across machine learning, computer vision, neuroscience, and more
         - **minimal_demo_5papers**: Quick 5-paper network for fast testing
     3. **Click "Load Dataset"** for instant sample data (loads in 2-3 seconds)
     4. **Explore all features** with realistic academic data:
@@ -133,7 +133,7 @@ print(f"Average citations per paper: {overview.avg_citations:.2f}")
     2. Go to **ML Predictions** page  
     3. **Notice green status** - Demo ML service is ready!
     4. **Try a paper from your demo dataset**:
-        - For complete_demo: Try "649def34f8be52c8b66281af98ae884c09aef38f9" (Attention Is All You Need)
+        - For complete_demo: Try "transformer_attention_2017" (Attention Is All You Need)
         - Or search by title: "Attention"
     5. **Click Generate Predictions** 
     6. **Explore realistic results** with confidence scores based on:
@@ -163,7 +163,7 @@ print(f"Average citations per paper: {overview.avg_citations:.2f}")
     
     # Demo mode: Use papers from loaded demo dataset
     # Production: Use papers from your database
-    paper_id = "649def34f8be52c8b66281af98ae884c09aef38f9"  # Attention paper in demo
+    paper_id = "transformer_attention_2017"  # "Attention Is All You Need" in the demo dataset
     predictions = ml_service.predict_citations(paper_id, top_k=10)
     
     print(f"🤖 Predictions for paper: {paper_id}")
