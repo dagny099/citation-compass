@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Academic Citation Platform provides several APIs for interacting with citation data, machine learning models, and analytics services. This document covers the main API components and their usage.
+Citation Compass provides several APIs for interacting with citation data, machine learning models, and analytics services. This document covers the main API components and their usage.
 
 ## Core Services API
 

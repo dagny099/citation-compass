@@ -1,8 +1,8 @@
-# Academic Citation Platform - Testing Instructions
+# Citation Compass - Testing Instructions
 
 ## Overview
 
-This document provides comprehensive step-by-step instructions for testing the Academic Citation Platform Phase 2 integration. The platform combines interactive web interfaces, ML prediction capabilities, and robust data collection from three reference codebases.
+This document provides step-by-step instructions for testing the Citation Compass integration. The platform combines interactive web interfaces, ML prediction capabilities, and robust data collection from reference components.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ This document provides comprehensive step-by-step instructions for testing the A
 ### Environment Setup
 ```bash
 # 1. Navigate to project directory
-cd /Users/bhs/PROJECTS/academic-citation-platform
+cd /Users/bhs/PROJECTS/citation-compass
 
 # 2. Create and activate virtual environment
 python -m venv venv
@@ -368,7 +368,7 @@ cat > run_tests.sh << 'EOF'
 #!/bin/bash
 set -e
 
-echo "Running Academic Citation Platform Test Suite..."
+echo "Running Citation Compass Test Suite..."
 echo "=============================================="
 
 echo "1. Running unit tests..."
@@ -390,4 +390,4 @@ chmod +x run_tests.sh
 ./run_tests.sh
 ```
 
-This completes the comprehensive testing instructions for the Academic Citation Platform Phase 2 integration.
+This completes the testing instructions for the Citation Compass integration.

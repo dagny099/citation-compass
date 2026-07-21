@@ -20,6 +20,7 @@ from __future__ import annotations
 import os
 import logging
 from typing import Dict, List, Optional, Any, Union
+import random
 import pandas as pd
 from neo4j import GraphDatabase
 
@@ -336,6 +337,129 @@ def create_connection(validate: bool = True) -> Neo4jConnection:
         Neo4jConnection instance
     """
     return Neo4jConnection(validate_connection=validate)
+
+
+# -------- Feature helpers for Home page snapshot --------
+def get_top_papers_by_indegree(db: Neo4jConnection, limit: int = 20) -> pd.DataFrame:
+    """
+    Retrieve top papers ranked by in-degree (number of incoming CITES edges).
+
+    Args:
+        db: Neo4j connection
+        limit: Number of top papers to return
+
+    Returns:
+        DataFrame with columns: paperId, title, indeg
+    """
+    query = """
+    MATCH (p:Paper)<-[:CITES]-(:Paper)
+    RETURN p.paperId AS paperId, p.title AS title, count(*) AS indeg
+    ORDER BY indeg DESC
+    LIMIT $limit
+    """
+    try:
+        return db.query(query, {"limit": int(limit)})
+    except Exception as e:
+        raise Neo4jError(f"Failed to retrieve top papers by in-degree: {e}") from e
+
+
+def get_random_featured_paper_id(db: Neo4jConnection, top_n: int = 20) -> Optional[str]:
+    """
+    Pick a random paperId from the top N papers by in-degree.
+
+    Args:
+        db: Neo4j connection
+        top_n: Pool size to sample from
+
+    Returns:
+        paperId string or None if unavailable
+    """
+    df = get_top_papers_by_indegree(db, limit=top_n)
+    if df is None or df.empty:
+        return None
+    idx = random.randrange(len(df))
+    return df.iloc[idx]["paperId"]
+
+
+def get_home_ego_network(
+    db: Neo4jConnection,
+    paper_id: str,
+    max_cited: int = 6,
+    max_citing: int = 6,
+    max_fields: int = 3,
+) -> Dict[str, Any]:
+    """
+    Build a lightweight 1-hop ego network for Home page snapshot.
+
+    Returns a dict with center paper, cited and citing neighbors, and fields.
+
+    Args:
+        db: Neo4j connection
+        paper_id: Center paper id
+        max_cited: Max outgoing citations to include
+        max_citing: Max incoming citations to include
+        max_fields: Max fields to attach to center
+
+    Returns:
+        Dict with keys: center, cited, citing, fields
+    """
+    # Center with fields
+    q_center = """
+    MATCH (p:Paper {paperId: $paperId})
+    OPTIONAL MATCH (p)-[:IS_ABOUT]->(f:Field)
+    WITH p, collect(DISTINCT f.field) AS fields
+    RETURN p.paperId AS paperId, p.title AS title, p.year AS year,
+           p.citationCount AS citationCount, fields
+    """
+
+    # Outgoing citations
+    q_cited = """
+    MATCH (p:Paper {paperId: $paperId})-[:CITES]->(c:Paper)
+    RETURN c.paperId AS paperId, c.title AS title, c.year AS year,
+           c.citationCount AS citationCount
+    ORDER BY c.citationCount DESC
+    LIMIT $limit
+    """
+
+    # Incoming citations
+    q_citing = """
+    MATCH (c:Paper)-[:CITES]->(p:Paper {paperId: $paperId})
+    RETURN c.paperId AS paperId, c.title AS title, c.year AS year,
+           c.citationCount AS citationCount
+    ORDER BY c.citationCount DESC
+    LIMIT $limit
+    """
+
+    try:
+        center_df = db.query(q_center, {"paperId": paper_id})
+        if center_df.empty:
+            raise Neo4jError(f"Paper not found: {paper_id}")
+
+        center_row = center_df.iloc[0]
+        fields = center_row.get("fields") or []
+        # Ensure list type and limit
+        if not isinstance(fields, list):
+            fields = []
+        fields = [f for f in fields if f and str(f).strip()][:max_fields]
+
+        cited_df = db.query(q_cited, {"paperId": paper_id, "limit": int(max_cited)})
+        citing_df = db.query(q_citing, {"paperId": paper_id, "limit": int(max_citing)})
+
+        result: Dict[str, Any] = {
+            "center": {
+                "paperId": center_row.get("paperId"),
+                "title": center_row.get("title"),
+                "year": int(center_row.get("year")) if center_row.get("year") else None,
+                "citationCount": int(center_row.get("citationCount") or 0),
+            },
+            "cited": cited_df.to_dict("records") if not cited_df.empty else [],
+            "citing": citing_df.to_dict("records") if not citing_df.empty else [],
+            "fields": fields,
+        }
+        return result
+
+    except Exception as e:
+        raise Neo4jError(f"Failed to build ego network: {e}") from e
 
 
 def find_papers_by_keyword(db: Neo4jConnection, keyword: str) -> pd.DataFrame:

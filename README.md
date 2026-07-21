@@ -1,188 +1,117 @@
-# Academic Citation Platform
+# Citation Compass
 
-**ML-powered research discovery platform predicting citation relationships using TransE embeddings on 12K+ academic papers. Interactive visualization, community detection, and temporal analysis with Neo4j graph database backend.**
+Citation Compass helps you explore academic citation networks, analyze relationships, and generate citation predictions. It combines an interactive Streamlit app with analytics services, an optional Neo4j graph backend, and a small ML pipeline (TransE embeddings).
 
-*Combines network analysis, machine learning, and data visualization to facilitate academic research discovery.*
+📚 [Documentation](https://docs.barbhs.com/citation-compass/)  
+▶️ [Interactive Demo](https://cartography.barbhs.com/)  
+🩺 [Neo4j Ping Playbook](docs/neo4j-ping-guide.md)
 
-![Citation Network](docs/assets/images/logo.svg)
+## What It Does
 
-Interactive platform for analyzing academic citation networks and predicting research connections using machine learning.
+- Explore citation networks: interactive visualization of paper relationships
+- Predict likely citations with TransE-based embeddings
+- Analyze communities, temporal trends, and centrality metrics
+- Export results as LaTeX tables, figures, and summaries
 
-📚 **[View Complete Documentation](https://citationcompass.barbhs.com)** (or run `mkdocs serve` for a local copy at http://127.0.0.1:8000/)  
-🎯 **Try the Interactive Demo**: run `streamlit run app.py` and open http://localhost:8501/
+### Visual Overview
 
-> **Note:** This is a personal portfolio project maintained by a single author. It is provided as-is for demonstration and learning.
+![System architecture](docs/assets/diagrams/system-architecture.png)
 
-## 🚀 What This Does
+![Home dashboard](docs/assets/screenshots/01-home-dashboard.png)
 
-- **Explore Citation Networks**: Interactive visualization of paper relationships
-- **ML-Powered Predictions**: Find papers likely to cite each other using TransE embeddings
-- **Research Analytics**: Community detection, temporal trends, and citation patterns
-- **Export Results**: Generate reports, LaTeX tables, and research summaries
+## Get Started
 
-## 🎯 Quick Start
+### Option A — Try the Demo (no database)
+```bash
+streamlit run app.py
+# Opens at http://localhost:8501/
+```
+In the app, go to “Demo Datasets” → load “complete_demo” to explore features with curated sample data.
 
-### Prerequisites
-- **Python 3.8+** installed on your system
-- **Git** for cloning the repository
-- **Neo4j database** (optional - try demo mode first!)
+### Option B — Full Setup (with Neo4j)
 
-### Installation & Setup
+Prerequisites:
+- Python 3.8+
+- Git
+- A Neo4j instance (local or cloud)
 
-1. **Clone and Install**:
-   ```bash
-   git clone https://github.com/dagny099/citation-compass.git
-   cd citation-compass
-   pip install -e ".[all]"
-   ```
+Install:
+```bash
+git clone https://github.com/dagny099/citation-compass.git
+cd citation-compass
+pip install -e ".[all]"
+```
 
-2. **🎭 Try Demo Mode First!** (no database required):
-   ```bash
-   # Start interactive dashboard
-   streamlit run app.py
-   # Opens at http://localhost:8501/
-   ```
-   
-   **Demo Mode Features**:
-   - **🚀 Zero Setup** - Works instantly without any configuration!
-   - **📊 Curated Academic Data** - 13 high-impact papers across AI, neuroscience, physics
-   - **🤖 ML Predictions** - Citation prediction with synthetic embeddings (no training required!)
-   - **🔗 Interactive Networks** - Clickable nodes, real-time filtering, enhanced visualizations
-   - **📁 File Upload Testing** - Try the drag-and-drop interface with sample files
-   - **📈 Full Analytics** - Community detection, temporal analysis, export capabilities
-   
-   Navigate to **"Demo Datasets"** → Load **"complete_demo"** → Explore all features!
+Configure environment:
+```env
+NEO4J_URI=neo4j+s://your-database-url
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=your-password
+```
 
-3. **For Production Use** (copy `.env.example` to `.env` and add your Neo4j database):
-   ```env
-   NEO4J_URI=neo4j+s://your-database-url
-   NEO4J_USER=neo4j  
-   NEO4J_PASSWORD=your-password
-   ```
+Optional tools:
+```bash
+# Notebooks
+jupyter notebook notebooks/
 
-4. **Additional Options**:
-   ```bash
-   # Run Jupyter notebooks
-   jupyter notebook notebooks/
-   
-   # View documentation
-   mkdocs serve
-   # Opens at http://127.0.0.1:8000/
-   ```
+# Local docs
+mkdocs serve  # http://127.0.0.1:8000/
+```
 
-### Installation Options
-- **Quick Install**: `pip install -e ".[all]"` (recommended)
-- **Custom Install**: Install specific components:
-  - `pip install -e ".[ml]"` - Machine learning features
-  - `pip install -e ".[analytics]"` - Advanced analytics
-  - `pip install -e ".[viz]"` - Visualization tools
-  - `pip install -e ".[web]"` - Streamlit interface
+Jupyter kernel note (optional):
+```bash
+pip install ipykernel
+python -m ipykernel install --user --name=myenv --display-name="Python (myenv)"
+```
 
-## 📱 Interactive Features
+### Installation Variants
+- All features (recommended): `pip install -e ".[all]"`
+- Specific extras: `"[ml]"` (ML), `"[analytics]"` (analytics), `"[viz]"` (visualization), `"[web]"` (Streamlit)
 
-### 🎭 Demo Mode & Sample Data
-Explore the platform instantly without any database setup:
-- **Curated Datasets**: Academic papers from AI, NLP, physics, and computer science
-- **Offline Mode**: Full functionality without Neo4j database
-- **Quick Fixtures**: Fast-loading test data for development
-- **Sample ML Predictions**: Pre-configured models with realistic results
+## Features (Overview)
 
-### 📁 File Upload for Research Collections (NEW!)
-Import your paper collections effortlessly with drag-and-drop:
-- **📂 Drag & Drop Interface** - Upload .txt or .csv files with paper IDs
-- **📋 Multiple Formats** - Support for plain text lists and CSV with metadata
-- **✅ Real-time Validation** - Instant feedback on file format and content
-- **📊 Progress Tracking** - Monitor import with streaming updates and performance metrics
-- **📄 Sample Files** - Download examples to get started quickly
-- **🔄 Batch Processing** - Efficiently handle large research collections (1000+ papers)
+### Demo Mode & Sample Data
+- Curated datasets across several fields
+- Works offline without a Neo4j database
+- Sample ML predictions using included embeddings
 
-### 📥 Enhanced Data Import Pipeline
-Populate your database with real academic data using multiple methods:
-- **🔍 Search Queries** - Import papers by academic search terms
-- **🆔 Paper ID Lists** - Import specific papers by Semantic Scholar ID
-- **📁 File Upload** - Bulk import from your research file collections
-- **⚡ Streaming Performance** - Streaming pagination with real-time progress tracking
-- **🛡️ Error Handling** - Graceful failure recovery with detailed reporting
-- **🎯 Quality Filters** - Citation count, year range, and content filtering
+### Importing Data
+- Search queries (by keywords)
+- Paper ID lists (Semantic Scholar IDs)
+- File upload (.txt or .csv)
+- Progress tracking and batching with basic error handling and filters
 
-### 🔮 ML Predictions
-Predict citation relationships between papers using TransE embeddings:
-- Input paper IDs or search by title
-- Get top-K most likely citations with confidence scores
-- Explore paper embeddings in vector space
+### ML Predictions
+- Predict citation relationships between papers using TransE embeddings
+- Return top-K predictions with confidence scores
+- Explore embeddings in vector space
 
-### 📊 Enhanced Network Analysis
-Analyze citation networks with powerful interactive features:
-- **🖱️ Clickable Network Nodes** - Click any paper to view detailed information
-- **🎨 Interactive Visualizations** - Real-time filtering, zoom, pan with smooth animations
-- **🏘️ Community Detection** - Discover research clusters with multiple algorithms
-- **📊 Centrality Analysis** - Betweenness, eigenvector, PageRank measures
-- **⏰ Temporal Trends** - Track citation evolution over time
-- **📄 Export Capabilities** - Generate academic reports, LaTeX tables, high-resolution graphics
+### Network Analysis
+- Interactive network views with filtering and zoom
+- Community detection (e.g., Louvain) and centrality metrics
+- Temporal trend analysis; export figures and tables
 
-### 🧪 Research Notebooks
-Run pre-built analysis workflows:
-- Citation network analysis
-- Author collaboration patterns  
-- Field-specific research trends
-- Configurable parameters and real-time results
+### Notebooks (Workflow)
+Four notebooks support end-to-end analysis:
+- 01_comprehensive_exploration.ipynb — network exploration, communities, temporal patterns
+- 02_model_training_pipeline.ipynb — TransE training and evaluation
+- 03_prediction_evaluation.ipynb — metrics (MRR, Hits@K, AUC) and predictions
+- 04_narrative_presentation.ipynb — presentation and summary visuals
 
-### 📈 Results Interpretation
-Get context for your findings:
-- Academic benchmarking across domains
-- Traffic light performance indicators
-- Actionable research insights
-- LaTeX export for papers
-
-## 🛠️ For Data Scientists
-
-### 🧪 Research Pipeline: Complete Analysis Workflow
-
-Our 4-notebook pipeline tells a complete data science story from exploration to presentation:
-
-#### **📓 01_comprehensive_exploration.ipynb** - *"Network Discovery & Foundation"*
-- **What it does**: Analyzes citation network topology, community detection, temporal patterns
-- **Key outputs**: Network statistics, centrality analysis, community structure insights
-- **For portfolios**: Demonstrates systematic EDA and network analysis expertise
-- **Status**: ✅ **Production ready** - Handles database fallbacks gracefully
-
-#### **🤖 02_model_training_pipeline.ipynb** - *"TransE Model Development"*  
-- **What it does**: Implements TransE from scratch, trains on citation data, validates performance
-- **Key outputs**: Trained model (18.5MB), training visualizations, embedding analysis
-- **For portfolios**: Shows ML engineering skills, custom model implementation
-- **Status**: ✅ **Production ready** - Successfully trains models with early stopping
-
-#### **📊 03_prediction_evaluation.ipynb** - *"Performance Validation & Discovery"*
-- **What it does**: Comprehensive evaluation (MRR, Hits@K, AUC), generates citation predictions  
-- **Key outputs**: Performance metrics, 1000+ novel citation predictions, evaluation dashboard
-- **For portfolios**: Demonstrates proper ML evaluation and business value creation
-- **Status**: ✅ **Production ready** - Robust evaluation with confidence analysis
-
-#### **🎭 04_narrative_presentation.ipynb** - *"Scholarly Matchmaking Story"*
-- **What it does**: Creates compelling 4-act narrative visualization of the complete project
-- **Key outputs**: Portfolio-quality story visualizations, executive summaries
-- **For portfolios**: Shows ability to communicate technical work to multiple audiences
-- **Status**: ✅ **Production ready** - Handles both demo and actual data modes
-
-**⚠️ No trained models yet? Follow the numbered sequence above.**
-
-The training pipeline will:
-- Load citation data from your Neo4j database
-- Train a TransE model for citation prediction
-- Save the trained model to `models/` directory
-- Generate training visualizations and evaluations
-
-**🚀 Quick Start (Without Models)**: You can explore network analysis and data preparation features even without trained models!
+If you plan to train a model:
+- Load data from Neo4j
+- Train TransE
+- Save artifacts under `models/`
+- Review training visualizations and evaluation outputs
 
 ### Python API Usage
 ```python
 # ML predictions (requires trained model)
 from src.services.ml_service import get_ml_service
 ml = get_ml_service()
-# Note: Will raise FileNotFoundError if no model trained yet
 predictions = ml.predict_citations('paper_id', top_k=10)
 
-# Network analysis  
+# Network analysis
 from src.services.analytics_service import get_analytics_service
 analytics = get_analytics_service()
 communities = analytics.detect_communities('author_id')
@@ -196,93 +125,61 @@ python -m src.cli.import_data search "machine learning" --max-papers 100
 # Import specific paper IDs from file
 python -m src.cli.import_data ids --ids-file paper_ids.txt --batch-size 20
 
-# Import with filtering options  
+# Import with filtering options
 python -m src.cli.import_data search "neural networks" --max-papers 100 --year-range 2020 2024
 ```
 
-### Database Schema
-- **Papers**: Connected by citation relationships
-- **Authors**: Linked to papers and institutions  
-- **Venues**: Journals and conference publications
-- **Fields**: Research domain classifications
+### Database Entities
+- Papers — citation relationships
+- Authors — linked to papers and institutions
+- Venues — journals and conferences
+- Fields — research domain classifications
 
-### Testing Your Setup
+### Verify Your Setup
 ```bash
-# Test basic installation
+# Basic environment check
 python -c "from src.database.connection import Neo4jConnection; from src.services.analytics_service import get_analytics_service; print('✅ Basic installation successful')"
 
-# Run all tests
+# Run tests
 python -m pytest tests/ -v
 
-# Test ML service (will show warning if no trained model)
+# Services (no model needed for analytics)
 python -c "from src.services.ml_service import get_ml_service; ml=get_ml_service(); print('✅ ML Service Ready')"
-
-# Test analytics
 python -c "from src.services.analytics_service import get_analytics_service; print('✅ Analytics Ready')"
 ```
 
-## 📊 Sample Workflows
+## Sample Workflows
 
-### New User Experience (Enhanced!):
-1. **🎭 Start with Demo Mode**: Launch Streamlit → Demo Datasets → Load "complete_demo" → Explore all features with zero setup
-2. **📁 Upload Your Research**: Data Import → File Upload → Drag-and-drop your .txt/.csv paper collections → Monitor real-time progress  
-3. **🔍 Search & Import**: Search academic papers → Apply quality filters → Stream import with live progress tracking
-4. **🤖 Train Models**: Run training notebook → Train TransE model → Save to local models
+### New Users
+1. Launch Streamlit → Demo Datasets → load "complete_demo"
+2. Upload a .txt/.csv list of paper IDs (optional)
+3. Search and import papers by keywords
+4. Explore predictions and networks; export results
 
-### Enhanced Analysis Workflows:
-1. **🎯 Citation Prediction**: Input paper → Get ML predictions (works in demo mode!) → Explore synthetic embeddings → Validate results
-2. **🕸️ Interactive Network Analysis**: Load data → Click network nodes → Trace citation paths → Apply real-time filters → Export high-res visualizations
-3. **📊 Community Detection**: Select research domain → Detect communities → Analyze cross-field connections → Generate LaTeX reports
-4. **⏰ Temporal Analysis**: Choose date range → Track citation evolution → Identify trends → Export academic summaries
-5. **🔍 Research Discovery**: Explore embeddings → Find similar papers → Build reading lists → Track confidence scores
+### Analysis Tasks
+1. Citation prediction: input a paper → review predictions → explore embeddings
+2. Network analysis: load data → inspect communities and centrality → export figures
+3. Temporal analysis: set date range → examine trends → export tables
 
-## 🔧 Advanced Configuration
+## Configuration Notes
 
-### API Integration
-- Semantic Scholar API for paper metadata
-- Rate limiting and caching built-in
-- Handles large dataset imports
+### APIs and Data
+- Semantic Scholar API for metadata
+- Basic rate limiting and caching
+- Supports larger imports with batching
 
 ### Performance
-- **⚡ Streaming Data Import** - Streaming pagination with real-time progress tracking  
-- **🚀 Intelligent Batching** - Adaptive batch sizing for optimal performance
-- **🧠 Smart Caching** - Intelligent caching for ML predictions and analytics
-- **📊 Real-time Updates** - Live progress monitoring without blocking UI
-- **🔄 Resumable Operations** - Large imports continue where they left off
-- **🎯 Query Optimization** - Enhanced Neo4j query performance
+- Streaming imports with progress tracking
+- Adaptive batching and basic caching for analytics and predictions
+- Resumable operations for longer imports
+- Query efficiency improvements for Neo4j
 
----
+## Documentation
 
-**Need the technical integration details?** See the [architecture guide](docs/architecture.md) (and the archived integration notes under `docs/archive/`).
+See the full documentation site for installation, quick start, user and developer guides, and notebook workflows:
+- Online: https://docs.barbhs.com/citation-compass/
+- Local: `mkdocs serve` → http://127.0.0.1:8000/
 
-## 🚀 Deployment
-
-The platform ships with Docker and Google Cloud Run support:
-
-```bash
-# Local, with Neo4j, via Docker Compose
-docker-compose up -d          # app at http://localhost:8080
-
-# Deploy to Google Cloud Run
-./deploy_cloud_run_container.sh
-```
-
-See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the full guide (secrets, custom domain, troubleshooting).
-
-## 📚 Documentation
-
-The platform includes comprehensive documentation with:
-- **Getting Started Guide**: Installation, configuration, and first steps
-- **User Guide**: Interactive features and research workflows  
-- **Developer Guide**: Architecture, API reference, and extending the platform
-- **Notebook Documentation**: Complete pipeline from exploration to presentation
-
-**Access Documentation**:
-- **Online**: [citationcompass.barbhs.com](https://citationcompass.barbhs.com)
-- **Local**: Run `mkdocs serve` and visit http://127.0.0.1:8000/
-- **Features**: Search, dark/light theme, navigation, and code examples
-
-**Getting Started?** 
-1. Check the [installation guide](https://citationcompass.barbhs.com/getting-started/installation/) in the docs
-2. Follow the [quick start](https://citationcompass.barbhs.com/getting-started/quick-start/) tutorial
-3. Try the interactive demo: `streamlit run app.py`
+Looking for technical architecture and APIs? Start with:
+- `docs/architecture.md`
+- `docs/api.md`

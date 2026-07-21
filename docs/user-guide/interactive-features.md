@@ -4,7 +4,7 @@ Explore citation networks using the enhanced interactive Streamlit dashboard int
 
 ## Overview
 
-The **Academic Citation Platform** provides a comprehensive interactive web interface built with **Streamlit**. This guide covers all the point-and-click features available through the dashboard, including the latest enhancements for improved user experience and functionality.
+**Citation Compass** provides an interactive web interface built with **Streamlit**. This guide covers the point-and-click features available through the dashboard, including recent enhancements for usability.
 
 ## 🚀 Getting Started
 
@@ -29,7 +29,9 @@ The dashboard will open in your browser at `http://localhost:8501` with a multi-
 - **System status indicators** showing database, ML service, and analytics readiness
 - **Getting started guidance** with personalized recommendations
 
-### 2. 🎭 Demo Datasets (NEW!)
+![Home dashboard](../assets/screenshots/01-home-dashboard.png){ width="800" }
+
+### 2. 🎭 Demo Datasets
 
 **Location**: Demo Datasets (in sidebar)
 
@@ -44,7 +46,7 @@ The dashboard will open in your browser at `http://localhost:8501` with a multi-
 !!! tip "Start Here!"
     Perfect for new users! Load the complete_demo dataset to explore all platform features with realistic academic data.
 
-### 3. 📥 Data Import & File Upload (NEW!)
+### 3. 📥 Data Import & File Upload
 
 **Location**: Data Management → Data Import
 
@@ -67,6 +69,8 @@ The dashboard will open in your browser at `http://localhost:8501` with a multi-
 - **Batch prediction capabilities** for multiple papers
 - Interactive result exploration with sorting and filtering
 
+![ML predictions screen](../assets/screenshots/03-ml-predictions-with-interface.png){ width="800" }
+
 !!! info "Demo Mode Available"
     ML predictions work in demo mode using realistic synthetic embeddings. No trained model required for testing!
 
@@ -80,7 +84,9 @@ The dashboard will open in your browser at `http://localhost:8501` with a multi-
 - **Field-aware visualization** - Papers cluster realistically by domain
 - Similarity exploration with confidence metrics
 
-### 6. 🔗 Enhanced Visualizations with Clickable Nodes (ENHANCED!)
+![Embedding explorer](../assets/screenshots/05-embedding-explorer.png){ width="800" }
+
+### 6. 🔗 Enhanced Visualizations with Clickable Nodes
 
 **Location**: Analysis → Enhanced Visualizations
 
@@ -91,6 +97,8 @@ The dashboard will open in your browser at `http://localhost:8501` with a multi-
 - **Enhanced layouts** - Improved force-directed and hierarchical arrangements
 - **Performance optimizations** - Smooth rendering for larger networks
 - Export capabilities with high-resolution outputs
+
+![Enhanced visualizations](../assets/screenshots/04-enhanced-visualizations-interface.png){ width="800" }
 
 ### 7. Results Interpretation
 
@@ -114,10 +122,10 @@ The dashboard will open in your browser at `http://localhost:8501` with a multi-
 
 ## 🎯 Key Interactive Features
 
-### 🎭 Demo Mode Exploration (NEW!)
+### 🎭 Demo Mode Exploration
 
 **Instant Access**:
-- **Zero-setup exploration** - Works immediately without any configuration
+- **No database required** - Works without additional setup
 - **Realistic academic data** - Curated papers from AI, neuroscience, physics, and more
 - **Full offline functionality** - Complete feature access without internet
 - **Educational workflows** - Learn concepts with guided examples
@@ -128,7 +136,7 @@ The dashboard will open in your browser at `http://localhost:8501` with a multi-
 - **Performance monitoring** - Load times, memory usage, processing speed
 - **Comparison tools** - Side-by-side dataset statistics
 
-### 📁 File Upload & Import (NEW!)
+### 📁 File Upload & Import
 
 **Upload Interface**:
 - **Drag-and-drop functionality** for .txt and .csv files
@@ -240,7 +248,7 @@ Most features can be customized through the interface:
 
 ### New Performance Features
 
-- **Streaming pagination** - 25x faster data loading for large imports
+- **Streaming pagination** - Faster data loading for large imports
 - **Intelligent batching** - Automatic batch size optimization
 - **Real-time progress** - Live updates without blocking the interface
 - **Offline capabilities** - Full functionality without network dependencies
@@ -331,7 +339,7 @@ The dashboard supports custom visualization parameters:
 Ready to dive deeper? Explore these related guides:
 
 === "🎭 New User Path"
-    1. **[Demo Mode](../getting-started/demo-mode.md)** - Start here! Zero setup required
+    1. **[Demo Mode](../getting-started/demo-mode.md)** - Start here (no database required)
     2. **[Demo Datasets](demo-datasets.md)** - Explore curated academic research data  
     3. **[File Upload](../getting-started/file-upload.md)** - Import your own research collections
     4. **[Data Import](data-import.md)** - Advanced import pipeline features

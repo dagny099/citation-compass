@@ -20,7 +20,7 @@ By completing this notebook, you will:
 - Experience with data visualization (matplotlib, seaborn)
 
 ### System Requirements
-- Academic Citation Platform with analytics components
+- Citation Compass with analytics components
 - Neo4j database connection with citation data
 - NetworkX, pandas, matplotlib, seaborn libraries
 - Sufficient memory for network analysis (recommended: 8GB+ RAM)

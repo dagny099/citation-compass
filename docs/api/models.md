@@ -1,6 +1,6 @@
 # Data Models API Reference
 
-Comprehensive documentation for data models, schemas, and data structures used throughout the Academic Citation Platform.
+Comprehensive documentation for data models, schemas, and data structures used throughout Citation Compass.
 
 ## Core Data Models
 
@@ -518,4 +518,4 @@ class LazyPaper(BaseModel):
         return self._citations or []
 ```
 
-This comprehensive model system provides type safety, validation, and performance optimization for the entire Academic Citation Platform.
+This model system provides type safety, validation, and performance optimization for Citation Compass.

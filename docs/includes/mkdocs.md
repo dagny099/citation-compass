@@ -24,7 +24,7 @@
 *[UUID]: Universally Unique Identifier
 
 <!-- Common variables -->
-{% set platform_name = "Academic Citation Platform" %}
+{% set platform_name = "Citation Compass" %}
 {% set version = "0.1.0" %}
 {% set github_repo = "https://github.com/dagny099/citation-compass" %}
 

@@ -1,4 +1,4 @@
-# Import Standards for Academic Citation Platform
+# Import Standards for Citation Compass
 
 ## Standard Import Organization
 

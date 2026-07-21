@@ -1,10 +1,12 @@
 # Demo Datasets - Comprehensive Research Analytics
 
-Explore the Academic Citation Platform's full capabilities using curated academic datasets. Demo mode provides realistic research data with offline functionality, perfect for learning, testing, and demonstrating advanced analytics features.
+Explore Citation Compass capabilities using curated academic datasets. Demo mode provides realistic research data with offline functionality, useful for learning, testing, and demonstrating analytics features.
 
 ## 🎯 Demo Datasets Overview
 
 Demo datasets offer **immediate access** to powerful research analytics without requiring database setup, API keys, or data imports. Experience the complete platform with realistic academic data spanning multiple research fields.
+
+![Home dashboard (demo entry points)](../assets/screenshots/01-home-dashboard.png){ width="800" }
 
 ### Why Use Demo Datasets?
 

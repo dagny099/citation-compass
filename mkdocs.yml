@@ -1,12 +1,17 @@
-site_name: Academic Citation Platform
-site_description: Comprehensive platform for academic citation network analysis, prediction, and exploration
+site_name: Citation Compass
+site_description: Tools for exploring academic citation networks, predictions, and analysis
 site_url: https://citationcompass.barbhs.com
-site_author: Academic Citation Platform Team
+site_author: Citation Compass Team
 copyright: Copyright © 2025 Academic Citation Platform Team
 
 repo_name: dagny099/citation-compass
 repo_url: https://github.com/dagny099/citation-compass
 edit_uri: edit/main/docs/
+
+validation:
+  omitted_files: ignore
+  absolute_links: warn
+  unrecognized_links: warn
 
 theme:
   name: material
@@ -91,7 +96,7 @@ markdown_extensions:
   - md_in_html
   - toc:
       permalink: true
-      toc_depth: 3
+      toc_depth: 2
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.betterem:
@@ -130,14 +135,7 @@ markdown_extensions:
 
 nav:
   - 🏠 Home: index.md
-  - 📖 Overview: overview.md
-  - 🚀 Getting Started:
-      - 📦 Installation: getting-started/installation.md
-      - 🎭 Demo Mode: getting-started/demo-mode.md
-      - 📁 File Upload: getting-started/file-upload.md
-      - ⚙️ Configuration: getting-started/configuration.md
-      - ⚡ Quick Start: getting-started/quick-start.md
-      - 🌍 Environment Setup: getting-started/environment-setup.md
+  - 📖 Getting Started: getting-started.md
   - 👤 User Guide:
       - 📋 Overview: user-guide/overview.md
       - 🎭 Demo Datasets: user-guide/demo-datasets.md
@@ -147,17 +145,37 @@ nav:
       - 🎨 Interactive Features: user-guide/interactive-features.md
       - 📊 Results Interpretation: user-guide/results-interpretation.md
       - 📓 Notebook Pipeline: user-guide/notebook-pipeline.md
+  - 📓 Notebooks:
+      - 📋 Overview: notebooks/overview.md
+      - 01 – Comprehensive Exploration: notebooks/01-comprehensive-exploration.md
+      - 02 – Model Training Pipeline: notebooks/02-model-training-pipeline.md
+      - 03 – Prediction Evaluation: notebooks/03-prediction-evaluation.md
+      - 04 – Narrative Presentation: notebooks/04-narrative-presentation.md
   - 🔧 Developer Guide:
-      - 🏗️ Architecture: architecture.md
+      - 🏗️ Architecture & Design: architecture.md
       - 📚 API Reference: api.md
       - 🧩 Models: api/models.md
       - ⚙️ Services: api/services.md
+  - 🛠️ Resources:
+      - 🩺 Neo4j Health Monitoring: resources/neo4j-health-monitoring.md
+  - 🗄️ Archived:
+      - 📊 Visual Assets Index: VISUAL_ASSETS_INDEX.md
       - 📝 Development History:
           - 📋 Phase 4 Plan: archived_phase_4_plan.md
           - ⚙️ Phase 4 Implementation: archived_phase_4_implementation.md
-  - 📓 Notebooks:
-      - 📋 Overview: notebooks/overview.md
-  - 🛠️ Setup: setup.md
+      - 📁 Archive:
+          - Contextual Examples: archive/CONTEXTUAL_EXAMPLES.md
+          - Example Papers for Exploration: archive/EXAMPLE_PAPERS_FOR_EXPLORATION.md
+          - Import Standards: archive/IMPORT_STANDARDS.md
+          - Performance Improvements: archive/PERFORMANCE_IMPROVEMENTS.md
+          - Overview (legacy): overview.md
+          - Setup (legacy): setup.md
+      - 🧪 Development Docs:
+          - Data Import Guide: development/DATA_IMPORT_GUIDE.md
+          - File Upload Guide: development/FILE_UPLOAD_GUIDE.md
+          - Streamlit README: development/STREAMLIT_README.md
+          - Testing Instructions: development/TESTING_INSTRUCTIONS.md
+      - ⚙️ Includes: includes/mkdocs.md
 
 watch:
   - src
