@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJECT_ID="${PROJECT_ID:-gen-lang-client-0374286648}"
+PROJECT_ID="${PROJECT_ID:?Set PROJECT_ID to your GCP project ID (e.g. export PROJECT_ID=my-gcp-project)}"
 
 echo "Setting up secrets for Academic Citation Platform in project: $PROJECT_ID"
 echo ""

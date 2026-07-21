@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJECT_ID="${PROJECT_ID:-gen-lang-client-0374286648}"
+PROJECT_ID="${PROJECT_ID:?Set PROJECT_ID to your GCP project ID (e.g. export PROJECT_ID=my-gcp-project)}"
 REGION="${REGION:-us-central1}"
 SERVICE="${SERVICE:-academic-citation-platform}"
-DOMAIN="${DOMAIN:-cartography.barbhs.com}"
+DOMAIN="${DOMAIN:-citationcompass.barbhs.com}"
 
 echo "Setting up custom domain: $DOMAIN for service: $SERVICE"
 echo ""
