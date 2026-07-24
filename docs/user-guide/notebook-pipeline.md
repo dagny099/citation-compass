@@ -48,13 +48,13 @@ flowchart LR
 
 **Network Overview**:
 ```python
-# Example outputs from the notebook
+# Illustrative output — actual values depend on the data in your database.
+# The figures below are for the dataset used to train the shipped model
+# (see models/training_metadata.json).
 Network Statistics:
-- Papers: 15,420
-- Authors: 8,932  
-- Citations: 45,670
-- Average citations per paper: 2.96
-- Network density: 0.0003
+- Papers: 12,595
+- Citations: 18,912
+- Average citations per paper: 1.50
 ```
 
 **Community Detection**:
@@ -112,10 +112,10 @@ train_data, val_data, test_data = prepare_citation_data(
 model_config = {
     'embedding_dim': 128,
     'margin': 1.0,
-    'learning_rate': 0.001,
+    'learning_rate': 0.01,
     'batch_size': 1024,
     'epochs': 100,
-    'negative_sampling_ratio': 5
+    'negative_sampling_ratio': 1
 }
 ```
 
@@ -130,17 +130,21 @@ model_config = {
 **Saved Files**:
 - `models/transe_citation_model.pt` - Trained PyTorch model
 - `models/entity_mapping.pkl` - Paper/author ID mappings  
-- `models/training_metadata.pkl` - Training configuration and metrics
+- `models/training_metadata.json` - Training configuration and metrics
 
-**Training Metrics**:
+**Training Metrics** (actual values for the shipped model, from `models/training_metadata.json`):
 ```python
-# Example training results
 Training Results:
-- Final training loss: 0.234
-- Validation MRR: 0.412
-- Training time: 45 minutes
-- Model size: 15.3 MB
+- Epochs completed: 26 (early convergence)
+- Final training loss: 0.0037 (98.7% reduction from the initial loss)
+- Model parameters: 1,612,288
+- Model size on disk: ~18.5 MB
 ```
+
+!!! note
+    Ranking/classification metrics (MRR, Hits@K, AUC) are computed by
+    Notebook 3, but the shipped `training_metadata.json` records only the
+    training-loss history above — it does not include measured MRR/AUC.
 
 ## 📊 Notebook 3: Prediction Evaluation
 

@@ -136,6 +136,7 @@ markdown_extensions:
 nav:
   - 🏠 Home: index.md
   - 📖 Getting Started: getting-started.md
+  - 🎭 Demo Mode: getting-started/demo-mode.md
   - 👤 User Guide:
       - 📋 Overview: user-guide/overview.md
       - 🎭 Demo Datasets: user-guide/demo-datasets.md
